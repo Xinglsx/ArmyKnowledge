@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QuickShare.LiteFramework.WebApi</name>
+    </assembly>
+    <members>
+        <member name="M:QuickShare.LiteFramework.WebApi.AuditLog.AuditLogHelper.GetRequestValues(System.Net.Http.HttpRequestMessage)">
+            <summary>
+            读取request 的提交内容
+            </summary>
+            <param name="httpRequestMessage"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.AuditLog.AuditLogHelper.GetResponseValues(System.Net.Http.HttpResponseMessage)">
+            <summary>
+            读取action返回的result
+            </summary>
+            <param name="httpResponseMessage"></param>
+            <returns></returns>
+        </member>
+        <member name="P:QuickShare.LiteFramework.WebApi.Authorization.User.ID">
+            <summary> 用户ID </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.WebApi.Authorization.User.Name">
+            <summary> 用户名称 </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.WebApi.Authorization.User.Code">
+            <summary> 用户代码 </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.WebApi.Authorization.User.Type">
+            <summary> 验证类型 </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.UseAuthorization(System.Web.Http.HttpConfiguration,System.Web.Http.Filters.AuthorizationFilterAttribute)">
+            <summary>
+            身份验证模块启用
+            </summary>
+            <param name="config"></param>
+            <param name="authorizationFilterAttribute"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.UseFilter(System.Web.Http.HttpConfiguration,System.Web.Http.Filters.IFilter)">
+            <summary>
+            过滤器启用
+            </summary>
+            <param name="config"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.UseFilters(System.Web.Http.HttpConfiguration)">
+            <summary>
+            过滤器启用
+            </summary>
+            <param name="config"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.UseRoute(System.Web.Http.HttpConfiguration,System.String,System.String)">
+            <summary>
+            普通路由注入
+            </summary>
+            <param name="config"></param>
+            <param name="name"></param>
+            <param name="routeTemplate"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.UseHttpAttributeRoutes(System.Web.Http.HttpConfiguration)">
+            <summary>
+            普通路由注入
+            </summary>
+            <param name="config"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.UseNamespaceRoutes(System.Web.Http.HttpConfiguration,System.Collections.Generic.IDictionary{System.String,System.String[]})">
+            <summary>
+            应用命名空间路由查找器，按照命名空间分配路由
+            参数nameKeyValues像这样： new Dictionary&lt;string, string[]&gt;
+            { {"Api1",new string[] { "MyApplication.Namespace1.Controllers"}},
+            {"Api2",new string[] { "MyApplication.Namespace2.Controllers"}} }
+            </summary>
+            <param name="config"></param>
+            <param name="nameKeyValues"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.ConfigAppInstance(System.Web.Http.HttpConfiguration,System.Action{QuickShare.LiteFramework.AppInstance})">
+            <summary>
+            Autofac注入
+            </summary>
+            <param name="config"></param>
+            <param name="action"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.StartTasks(System.Web.Http.HttpConfiguration)">
+            <summary>
+            启动自动任务
+            </summary>
+            <param name="config"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.UseJson(System.Web.Http.HttpConfiguration,System.Boolean)">
+            <summary>
+            使用Json序列化
+            </summary>
+            <param name="config"></param>
+            <param name="camelCaseProperty"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.UseXml(System.Web.Http.HttpConfiguration)">
+            <summary>
+            启用XML序列化
+            </summary>
+            <param name="config"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.UseAllCors(System.Web.Http.HttpConfiguration,System.String[])">
+            <summary>
+            允许所有跨域
+            </summary>
+            <param name="config"></param>
+            <param name="headers"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.UseCors(System.Web.Http.HttpConfiguration,System.String,System.String,System.String,System.String[])">
+            <summary>
+            跨域配置
+            </summary>
+            <param name="config"></param>
+            <param name="origin"></param>
+            <param name="header"></param>
+            <param name="method"></param>
+            <param name="exposedHeaders"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.HttpConfigurationExtensions.Run(System.Web.Http.HttpConfiguration)">
+            <summary>
+            运行
+            </summary>
+            <param name="config"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.WebApi.WebContext.CurrentUser``1">
+            <summary>
+            当前登录用户信息
+            </summary>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

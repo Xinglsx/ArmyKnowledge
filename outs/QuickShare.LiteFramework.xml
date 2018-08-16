@@ -1,0 +1,2201 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>QuickShare.LiteFramework</name>
+    </assembly>
+    <members>
+        <member name="M:QuickShare.LiteFramework.AppInstance.Resolve``1">
+            <summary>
+            从容器中获取一个服务
+            </summary>
+            <typeparam name="TService"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.AppInstance.ResolveOptional``1">
+            <summary>
+            从容器中获取一个可选服务
+            </summary>
+            <typeparam name="TService"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.AppInstance.ResolveAll``1">
+            <summary>
+            从容器中获取一个服务集合
+            </summary>
+            <typeparam name="TService"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Base.IBaseService`1.GetAll(QuickShare.LiteFramework.Base.SortInfo{`0}[])">
+            <summary>取所有数据</summary>`
+        </member>
+        <member name="M:QuickShare.LiteFramework.Base.IBaseService`1.GetPage(System.Int32,System.Int32,System.Collections.Generic.IEnumerable{QuickShare.LiteFramework.Base.SortInfo{`0}},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>取分页数据</summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Base.IBaseService`1.GetPage(System.Int32,System.Int32,QuickShare.LiteFramework.Base.SortInfo{`0},System.Linq.Expressions.Expression{System.Func{`0,System.Boolean}})">
+            <summary>取分页数据</summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Base.IBaseService`1.Add(`0)">
+            <summary>添加一条记录</summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Base.IBaseService`1.Update(`0)">
+            <summary>更新一条记录，需要更新的记录有实体的ID指定,更新内容由指定实体指定</summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Base.IModel">
+            <summary>
+            模型接口，表示实现该接口的都是领域模型
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Base.ISpecification`1">
+            <summary>
+            规约接口
+            </summary>
+            <typeparam name="TEntity"></typeparam>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Base.ISpecification`1.GetExpression">
+            <summary>
+            返回规约表达式
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Base.SortInfo.Ascending``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            创建一个升序的排序信息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="field"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Base.SortInfo.Descending``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}})">
+            <summary>
+            创建一个降序的排序信息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="field"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Base.SortInfo.NewSort``1(System.Linq.Expressions.Expression{System.Func{``0,System.Object}},System.Data.SqlClient.SortOrder)">
+            <summary>
+            创建一个排序信息
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="field"></param>
+            <param name="order"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Base.EntityMap`1">
+            <summary>
+            实体表配置类
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Base.EntityMap`1.DbName">
+            <summary>
+            数据库名称
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Base.EntityMap`1.IsBase">
+            <summary>
+            是否基础表，如果指定为true，表示该表会建立在所有数据库中
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Base.EntityMap`1.AddConfiguration(System.Data.Entity.ModelConfiguration.Configuration.ConfigurationRegistrar)">
+            <summary>
+            注册本配置
+            </summary>
+            <param name="registrar"></param>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Base.IEntity">
+            <summary>
+            表示继承于该接口的类型都是领域实体
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Base.IEntityMap">
+            <summary>
+            HRP实体表配置接口
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Base.IEntityMap.AddConfiguration(System.Data.Entity.ModelConfiguration.Configuration.ConfigurationRegistrar)">
+            <summary>
+            注册本配置
+            </summary>
+            <param name="registrar"></param>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Base.IRowVersion">
+            <summary>
+            时间戳接口
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Base.IRowVersion.RowTimestamp">
+            <summary>
+            时间戳
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Base.Specification">
+            <summary>
+            规约扩展
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Enum.EnumGroup">
+            <summary>
+            标记枚举或枚举成员的分组信息
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Enum.EnumGroup.GroupName">
+            <summary>
+            分组名称
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Enum.EnumGroup.#ctor(System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="groupName">分组名称</param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Enum.EnumGroup.#ctor(System.String,System.String)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="groupName">分组名称</param>
+            <param name="description">在该分组的显示文本</param>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Enum.EnumHelper">
+            <summary>
+            枚举工具类型
+            </summary>
+        </member>
+        <member name="F:QuickShare.LiteFramework.Common.Enum.EnumHelper.caches">
+            <summary>
+            枚举类型反射信息的缓存字典
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Enum.EnumHelper.GetValue``1(System.Enum,System.Nullable{``0})">
+            <summary>
+            取一个枚举的具体值
+            </summary>
+            <typeparam name="T">要返回值的类型</typeparam>
+            <param name="e">枚举</param>
+            <param name="defaultValue"></param>
+            <returns>枚举的值</returns>
+            <exception cref="N:QuickShare.LiteFramework.Common.Exception">指定枚举类型未定义该值。</exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Enum.EnumHelper.GetDescription(System.Enum,System.String)">
+            <summary>
+            取一个枚举的描述信息
+            </summary>
+            <param name="e">枚举</param>
+            <param name="groupName"></param>
+            <returns>枚举的描述信息</returns>
+            <exception cref="N:QuickShare.LiteFramework.Common.Exception">指定枚举类型未定义该分组或该值</exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Enum.EnumHelper.GetEnumInfo(System.Type)">
+            <summary>
+            返回一个枚举类型的枚举信息
+            </summary>
+            <param name="type">枚举类型</param>
+            <returns>枚举信息</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Enum.EnumHelper.GetEnumInfos(System.Type)">
+            <summary>
+            返回枚举类型的所有枚举信息
+            </summary>
+            <param name="type">枚举类型</param>
+            <returns>枚举信息列表</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Enum.EnumHelper.ReflectEnumTypes(System.Type)">
+            <summary>
+            反射枚举类型的信息
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Enum.EnumInfo">
+            <summary>
+            枚举信息描述类
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Enum.EnumInfo.Value">
+            <summary>
+            枚举的值
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Enum.EnumInfo.Code">
+            <summary>
+            枚举代码
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Enum.EnumInfo.Display">
+            <summary>
+            枚举名称
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Enum.EnumInfo.Values">
+            <summary>
+            枚举成员
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Enum.EnumValue">
+            <summary>
+            枚举成员信息描述类
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Enum.EnumValue.Enum">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Enum.EnumValue.Value">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Enum.EnumValue.Code">
+            <summary>
+            代码
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Enum.EnumValue.Display">
+            <summary>
+            显示文本
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Exception.Check">
+            <summary>
+            检查类
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Exception.Check.NotMatch(System.Func{System.Boolean},System.String,System.String)">
+            <summary>
+            如果一个值满足指定条件,则抛出异常
+            </summary>
+            <param name="precondition"></param>
+            <param name="message"></param>
+            <param name="argName"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ApplicationException"></exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Exception.Check.NotDefault``1(``0,System.String,System.String)">
+            <summary>
+            如果一个值是该类型的默认值,则抛出异常
+            </summary>
+            <param name="value"></param>
+            <param name="message"></param>
+            <param name="argName"></param>
+            <typeparam name="T"></typeparam>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ApplicationException"></exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Exception.Check.NotNull``1(``0,System.String,System.String)">
+            <summary>
+            检查输入的参数 <paramref name="value"/> 是否为 Null。
+            如果 <paramref name="value"/> 值为 Null，则抛出 <see cref="T:System.ArgumentNullException"/> 异常；否则返回 <paramref name="value"/> 值本身。
+            </summary>
+            <typeparam name="T"><paramref name="value"/> 参数的类型。</typeparam>
+            <param name="value">被检查的参数值。</param>
+            <param name="message"></param>
+            <param name="argName">被检查的参数名称。</param>
+            <returns>如果 <paramref name="value"/> 值不为 Null ，则返回 <paramref name="value"/> 值本身。</returns>
+            <exception cref="T:System.ArgumentNullException">如果 <paramref name="value"/> 值为 Null，则抛出该异常。</exception>
+            <exception cref="T:System.ApplicationException"></exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Exception.Check.NotEmpty(System.String,System.String,System.String)">
+            <summary>
+            检查输入的参数是否为 Null、空或者空白字符串组成。
+            如果 <paramref name="value"/> 值为 Null、空或者空白字符串组成，则抛出 <see cref="T:System.ArgumentException"/> 异常；否则返回 <paramref name="value"/> 值本身。
+            </summary>
+            <param name="value">被检查的参数值。</param>
+            <param name="message"></param>
+            <param name="argName">被检查的参数名称。</param>
+            <returns>如果 <paramref name="value"/> 值不为 Null、空或者空白字符串组成 ，则返回 <paramref name="value"/> 值本身。</returns>
+            <exception cref="T:System.ArgumentNullException">如果 <paramref name="value"/> 值为 Null、空或者空白字符串组成，则抛出该异常。</exception>
+            <exception cref="T:System.ApplicationException"></exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Exception.Check.NotNullOrEmpty(System.Collections.IEnumerable,System.String,System.String)">
+            <summary>
+            如果一个集合是空或空序列，则抛出一个异常
+            </summary>
+            <param name="value"></param>
+            <param name="message"></param>
+            <param name="argName"></param>
+            <exception cref="T:System.ArgumentNullException"></exception>
+            <exception cref="T:System.ApplicationException"></exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Exception.Check.NotInvalid(System.Func{System.Boolean},System.String)">
+            <summary>
+            检查无效的操作
+            </summary>
+            <param name="precondition"></param>
+            <param name="message"></param>
+            <exception cref="T:System.InvalidOperationException"></exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Exception.Check.Not(System.Func{System.Boolean},System.String)">
+            <summary>
+            检查错误
+            </summary>
+            <param name="precondition"></param>
+            <param name="message"></param>
+            <exception cref="T:System.ApplicationException"></exception>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Exception.Error">
+            <summary>
+            返回各类异常错误
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Exception.Guard">
+            <summary>
+            throw,报警
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.ExpressionExtensions.OrElse``1(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}},System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Extenstions.QueryableExtensions">
+            <summary>
+            查询扩展
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.QueryableExtensions.ToPage``1(System.Linq.IQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            扩展分页
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.QueryableExtensions.WithSpecification``1(System.Linq.IQueryable{``0},QuickShare.LiteFramework.Base.ISpecification{``0})">
+            <summary>
+            扩展分页
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="queryable"></param>
+            <param name="specification"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.QueryableExtensions.WithPage``1(System.Linq.IQueryable{``0},System.Int32,System.Int32)">
+            <summary>
+            扩展分页
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="queryable"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.QueryableExtensions.WithSort``1(System.Linq.IQueryable{``0},System.Collections.Generic.IEnumerable{QuickShare.LiteFramework.Base.SortInfo{``0}})">
+            <summary>
+            扩展排序
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="queryable"></param>
+            <param name="sorts"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.AutofacExtentions.RegisterOneOrDefault(Autofac.ContainerBuilder,QuickShare.LiteFramework.Inject.IFinder,System.Type)">
+            <summary>
+            注册默认实现
+            </summary>
+            <param name="builder"></param>
+            <param name="finder"></param>
+            <param name="serverType"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.AutofacExtentions.RegisterOneOrDefault``1(Autofac.ContainerBuilder,QuickShare.LiteFramework.Inject.IFinder)">
+            <summary>
+            注册默认实现
+            </summary>
+            <param name="builder"></param>
+            <param name="finder"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.AutofacExtentions.RegisterSubType(Autofac.ContainerBuilder,QuickShare.LiteFramework.Inject.IFinder,System.Type)">
+            <summary>
+            注册实现
+            </summary>
+            <param name="builder"></param>
+            <param name="finder"></param>
+            <param name="serverType"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.AutofacExtentions.RegisterSubType``1(Autofac.ContainerBuilder,QuickShare.LiteFramework.Inject.IFinder)">
+            <summary>
+            注册实现
+            </summary>
+            <param name="builder"></param>
+            <param name="finder"></param>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Extenstions.DateTimeExtensions">
+            <summary>
+            日期和时间的扩展
+            </summary>
+        </member>
+        <member name="F:QuickShare.LiteFramework.Common.Extenstions.DateTimeExtensions.Min">
+            <summary>
+            系统最小日期
+            </summary>
+        </member>
+        <member name="F:QuickShare.LiteFramework.Common.Extenstions.DateTimeExtensions.Max">
+            <summary>
+            系统最大日期
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Extenstions.DictionaryExtensions">
+            <summary>
+            字典扩展方法
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.DictionaryExtensions.SafeAdd``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1)">
+            <summary>
+            尝试将键和值添加到字典中：如果不存在,才添加.存在,不添加也不抛导常,并使用锁机制
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.DictionaryExtensions.SafeRemove``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1@)">
+            <summary>
+            尝试将键和值添加到字典中：如果不存在,才添加.存在,不添加也不抛导常,并使用锁机制
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.DictionaryExtensions.SafeAddOrReplace``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1)">
+            <summary>
+            将键和值添加或替换到字典中：如果不存在,则添加,存在,则替换,并使用锁机制.
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.DictionaryExtensions.SafeGet``2(System.Collections.Generic.IDictionary{``0,``1},``0,``1@)">
+            <summary>
+            获取与指定的键相关联的值,如果没有则返回输入的默认值,不需要再使用out,并使用锁机制.
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.DictionaryExtensions.SafeGetOrCreate``2(System.Collections.Generic.IDictionary{``0,``1},``0,System.Func{``0,``1})">
+            <summary>
+            获取与指定的键相关联的值,如果没有则返回输入的默认值,不需要再使用out,并使用锁机制.
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Extenstions.EnumerableExtensions">
+            <summary>
+            枚举器扩展方法
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.EnumerableExtensions.IsNullOrEmpty(System.Collections.IEnumerable)">
+            <summary>
+            判断一个枚举器是否为空或空序列
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.EnumerableExtensions.IsNullOrEmpty``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            判断一个枚举器是否为空或空序列
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.EnumerableExtensions.DistinctBy``1(System.Collections.Generic.IEnumerable{``0},System.Func{``0,System.Object})">
+            <summary>
+            根据一个比较器返回非重复函数
+            </summary>
+            <typeparam name="TSource"></typeparam>
+            <param name="source"></param>
+            <param name="keySelector">比较器</param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.EnumerableExtensions.ToSafeDictionary``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1})">
+            <summary>
+            根据指定的键选择器和元素选择器函数，从 System.Collections.Generic.IEnumerable&lt;TSource&gt; 创建一个 System.Collections.Generic.Dictionary&lt;TKey,TSource&gt;，在此过程中遇到重复的键将被忽略。
+            </summary>
+            <typeparam name="TSource">source 中的元素的类型。</typeparam>
+            <typeparam name="TKey">keySelector 返回的键的类型。</typeparam>
+            <param name="source">一个 System.Collections.Generic.IEnumerable&lt;TSource&gt;，将从它创建一个 System.Collections.Generic.Dictionary&lt;TKey,TSource&gt;。</param>
+            <param name="keySelector">用于从每个元素中提取键的函数。</param>
+            <returns>一个 System.Collections.Generic.Dictionary&lt;TKey,TSource&gt;，包含从输入序列中选择的类型为 TElement 的值。</returns>
+            <exception cref="T:System.ArgumentNullException">source 或 keySelector 或 elementSelector 为 null。- 或 -keySelector 产生了一个 null 键。</exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.EnumerableExtensions.ToSafeDictionary``2(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+            根据指定的键选择器和元素选择器函数，从 System.Collections.Generic.IEnumerable&lt;TSource&gt; 创建一个 System.Collections.Generic.Dictionary&lt;TKey,TSource&gt;，在此过程中遇到重复的键将被忽略。
+            </summary>
+            <typeparam name="TSource">source 中的元素的类型。</typeparam>
+            <typeparam name="TKey">keySelector 返回的键的类型。</typeparam>
+            <param name="source">一个 System.Collections.Generic.IEnumerable&lt;TSource&gt;，将从它创建一个 System.Collections.Generic.Dictionary&lt;TKey,TSource&gt;。</param>
+            <param name="keySelector">用于从每个元素中提取键的函数。</param>
+            <param name="comparer">一个用于对键进行比较的 System.Collections.Generic.IEqualityComparer&lt;TKey&gt;。</param>
+            <returns>一个 System.Collections.Generic.Dictionary&lt;TKey,TSource&gt;，包含从输入序列中选择的类型为 TElement 的值。</returns>
+            <exception cref="T:System.ArgumentNullException">source 或 keySelector 或 elementSelector 为 null。- 或 -keySelector 产生了一个 null 键。</exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.EnumerableExtensions.ToSafeDictionary``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2})">
+            <summary>
+            根据指定的键选择器和元素选择器函数，从 System.Collections.Generic.IEnumerable&lt;TSource&gt; 创建一个 System.Collections.Generic.Dictionary&lt;TKey,TElement&gt;，在此过程中遇到重复的键将被忽略。
+            </summary>
+            <typeparam name="TSource">source 中的元素的类型。</typeparam>
+            <typeparam name="TKey">keySelector 返回的键的类型。</typeparam>
+            <typeparam name="TElement">elementSelector 返回的值的类型。</typeparam>
+            <param name="source">一个 System.Collections.Generic.IEnumerable&lt;TSource&gt;，将从它创建一个 System.Collections.Generic.Dictionary&lt;TKey,TElement&gt;。</param>
+            <param name="keySelector">用于从每个元素中提取键的函数。</param>
+            <param name="elementSelector">用于从每个元素产生结果元素值的转换函数。</param>
+            <returns>一个 System.Collections.Generic.Dictionary&lt;TKey,TElement&gt;，包含从输入序列中选择的类型为 TElement 的值。</returns>
+            <exception cref="T:System.ArgumentNullException">source 或 keySelector 或 elementSelector 为 null。- 或 -keySelector 产生了一个 null 键。</exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.EnumerableExtensions.ToSafeDictionary``3(System.Collections.Generic.IEnumerable{``0},System.Func{``0,``1},System.Func{``0,``2},System.Collections.Generic.IEqualityComparer{``1})">
+            <summary>
+            根据指定的键选择器和元素选择器函数，从 System.Collections.Generic.IEnumerable&lt;TSource&gt; 创建一个 System.Collections.Generic.Dictionary&lt;TKey,TElement&gt;，在此过程中遇到重复的键将被忽略。
+            </summary>
+            <typeparam name="TSource">source 中的元素的类型。</typeparam>
+            <typeparam name="TKey">keySelector 返回的键的类型。</typeparam>
+            <typeparam name="TElement">elementSelector 返回的值的类型。</typeparam>
+            <param name="source">一个 System.Collections.Generic.IEnumerable&lt;TSource&gt;，将从它创建一个 System.Collections.Generic.Dictionary&lt;TKey,TElement&gt;。</param>
+            <param name="keySelector">用于从每个元素中提取键的函数。</param>
+            <param name="elementSelector">用于从每个元素产生结果元素值的转换函数。</param>
+            <param name="comparer">一个用于对键进行比较的 System.Collections.Generic.IEqualityComparer&lt;TKey&gt;。</param>
+            <returns>一个 System.Collections.Generic.Dictionary&lt;TKey,TElement&gt;，包含从输入序列中选择的类型为 TElement 的值。</returns>
+            <exception cref="T:System.ArgumentNullException">source 或 keySelector 或 elementSelector 为 null。- 或 -keySelector 产生了一个 null 键。</exception>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Extenstions.ExceptionExtensions">
+            <summary>
+            异常扩展方法
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.ExceptionExtensions.AllMessage(System.Exception)">
+            <summary>
+            返回异常的具体信息，如果异常包含内部异常，会将内部异常的信息一起展示出来，
+            如果异常时聚合异常，会将内部所有异常的信息展示出来
+            </summary>
+            <param name="ex"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Extenstions.StringExtensions">
+            <summary>
+            字符串扩展方法
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.StringExtensions.IsNullOrEmptyOrWhiteSpace(System.String)">
+            <summary>
+            判断字符串是空或空字串或空白字串
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.StringExtensions.IsNotNullOrEmptyOrWhiteSpace(System.String)">
+            <summary>
+            判断字符串不是空或空字串或空白字串
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.StringExtensions.ToSbc(System.String)">
+             <summary>
+             转全角的函数(SBC case)
+             </summary>
+             <param name="input">任意字符串</param>
+             <returns>全角字符串</returns>
+            <remarks>
+            全角空格为12288，半角空格为32
+            其他字符半角(33-126)与全角(65281-65374)的对应关系是：均相差65248
+            </remarks>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.StringExtensions.ToDbc(System.String)">
+             <summary>
+             转半角的函数(DBC case)
+             </summary>
+             <param name="input">任意字符串</param>
+             <returns>半角字符串</returns>
+            <remarks>
+            全角空格为12288，半角空格为32
+            其他字符半角(33-126)与全角(65281-65374)的对应关系是：均相差65248
+            </remarks>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.StringExtensions.Left(System.String,System.Int32)">
+            <summary>
+            取一个字串的左侧指定长度的子字串
+            </summary>
+            <param name="value"></param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.StringExtensions.Right(System.String,System.Int32)">
+            <summary>
+            取一个字串的右侧指定长度的子字串
+            </summary>
+            <param name="value"></param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.StringExtensions.RemoveLeft(System.String,System.Int32)">
+            <summary>
+            取一个字串的去除左侧指定长度的子字串
+            </summary>
+            <param name="value"></param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.StringExtensions.RemoveRight(System.String,System.Int32)">
+            <summary>
+            取一个字串的去除右侧指定长度的子字串
+            </summary>
+            <param name="value"></param>
+            <param name="length"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.StringExtensions.Contains(System.String,System.String,System.StringComparison)">
+            <summary>
+            根据区域大小写和排序规则判断源字符串是否包含目标字符串
+            </summary>
+            <param name="source"></param>
+            <param name="value"></param>
+            <param name="comparisonType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.StringExtensions.Ellipse(System.String,System.Int32,System.Char)">
+            <summary>
+            将文本超出长度的部分换成省略号，或直接截取
+            </summary>
+            <param name="source"></param>
+            <param name="length"></param>
+            <param name="ellipse"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions">
+            <summary>
+            类型扩展方法
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.GetNonNullableType(System.Type)">
+            <summary>
+            返回一个类型的不可空类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.IsNullOrVoid(System.Type)">
+            <summary>
+            判断一个类型是空或void
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.IsNullableType(System.Type)">
+            <summary>
+            判断一个类型是Nullable
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.HasInterface(System.Type,System.Type)">
+            <summary>
+            判断一个类型具备一个接口
+            </summary>
+            <param name="type"></param>
+            <param name="interfaceType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.HasInterface``1(System.Type)">
+            <summary>
+            判断一个类型具备一个接口
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.GetSignName(System.Reflection.MethodInfo)">
+            <summary>
+            返回一个方法包含参数的完整签名
+            </summary>
+            <param name="method"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.GetFullName(System.Reflection.MethodInfo)">
+            <summary>
+            返回一个方法的完全名称
+            </summary>
+            <param name="method"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.GetGenericName(System.Type)">
+            <summary>
+            返回一个类型的名称部分，不包含泛型类型参数部分
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.GetFullName(System.Type)">
+            <summary>
+            返回一个类型的完整名称
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.IsAnonymousType(System.Type)">
+            <summary>
+            判断一个类型是匿名类型
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.IsAnonymousType``1">
+            <summary>
+            判断一个类型是匿名类型
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Extenstions.TypeExtensions.GetMemberType(System.Reflection.MemberInfo)">
+            <summary>
+            返回一个成员的类型
+            </summary>
+            <param name="value"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Utilities.WebUtil">
+            <summary>
+            Web工具类
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.GetServerVariables(System.String)">
+            <summary>获取服务器端变量</summary>
+            <param name="name">变量名称</param>
+            <returns>服务器端变量的值</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.IsSupportGzip">
+            <summary>获取客户端浏览器是否支持 GZIP 压缩</summary>
+            <value>如果客户端浏览器支持 GZIP 压缩，则该值为 <c>true</c>；否则为 <c>false</c>。</value>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.GetClientLanguane">
+            <summary>获取客户端浏览器语言</summary>
+            <value>客户端浏览器语言</value>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.GetIP">
+            <summary>获取客户端 IP 地址</summary>
+            <value>客户端 IP 地址</value>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.GetClientHostName">
+            <summary>
+             获取客户端计算机名称
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.GetHostName">
+            <summary>获取当前域名</summary>
+            <value>当前域名</value>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.GetPageUrl">
+            <summary>获取当前页面 URL</summary>
+            <value>当前页面 URL</value>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.GetUrlReferrer">
+            <summary>获取来访页面 URL</summary>
+            <value>来访页面 URL</value>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.GetRawUrl">
+            <summary>获取当前请求的原始 URL</summary>
+            <value>当前请求的原始 URL</value>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.GetUserAgent">
+            <summary>获取客户端浏览器用户代理信息</summary>
+            <value>客户端浏览器用户代理信息</value>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.IsIP(System.String)">
+            <summary>验证 IP 地址格式是否为 IPv4 或 IPv6</summary>
+            <param name="ip">IP 地址</param>
+            <returns>指示 IP 地址格式是否为 IPv4 或 IPv6</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.IsIPVer4(System.String)">
+            <summary>验证 IP 地址是否为 IPv4</summary>
+            <param name="ip">IP 地址</param>
+            <returns>指示 IP 地址格式是否为 IPv4</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.IsIPVer6(System.String)">
+            <summary>验证 IP 地址是否为 IPv6</summary>
+            <param name="ip">IP 地址</param>
+            <returns>指示 IP 地址格式是否为 IPv6</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.GetIPVer(System.String)">
+            <summary>获取 IP 地址版本。4 为 IPv4，6 为 IPv6，0 为非 IP</summary>
+            <param name="ip">IP 地址</param>
+            <returns>IP 地址版本。4 为 IPv4，6 为 IPv6，0 为非 IP</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.WebUtil.RestartApplication">
+            <summary>重启 ASP.Net 程序</summary>
+            <returns>指示是否重启成功</returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Utilities.CryptoApi">
+            <summary>
+            加密工具类
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.Md532(System.String)">
+            <summary>
+            MD5加密
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.Sha1(System.String)">
+            <summary>
+            SHA1 加密
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.Sha256(System.String)">
+            <summary>
+            SHA256 加密
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.Sha512(System.String)">
+            <summary>
+            SHA512 加密
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.AesEncrypt(System.String,System.String,System.String)">
+            <summary>
+            AES加密
+            </summary>
+            <param name="data">被加密的明文</param>
+            <param name="key">密钥</param>
+            <param name="vector">向量</param>
+            <returns>密文</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.AesDecrypt(System.String,System.String,System.String)">
+            <summary>
+            AES解密
+            </summary>
+            <param name="data">被解密的密文</param>
+            <param name="key">密钥</param>
+            <param name="vector">向量</param>
+            <returns>明文</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.AesEncrypt(System.String,System.String)">
+            <summary>
+            AES加密(无向量)
+            </summary>
+            <param name="data">被加密的明文</param>
+            <param name="key">密钥</param>
+            <returns>密文</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.AesDecrypt(System.String,System.String)">
+            <summary>
+            AES解密(无向量)
+            </summary>
+            <param name="data">被加密的明文</param>
+            <param name="key">密钥</param>
+            <returns>明文</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.AesEncrypt(System.String)">
+            <summary>
+            AES加密(无向量)
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.AesDecrypt(System.String)">
+            <summary>
+            AES解密(无向量)
+            </summary>
+            <param name="data"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.HashAlgorithmBase(System.Security.Cryptography.HashAlgorithm,System.String,System.Text.Encoding)">
+            <summary>
+            HashAlgorithm 加密统一方法
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.CryptoApi.Bytes2Str(System.Byte[],System.String)">
+            <summary>
+            转换成字符串
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Utilities.FileHelper">
+            <summary>
+            文件管理工具类
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.FileHelper.IsExistFile(System.String)">
+            <summary>
+            文件是否存在
+            </summary>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.FileHelper.IsExistDirectory(System.String)">
+            <summary>
+            目录是否存在
+            </summary>
+            <param name="dirPath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.FileHelper.CheckFileExtension(System.String,System.String)">
+            <summary>
+            检查文件后缀名是否是指定的后缀，如果不是，添加后缀
+            </summary>
+            <param name="fileName"></param>
+            <param name="extension"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.FileHelper.GetFileEncodeType(System.String)">
+            <summary>
+            获取文件的编码类型
+            </summary>
+            <param name="filePath"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.FileHelper.RemoveReadonly(System.String)">
+            <summary>
+            去除文件的只读属性
+            </summary>
+            <param name="path"></param>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Utilities.XEqualityComparer`1">
+            <summary>
+            相等比较器
+            </summary>
+            <typeparam name="T">目标类型</typeparam>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.XEqualityComparer`1.Equals(`0,`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.XEqualityComparer`1.GetHashCode(`0)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.XEqualityComparer`1.Get(System.Func{`0,System.Object})">
+            <summary>
+            使用选择器构建一个<typeparamref name="T"/>实例的比较器。
+            </summary>
+            <param name="keySelector">如果选择器为空,则返回一个默认比较器</param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Utilities.XHash">
+            <summary>
+            Salted password hashing with PBKDF2-SHA1.
+            Author: havoc AT defuse.ca
+            www: http://crackstation.net/hashing-security.htm
+            Compatibility: .NET 3.0 and later.
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.XHash.Create(System.String)">
+            <summary>
+            Creates a salted PBKDF2 hash of the password.
+            </summary>
+            <param name="input">The password to hash.</param>
+            <returns>The hash of the password.</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.XHash.CreateAuthorize(System.String,System.String)">
+            <summary>
+            Creates a salted PBKDF2 hash of the password.
+            </summary>
+            <param name="tick"></param>
+            <param name="publicKey"></param>
+            <returns>The hash of the password.</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.XHash.ValidateAuthorize(System.String,System.String,System.String)">
+            <summary>
+            Validates a password given a hash of the correct one.
+            </summary>
+            <param name="tick"></param>
+            <param name="publicKey">The password to check.</param>
+            <param name="correctHash">A hash of the correct password.</param>
+            <returns>True if the password is correct. False otherwise.</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.XHash.Validate(System.String,System.String)">
+            <summary>
+            Validates a password given a hash of the correct one.
+            </summary>
+            <param name="input">The password to check.</param>
+            <param name="correctHash">A hash of the correct password.</param>
+            <returns>True if the password is correct. False otherwise.</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.XHash.Validate(System.String,System.String,System.Int32)">
+            <summary>
+            Validates a password given a hash of the correct one.
+            </summary>
+            <param name="input">The password to check.</param>
+            <param name="correctHash">A hash of the correct password.</param>
+            <param name="iterations"></param>
+            <returns>True if the password is correct. False otherwise.</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.XHash.SlowEquals(System.Byte[],System.Byte[])">
+            <summary>
+            Compares two byte arrays in length-constant time. This comparison
+            method is used so that password hashes cannot be extracted from
+            on-line systems using a timing attack and then attacked off-line.
+            </summary>
+            <param name="a">The first byte array.</param>
+            <param name="b">The second byte array.</param>
+            <returns>True if both byte arrays are equal. False otherwise.</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Utilities.XHash.Pbkdf2(System.String,System.Byte[],System.Int32,System.Int32)">
+            <summary>
+            Computes the PBKDF2-SHA1 hash of a password.
+            </summary>
+            <param name="password">The password to hash.</param>
+            <param name="salt">The salt.</param>
+            <param name="iterations">The PBKDF2 iteration count.</param>
+            <param name="outputBytes">The length of the hash to generate, in bytes.</param>
+            <returns>A hash of the password.</returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Dynamic.DynamicTypeBuilder">
+            <summary>
+            动态类型创建类
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Dynamic.DynamicTypeBuilder.GetDynamicType(System.Collections.Generic.Dictionary{System.String,System.Type})">
+            <summary>
+            通过指定的字段和类型生成一个动态类型
+            </summary>
+            <param name="fields">指定的字段和类型字典</param>
+            <returns>只包含与指定的字段和类型相匹配属性的类型</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Dynamic.DynamicTypeBuilder.GetDynamicType(System.Collections.Generic.IEnumerable{System.Reflection.PropertyInfo})">
+            <summary>
+            根据指定的属性生成一个动态类型
+            </summary>
+            <param name="fields">指定的属性</param>
+            <returns>包含与指定属性匹配属性的类型</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Dynamic.DynamicTypeBuilder.CreateFuncDynamic``1(System.Reflection.PropertyInfo)">
+            <summary>
+            创建一个动态表达式
+            </summary>
+            <typeparam name="T">动态表达式参数的类型</typeparam>
+            <param name="property">创建的动态表达式要访问的属性</param>
+            <returns>动态表达式</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Dynamic.DynamicTypeBuilder.CreateFuncDynamic``1(System.Collections.Generic.IEnumerable{System.Reflection.PropertyInfo})">
+            <summary>
+            创建一个动态表达式
+            </summary>
+            <typeparam name="T">动态表达式参数的类型</typeparam>
+            <param name="properties">创建的动态表达式要访问的属性</param>
+            <returns>动态表达式</returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Dynamic.FastObjectCreator">
+            <summary>
+            快速创建对象的工具类
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Dynamic.FastObjectCreator.CreateObject(System.Type,System.Object[])">
+            <summary>
+            根据参数快速创建一个对象
+            </summary>
+            <param name="type">对象的类型</param>
+            <param name="parameters">对象的构造函数要求的参数</param>
+            <returns>创建的对象</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Dynamic.FastObjectCreator.CreateHandler(System.Type,System.Type[])">
+            <summary>
+            生产一个创建对象的委托
+            </summary>
+            <param name="type">创建对象的类型</param>
+            <param name="paramsTypes">创建对象的构造函数的参数类型列表</param>
+            <returns>创建对象的委托</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Dynamic.FastObjectCreator.GetParameterTypes(System.Int32@,System.Object[])">
+            <summary>
+            GetParameterTypes
+            </summary>
+            <param name="token"></param>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Dynamic.Reflaction">
+            <summary>
+            反射方法工具类
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Dynamic.Reflaction.GetMemberValue(System.Object,System.String,System.Boolean)">
+            <summary>
+            访问一个实例的公开或非公开属性
+            </summary>
+            <param name="obj">要访问的属性所属的实例</param>
+            <param name="memberName">要访问的属性的名称</param>
+            <param name="throwWhenNull">指示无法访问是否抛出异常</param>
+            <returns>属性的值</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Dynamic.Reflaction.GetMemberValue``1(System.Object,System.String,System.Boolean)">
+            <summary>
+            访问一个实例的公开或非公开属性
+            </summary>
+            <typeparam name="T">要访问属性的类型</typeparam>
+            <param name="obj">要访问的属性所属的实例</param>
+            <param name="memberName">要访问的属性的名称</param>
+            <param name="throwWhenNull">指示无法访问是否抛出异常</param>
+            <returns>属性的值</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Dynamic.Reflaction.Invoke(System.Object,System.String,System.Object[])">
+            <summary>
+            调用一个实例的公开或非公开的方法
+            </summary>
+            <param name="obj">要调用的方法所属的实例</param>
+            <param name="methodName">要调用的方法的名称</param>
+            <param name="args">要调用的方法的参数</param>
+            <returns>调用结果</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Dynamic.Reflaction.InvokeGeneric(System.Object,System.String,System.Type[],System.Object[])">
+            <summary>
+            调用一个实例的公开或非公开的泛型方法
+            </summary>
+            <param name="obj">要调用的方法所属的实例</param>
+            <param name="methodName">要调用的方法的名称</param>
+            <param name="types">要调用的方法的泛型类型列表</param>
+            <param name="args">要调用的方法的参数</param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.IPagedData`1">
+            <summary>
+            分页数据接口
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.IPagedData`1.Data">
+            <summary>
+            数据列表
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.IPagedData`1.PageIndex">
+            <summary>
+            页索引
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.IPagedData`1.PageSize">
+            <summary>
+            每页记录数
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.IPagedData`1.TotalCount">
+            <summary>
+            总记录数
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.IPagedData`1.TotalPages">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.PagedData`1">
+            <summary>
+            分页数据
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.PagedData`1.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Collections.Generic.IList{`0})">
+            <summary>
+            构造函数
+            </summary>
+            <param name="totalCount"></param>
+            <param name="totalPages"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <param name="data"></param>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.PagedData`1.TotalCount">
+            <inheritdoc />
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.PagedData`1.TotalPages">
+            <inheritdoc />
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.PagedData`1.PageIndex">
+            <inheritdoc />
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.PagedData`1.PageSize">
+            <inheritdoc />
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.PagedData`1.Data">
+            <inheritdoc />
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Serializers.BaseSerializer">
+            <summary>
+            序列化基类
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.BaseSerializer.Deserialize``1(System.String,System.Boolean)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.BaseSerializer.InnerDeserialize``1(System.String)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="path"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.BaseSerializer.Serialize``1(``0,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.BaseSerializer.InnerSerialize``1(``0,System.String)">
+            <summary>
+            序列化
+            </summary>
+            <param name="fileName"></param>
+            <param name="data"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Serializers.BaseSerializer.FileExtension">
+            <inheritdoc />
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Serializers.BinarySerializer">
+            <summary>
+            二进制序列化
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Serializers.BinarySerializer.FileExtension">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.BinarySerializer.InnerDeserialize``1(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.BinarySerializer.InnerSerialize``1(``0,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Serializers.ISerializer">
+            <summary>
+            序列化接口
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.ISerializer.Deserialize``1(System.String,System.Boolean)">
+            <summary>
+            反序列化
+            </summary>
+            <param name="path"></param>
+            <param name="isRequire"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.ISerializer.Serialize``1(``0,System.String)">
+            <summary>
+            序列化
+            </summary>
+            <param name="data"></param>
+            <param name="fileName"></param>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Serializers.ISerializer.FileExtension">
+            <summary>
+            文件扩展名
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Serializers.JsonSerializer">
+            <summary>
+            JSON序列化类
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Serializers.JsonSerializer.FileExtension">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.JsonSerializer.InnerDeserialize``1(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.JsonSerializer.InnerSerialize``1(``0,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="T:QuickShare.LiteFramework.Common.Serializers.XmlSerializer">
+            <summary>
+            XML序列化类
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.XmlSerializer.InnerDeserialize``1(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.Serializers.XmlSerializer.InnerSerialize``1(``0,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="P:QuickShare.LiteFramework.Common.Serializers.XmlSerializer.FileExtension">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Return(System.Action)">
+            <summary>
+            异步执行一个函数，并将结果封装为Result结构返回
+            </summary>
+            <param name="work">要异步执行的函数</param>
+            <returns>Result结构</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Return``1(System.Func{``0})">
+            <summary>
+            异步执行一个函数，并将结果封装为Result结构返回
+            </summary>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <returns>Result结构</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Return``2(System.Func{``0,``1},``0)">
+            <summary>
+            异步执行一个函数，并将结果封装为Result结构返回
+            </summary>
+            <typeparam name="TA">函数的参数类型</typeparam>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <param name="a">函数参数</param>
+            <returns>Result结构</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Return``3(System.Func{``0,``1,``2},``0,``1)">
+            <summary>
+            异步执行一个函数，并将结果封装为Result结构返回
+            </summary>
+            <typeparam name="TA1"></typeparam>
+            <typeparam name="TA2"></typeparam>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <returns>Result结构</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Return``4(System.Func{``0,``1,``2,``3},``0,``1,``2)">
+            <summary>
+            异步执行一个函数，并将结果封装为Result结构返回
+            </summary>
+            <typeparam name="TA1"></typeparam>
+            <typeparam name="TA2"></typeparam>
+            <typeparam name="TA3"></typeparam>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <param name="a3"></param>
+            <returns>Result结构</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Return``5(System.Func{``0,``1,``2,``3,``4},``0,``1,``2,``3)">
+            <summary>
+            异步执行一个函数，并将结果封装为Result结构返回
+            </summary>
+            <typeparam name="TA1"></typeparam>
+            <typeparam name="TA2"></typeparam>
+            <typeparam name="TA3"></typeparam>
+            <typeparam name="TA4"></typeparam>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <param name="a3"></param>
+            <param name="a4"></param>
+            <returns>Result结构</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Return``6(System.Func{``0,``1,``2,``3,``4,``5},``0,``1,``2,``3,``4)">
+            <summary>
+            异步执行一个函数，并将结果封装为Result结构返回
+            </summary>
+            <typeparam name="TA1"></typeparam>
+            <typeparam name="TA2"></typeparam>
+            <typeparam name="TA3"></typeparam>
+            <typeparam name="TA4"></typeparam>
+            <typeparam name="TA5"></typeparam>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <param name="a3"></param>
+            <param name="a4"></param>
+            <param name="a5"></param>
+            <returns>Result结构</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Return(System.Threading.Tasks.Task)">
+            <summary>
+            将一个异步方法的结果封装成Result结构
+            </summary>
+            <param name="task">异步方法</param>
+            <returns>Result结构</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Return``1(System.Threading.Tasks.Task{``0})">
+            <summary>
+            将一个异步方法的结果封装成Result结构
+            </summary>
+            <typeparam name="T">异步方法返回值类型</typeparam>
+            <param name="task">异步方法</param>
+            <returns>Result结构</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Run(System.Action)">
+            <summary>
+            异步执行一个函数
+            </summary>
+            <param name="work">要异步执行的函数</param>
+            <returns>表示在线程池执行的队列的任务</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Run``1(System.Func{``0})">
+            <summary>
+            异步执行一个函数
+            </summary>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <returns>表示在线程池执行的队列的任务</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Run``2(System.Func{``0,``1},``0)">
+            <summary>
+            异步执行一个函数
+            </summary>
+            <typeparam name="TA"></typeparam>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <param name="a"></param>
+            <returns>表示在线程池执行的队列的任务</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Run``3(System.Func{``0,``1,``2},``0,``1)">
+            <summary>
+            异步执行一个函数
+            </summary>
+            <typeparam name="TA1"></typeparam>
+            <typeparam name="TA2"></typeparam>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <returns>表示在线程池执行的队列的任务</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Run``4(System.Func{``0,``1,``2,``3},``0,``1,``2)">
+            <summary>
+            异步执行一个函数
+            </summary>
+            <typeparam name="TA1"></typeparam>
+            <typeparam name="TA2"></typeparam>
+            <typeparam name="TA3"></typeparam>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <param name="a3"></param>
+            <returns>表示在线程池执行的队列的任务</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Run``5(System.Func{``0,``1,``2,``3,``4},``0,``1,``2,``3)">
+            <summary>
+            异步执行一个函数
+            </summary>
+            <typeparam name="TA1"></typeparam>
+            <typeparam name="TA2"></typeparam>
+            <typeparam name="TA3"></typeparam>
+            <typeparam name="TA4"></typeparam>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <param name="a3"></param>
+            <param name="a4"></param>
+            <returns>表示在线程池执行的队列的任务</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.Run``6(System.Func{``0,``1,``2,``3,``4,``5},``0,``1,``2,``3,``4)">
+            <summary>
+            异步执行一个函数
+            </summary>
+            <typeparam name="TA1"></typeparam>
+            <typeparam name="TA2"></typeparam>
+            <typeparam name="TA3"></typeparam>
+            <typeparam name="TA4"></typeparam>
+            <typeparam name="TA5"></typeparam>
+            <typeparam name="T">函数结果类型</typeparam>
+            <param name="work">要异步执行的函数</param>
+            <param name="a1"></param>
+            <param name="a2"></param>
+            <param name="a3"></param>
+            <param name="a4"></param>
+            <param name="a5"></param>
+            <returns>表示在线程池执行的队列的任务</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.WaitAll``3(System.Func{``0},System.Func{``1},System.Func{QuickShare.LiteFramework.Model.Option{``0},QuickShare.LiteFramework.Model.Option{``1},``2})">
+            <summary>
+            等待两个任务全部执行结束后，将任务结果传入聚合函数处理成最终结果并返回
+            </summary>
+            <typeparam name="T1">任务一的结果类型</typeparam>
+            <typeparam name="T2">任务二的结果类型</typeparam>
+            <typeparam name="T">最终结果类型</typeparam>
+            <param name="task1">任务一</param>
+            <param name="task2">任务二</param>
+            <param name="work">聚合函数</param>
+            <returns>最终结果</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.WaitAll``4(System.Func{``0},System.Func{``1},System.Func{``2},System.Func{QuickShare.LiteFramework.Model.Option{``0},QuickShare.LiteFramework.Model.Option{``1},QuickShare.LiteFramework.Model.Option{``2},``3})">
+            <summary>
+            等待两个任务全部执行结束后，将任务结果传入聚合函数处理成最终结果并返回
+            </summary>
+            <typeparam name="T1">任务一的结果类型</typeparam>
+            <typeparam name="T2">任务二的结果类型</typeparam>
+            <typeparam name="T3">任务三的结果类型</typeparam>
+            <typeparam name="T">最终结果类型</typeparam>
+            <param name="task1">任务一</param>
+            <param name="task2">任务二</param>
+            <param name="task3">任务三</param>
+            <param name="work">聚合函数</param>
+            <returns>最终结果</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.WaitAll``1(System.Func{System.Collections.Generic.IEnumerable{QuickShare.LiteFramework.Model.Option{System.Object}},``0},System.Func{System.Object}[])">
+            <summary>
+            等待两个任务全部执行结束后，将任务结果传入聚合函数处理成最终结果并返回
+            </summary>
+            <typeparam name="T">最终结果类型</typeparam>
+            <param name="work">聚合函数</param>
+            <param name="tasks">要等待的任务列表</param>
+            <returns>最终结果</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.WaitAll(System.Collections.Generic.IEnumerable{System.Threading.Tasks.Task})">
+            <summary>
+            等待所有任务执行完毕
+            </summary>
+            <param name="tasks"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Common.XTask.WaitAll(System.Collections.Generic.IEnumerable{System.Threading.Tasks.Task},System.Action{System.Exception})">
+            <summary>
+            等待所有任务执行完毕
+            </summary>
+            <param name="tasks"></param>
+            <param name="errorHandler"></param>
+        </member>
+        <member name="T:QuickShare.LiteFramework.ConfigUI.ControlChangedHandler">
+            <summary>
+            定义一个当控件值发生改变时的委托
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.ConfigUI.ControlTooltipHandler">
+            <summary>
+            定义一个当控件需要提示时的委托
+            </summary>
+            <param name="ctl">控件</param>
+            <param name="message">提示消息</param>
+        </member>
+        <member name="T:QuickShare.LiteFramework.ConfigUI.IConfigContainer">
+            <summary>
+            配置窗口
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.ConfigUI.IConfigContainer.LoadConfig">
+            <summary>
+            读取配置
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.ConfigUI.IConfigContainer.SaveConfig">
+            <summary>
+            保存配置
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.ConfigUI.IConfigContainer.ToControl">
+            <summary>
+            转换成控件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:QuickShare.LiteFramework.ConfigUI.IConfigContainer.IsModified">
+            <summary>
+            是否已经修改
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.ConfigUI.IConfigContainer.FileName">
+            <summary>
+            配置保存的文件名
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.ConfigUI.IConfigContainer.Description">
+            <summary>
+            配置描述
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.ConfigUI.IConfigContainer.Check">
+            <summary>
+            输入检查
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.ConfigUI.IConfigControl">
+            <summary>
+            配置控件接口
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.ConfigUI.IConfigControl.ConfigName">
+            <summary>
+            配置名称
+            </summary>
+        </member>
+        <member name="E:QuickShare.LiteFramework.ConfigUI.IConfigControl.OnChanged">
+            <summary>
+            当控件值发生改变时触发的事件
+            </summary>
+        </member>
+        <member name="E:QuickShare.LiteFramework.ConfigUI.IConfigControl.OnTooltip">
+            <summary>
+            当控件需要提示信息时触发的事件
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.ConfigUI.IScrollContainer">
+            <summary>
+            定义一个接口表示该控件包含滚动容器
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.ConfigUI.IScrollContainer.ScrollContainer">
+            <summary>
+            可滚动的容器
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Data.IDbContext">
+            <summary>
+            EF数据上下文接口
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Data.IDbContext.Table``1(System.Boolean)">
+            <summary>
+            实体集合
+            </summary>
+            <typeparam name="TEntity">实体类型</typeparam>
+            <param name="trackable">是否跟踪对象变化</param>
+            <returns>实体集合</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Data.IDbContext.ExecSqls(System.Collections.Generic.IEnumerable{System.String},System.String@)">
+            <summary>
+            批量执行sql语句
+            </summary>
+            <param name="sqlList"></param>
+            <param name="errMsg"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Data.IDbContext.Commit">
+            <summary>
+            同步保存数据
+            </summary>
+            <returns>影响行数</returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Data.IDbContextFactory">
+            <summary>
+            创建数据库上下文
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Data.IDbContextFactory.GetDbContext(System.String)">
+            <summary>
+            根据系统类型获取对应的数据库上下文
+            </summary>
+            <param name="dbName">数据库名称</param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Data.IDbName">
+            <summary>
+            数据库配置名称
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Data.IDbName.Name">
+            <summary>
+            数据库连接名称
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Data.IDbName.Description">
+            <summary>
+            数据库描述
+            </summary>
+        </member>
+        <member name="F:QuickShare.LiteFramework.Foundation.AspNetCache.cache">
+            <summary>
+            内部缓存
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.#ctor">
+            <summary>
+            构造函数
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.AspNetCache.Name">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.GetObject(System.String,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.GetObject``1(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.SetObject(System.String,System.Object,System.Nullable{System.TimeSpan})">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.IsSet(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.GetObject(System.String,System.String,System.Type)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.GetObject``1(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.SetSecondObject(System.String,System.String,System.Object)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.RemoveObject(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.RemoveByPattern(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.IsSet(System.String,System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.RemoveObject(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.RemoveByPattern(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.AspNetCache.Clear">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.Config.Get(QuickShare.LiteFramework.Foundation.ConfigType)">
+            <summary>
+            根据序列化类型获取一个序列化类
+            </summary>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Foundation.ConfigType">
+            <summary>
+            配置格式类型
+            </summary>
+        </member>
+        <member name="F:QuickShare.LiteFramework.Foundation.ConfigType.Json">
+            <summary> JSON </summary>
+        </member>
+        <member name="F:QuickShare.LiteFramework.Foundation.ConfigType.Xml">
+            <summary> XML </summary>
+        </member>
+        <member name="F:QuickShare.LiteFramework.Foundation.ConfigType.Binary">
+            <summary> XML </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Foundation.ICache">
+            <summary>
+            缓存接口
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.ICache.Name">
+            <summary>
+            缓存名字
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.GetObject(System.String,System.Type)">
+            <summary>
+            获取缓存
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.GetObject``1(System.String)">
+            <summary>
+            获取缓存，泛型
+            </summary>
+            <typeparam name="TObject"></typeparam>
+            <param name="cacheKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.SetObject(System.String,System.Object,System.Nullable{System.TimeSpan})">
+            <summary>
+            保存缓存
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="value"></param>
+            <param name="expire"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.RemoveObject(System.String)">
+            <summary>
+            根据键删除缓存
+            </summary>
+            <param name="cacheKey"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.RemoveByPattern(System.String)">
+            <summary>
+            根据正则表达式匹配键删除缓存
+            </summary>
+            <param name="pattern"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.IsSet(System.String)">
+            <summary>
+            判断缓存键是否存在
+            </summary>
+            <param name="cacheKey"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.GetObject(System.String,System.String,System.Type)">
+            <summary>
+            获取二级缓存
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="level2Key"></param>
+            <param name="type"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.GetObject``1(System.String,System.String)">
+            <summary>
+            获取二级缓存，泛型
+            </summary>
+            <typeparam name="TObject"></typeparam>
+            <param name="cacheKey"></param>
+            <param name="level2Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.SetSecondObject(System.String,System.String,System.Object)">
+            <summary>
+            设置二级缓存
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="level2Key"></param>
+            <param name="value"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.RemoveObject(System.String,System.String)">
+            <summary>
+            根据键删除二级缓存
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="level2Key"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.RemoveByPattern(System.String,System.String)">
+            <summary>
+            根据正则表达式陪陪键删除二级缓存
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="pattern"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.IsSet(System.String,System.String)">
+            <summary>
+            判断二级缓存是否存在
+            </summary>
+            <param name="cacheKey"></param>
+            <param name="level2Key"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ICache.Clear">
+            <summary>
+            清空缓存
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Foundation.IConfig">
+            <summary>
+            配置接口
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.IConfig.GetConfig``1(System.String,QuickShare.LiteFramework.Foundation.ConfigType,System.Boolean)">
+            <summary>
+            从指定文件获取配置
+            </summary>
+            <param name="configName"></param>
+            <param name="configType"></param>
+            <param name="isRequire"></param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.IConfig.SetConfig``1(``0,System.String,QuickShare.LiteFramework.Foundation.ConfigType)">
+            <summary>
+            保存配置到指定文件
+            </summary>
+            <param name="config"></param>
+            <param name="configName"></param>
+            <param name="configType"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Foundation.ILogger">
+            <summary>
+            日志接口
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.ILogger.Name">
+            <summary>
+            日志名称
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.ILogger.IsFatalEnabled">
+            <summary>
+            日志级别是崩溃
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.ILogger.IsErrorEnabled">
+            <summary>
+            日志级别是错误
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.ILogger.IsWarnEnabled">
+            <summary>
+            日志级别是警告
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.ILogger.IsDebugEnabled">
+            <summary>
+            日志级别低调试
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.ILogger.IsInfoEnabled">
+            <summary>
+            日志级别是信息
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ILogger.LogFatal(System.String)">
+            <summary>
+            记录崩溃信息
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ILogger.LogError(System.String,System.Exception)">
+            <summary>
+            记录错误信息
+            </summary>
+            <param name="message"></param>
+            <param name="exception"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ILogger.LogError(System.Exception)">
+            <summary>
+            记录Error信息到日志文件
+            </summary>
+            <param name="exception"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ILogger.LogWarn(System.String)">
+            <summary>
+            记录警告信息
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ILogger.LogDebug(System.String)">
+            <summary>
+            记录调试信息
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.ILogger.LogInfo(System.String)">
+            <summary>
+            记录日志信息
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Foundation.IPath.GetServerPath(System.String)">
+            <summary>
+            获取一个相对路径的服务器绝对路径
+            </summary>
+            <param name="path"></param>
+            <returns></returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Foundation.ISystemPath">
+            <summary>
+            目录接口
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.ISystemPath.Config">
+            <summary> 配置目录相对工作目录的路径 </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.ISystemPath.Bins">
+            <summary> 程序集目录相对工作目录的路径 </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.ISystemPath.Work">
+            <summary> 工作目录</summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Foundation.TypeSetting">
+            <summary>
+            类型配置
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.TypeSetting.Name">
+            <summary>
+            类型名称
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.TypeSetting.Type">
+            <summary>
+            类型名称
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Foundation.TypeSetting.Description">
+            <summary>
+            类型的描述
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Inject.IDefaultImplemente">
+            <summary>
+            标记是一个服务的默认实现
+            </summary>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Inject.IDependency">
+            <summary>
+            依赖注入接口
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Inject.IDependency.Register(Autofac.ContainerBuilder,QuickShare.LiteFramework.Inject.IFinder)">
+            <summary>
+            执行依赖注入
+            </summary>
+            <param name="builder"></param>
+            <param name="finder"></param>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Mapper.MapperExtensions">
+            <summary>
+            TinyMapper映射扩展方法
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperExtensions.MapTo``2(``0)">
+            <summary>
+            转换模型
+            </summary>
+            <typeparam name="TSource">源模型</typeparam>
+            <typeparam name="TTarget">目标模型</typeparam>
+            <param name="source">源模型实例</param>
+            <returns>转换后的目标类型实例</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperExtensions.MapTo``2(``0,``1)">
+            <summary>
+            根据源模型实例修改目标模型实例，如果目标模型实例为空，则返回直接通过源模型实例转换的结果
+            </summary>
+            <typeparam name="TSource">源模型</typeparam>
+            <typeparam name="TTarget">目标模型</typeparam>
+            <param name="source">源模型实例</param>
+            <param name="target">目标模型实例</param>
+            <returns>修改后的目标类型实例</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperExtensions.MapTo``2(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            批量转换模型
+            </summary>
+            <typeparam name="TSource">源模型</typeparam>
+            <typeparam name="TTarget">目标模型</typeparam>
+            <param name="source">源模型实例的集合</param>
+            <returns>转换后的目标类型实例的集合</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperExtensions.MapTo``2(QuickShare.LiteFramework.Common.IPagedData{``0})">
+            <summary>
+            批量转换模型
+            </summary>
+            <typeparam name="TSource">源模型</typeparam>
+            <typeparam name="TTarget">目标模型</typeparam>
+            <param name="source">源模型实例的集合</param>
+            <returns>转换后的目标类型实例的集合</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperExtensions.Transfer``2(System.Collections.Generic.IEnumerable{QuickShare.LiteFramework.Base.SortInfo{``0}})">
+            <summary>
+            转换表达式
+            </summary>
+            <param name="sorts">源表达式</param>
+            <typeparam name="TDto">源表达式中要替换的参数模型类型</typeparam>
+            <typeparam name="T">用于替换<typeparamref name="TDto"/>的参数模型类型</typeparam>
+            <returns>转换后的表达式</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperExtensions.Transfer``2(System.Linq.Expressions.Expression{System.Func{``0,System.Boolean}})">
+            <summary>
+            转换表达式
+            </summary>
+            <param name="exp">源表达式</param>
+            <typeparam name="TDto">源表达式中要替换的参数模型类型</typeparam>
+            <typeparam name="T">用于替换<typeparamref name="TDto"/>的参数模型类型</typeparam>
+            <returns>转换后的表达式</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperExtensions.Transfer``3(System.Linq.Expressions.Expression{System.Func{``0,``2}})">
+            <summary>
+            转换表达式
+            </summary>
+            <param name="exp">源表达式</param>
+            <typeparam name="TDto">源表达式中要替换的参数模型类型</typeparam>
+            <typeparam name="T">用于替换<typeparamref name="TDto"/>的参数模型类型</typeparam>
+            <typeparam name="TR">表达式的结果类型</typeparam>
+            <returns>转换后的表达式</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperExtensions.Transfer``3(System.Collections.Generic.IEnumerable{System.Linq.Expressions.Expression{System.Func{``0,``2}}})">
+            <summary>
+            转换表达式
+            </summary>
+            <param name="exps">源表达式</param>
+            <typeparam name="TDto">源表达式中要替换的参数模型类型</typeparam>
+            <typeparam name="T">用于替换<typeparamref name="TDto"/>的参数模型类型</typeparam>
+            <typeparam name="TR">表达式的结果类型</typeparam>
+            <returns>转换后的表达式</returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperExtensions.Transfer``2(System.Linq.Expressions.Expression{System.Predicate{``0}})">
+            <summary>
+            转换表达式
+            </summary>
+            <param name="exp">源表达式</param>
+            <typeparam name="TDto">源表达式中要替换的参数模型类型</typeparam>
+            <typeparam name="T">用于替换<typeparamref name="TDto"/>的参数模型类型</typeparam>
+            <returns>转换后的表达式</returns>
+        </member>
+        <member name="T:QuickShare.LiteFramework.Mapper.MapperTransfer`2">
+            <summary>
+            表达式转换
+            </summary>
+            <typeparam name="TDto">源表达式中要替换的参数模型类型</typeparam>
+            <typeparam name="T">用于替换<typeparamref name="TDto"/>的参数模型类型</typeparam>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperTransfer`2.#ctor(System.Linq.Expressions.ParameterExpression,System.Collections.Generic.List{QuickShare.LiteFramework.Mapper.IMappingMember})">
+            <summary>
+            使用参数和模型属性映射关系来实例化
+            </summary>
+            <param name="parameter">用于替换参数的参数表达式，其静态类型是<typeparamref name="T"/></param>
+            <param name="maps">模型<typeparamref name="TDto"/>到<typeparamref name="T"/>的属性映射关系</param>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperTransfer`2.RepalceParameter(System.Linq.Expressions.Expression,System.Linq.Expressions.ParameterExpression,System.Collections.Generic.List{QuickShare.LiteFramework.Mapper.IMappingMember})">
+            <summary>
+            表达式转换静态方法
+            </summary>
+            <param name="expression">要转换的表达式</param>
+            <param name="parameter">用于替换参数的参数表达式，其静态类型是<typeparamref name="T"/></param>
+            <param name="maps">模型<typeparamref name="TDto"/>到<typeparamref name="T"/>的属性映射关系</param>
+            <returns>转换结果</returns>
+            <exception cref="T:System.Exception">成员被忽略或试图实例化<typeparamref name="TDto"/></exception>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperTransfer`2.VisitParameter(System.Linq.Expressions.ParameterExpression)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperTransfer`2.VisitMember(System.Linq.Expressions.MemberExpression)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperTransfer`2.VisitMethodCall(System.Linq.Expressions.MethodCallExpression)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperTransfer`2.VisitNew(System.Linq.Expressions.NewExpression)">
+            <inheritdoc />
+        </member>
+        <member name="M:QuickShare.LiteFramework.Mapper.MapperTransfer`2.VisitConstant(System.Linq.Expressions.ConstantExpression)">
+            <inheritdoc />
+        </member>
+        <member name="T:QuickShare.LiteFramework.Model.Option`1">
+            <summary>
+            一个可选值结构
+            </summary>
+            <typeparam name="T">值类型</typeparam>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Model.Option`1.Value">
+            <summary>
+            值
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Model.Option`1.HasValue">
+            <summary>
+            是否有值
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Model.Option`1.Empty">
+            <summary>
+            一个空值
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Model.Option`1.New(`0)">
+            <summary>
+            一个值
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Model.Result.IsSuccess">
+            <summary>
+            成功标志
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Model.Result.Message">
+            <summary>
+            返回信息
+            </summary>
+        </member>
+        <member name="P:QuickShare.LiteFramework.Model.Result.Code">
+            <summary>
+            结果代码
+            0成功
+            -1未知错误
+            -2业务逻辑错误
+            -3代码错误
+            -4身份验证失败 
+            </summary>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Model.Result.Fail(System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="msg"></param>
+            <param name="code">结果代码：
+            0成功；
+            -1未知错误；
+            -2业务逻辑错误；
+            -3代码错误；
+            -4身份验证失败 </param>
+            <returns></returns>
+        </member>
+        <member name="M:QuickShare.LiteFramework.Model.Result.Fail(System.Exception,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="ex"></param>
+            <param name="code">结果代码：
+            0成功；
+            -1未知错误；
+            -2业务逻辑错误；
+            -3代码错误；
+            -4身份验证失败 </param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

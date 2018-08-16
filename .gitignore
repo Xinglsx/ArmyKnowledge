@@ -328,3 +328,5 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/Mskj.ArmyKnowledge/Mskj.ArmyKnowledge.Web/Web.Release.config
+/Mskj.ArmyKnowledge/Mskj.ArmyKnowledge.Web/Web.Debug.config

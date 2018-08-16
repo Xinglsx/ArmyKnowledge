@@ -5,6 +5,8 @@ using System.Web.Http;
 using Top.Api;
 using Top.Api.Request;
 using Top.Api.Response;
+using Mskj.ArmyKnowledge.All.Domains;
+using Mskj.ArmyKnowledge.Common.DataObject;
 
 namespace Mskj.ArmyKnowledge.All.Controllers
 {
@@ -19,11 +21,20 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             _GoodsService = goodsService;
         }
         
-        [Route("GetRecommandGoodsList")]
-        [HttpGet]
-        public object GetRecommandGoodsList(int curPage, int pageSize, int type, string filter)
+        [Route("AddUser")]
+        [HttpPost]
+        public object AddUser(Users user)
         {
-            return "";
+            bool saveResult = false;
+            try
+            {
+                saveResult = _GoodsService.Add(user);
+            }
+            catch (Exception exp)
+            {
+                return new ReturnResult<bool>(-1, exp.Message);
+            }
+            return new ReturnResult<bool>(1,saveResult);
         }
         
     }

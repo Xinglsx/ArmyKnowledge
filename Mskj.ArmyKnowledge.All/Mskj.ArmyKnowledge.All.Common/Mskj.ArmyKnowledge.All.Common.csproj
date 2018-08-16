@@ -52,11 +52,11 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Mskj.ArmyKnowledge\Mskj.ArmyKnowledge.Common\Mskj.ArmyKnowledge.Common.csproj">
       <Project>{bf59d032-c9fc-4106-a1a7-230371e25063}</Project>
-      <Name>Mskj.Shareping.Common</Name>
+      <Name>Mskj.ArmyKnowledge.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mskj.ArmyKnowledge.All.ServiceContracts\Mskj.ArmyKnowledge.All.ServiceContracts.csproj">
       <Project>{3cee5e99-2192-43bd-801e-0111ee195de8}</Project>
-      <Name>Mskj.Shareping.Goods.ServiceContracts</Name>
+      <Name>Mskj.ArmyKnowledge.All.ServiceContracts</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

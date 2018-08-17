@@ -1,9 +1,4 @@
 ﻿using QuickShare.LiteFramework.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Mskj.ArmyKnowledge.All.Domains
 {
@@ -11,14 +6,15 @@ namespace Mskj.ArmyKnowledge.All.Domains
     {
         public string id { get; set; }
         public string loginname { get; set; }
-        public string password { get; set; }
+        public string pwd { get; set; }
         public string nickname { get; set; }
         public string profession { get; set; }
         public string organization { get; set; }
         public string creditcode { get; set; }
         public string phonenumber { get; set; }
-        public string signature { get; set; }
-        public string usertype { get; set; }
+        public string avatar { get; set; }
+        public string signatures { get; set; }
+        public int usertype { get; set; }
         public int iscertification { get; set; }
         public bool isadmin { get; set; }
         public int answercount { get; set; }
@@ -26,6 +22,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public int compositescores { get; set; }
         public int followcount { get; set; }
         public int fanscount { get; set; }
-        public int state { get; set; }
+        public int userstate { get; set; }
     }
 }

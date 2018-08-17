@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QuickShare.LiteFramework">
-      <HintPath>..\..\libs\QuickShare.LiteFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,6 +40,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IFansService.cs" />
+    <Compile Include="IProductService.cs" />
+    <Compile Include="IMsgService.cs" />
+    <Compile Include="IQuestionSerice.cs" />
     <Compile Include="IUsersService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -54,6 +55,10 @@
     <ProjectReference Include="..\..\Mskj.ArmyKnowledge\Mskj.ArmyKnowledge.core\Mskj.ArmyKnowledge.Core.csproj">
       <Project>{df073786-5147-43a2-9938-0c387e398195}</Project>
       <Name>Mskj.ArmyKnowledge.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework\QuickShare.LiteFramework.csproj">
+      <Project>{56f059b9-0aa7-4f5b-aa7f-69512cdb70b5}</Project>
+      <Name>QuickShare.LiteFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mskj.ArmyKnowledge.All.Domains\Mskj.ArmyKnowledge.All.Domains.csproj">
       <Project>{8f34319b-c79f-4304-a092-7d6b87ae2ea2}</Project>

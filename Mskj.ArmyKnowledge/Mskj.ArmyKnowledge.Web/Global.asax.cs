@@ -3,6 +3,7 @@ using QuickShare.LiteFramework;
 using QuickShare.LiteFramework.Model;
 using QuickShare.LiteFramework.WebApi;
 using QuickShare.LiteFramework.WebApi.AuditLog;
+using QuickShare.LiteFramework.Log4net;
 using QuickShare.LiteFramework.TinyMapper;
 using System;
 using System.Web;
@@ -29,6 +30,7 @@ namespace Mskj.ArmyKnowledge.Web
         {
             appInstance
                 .UseTinyMapper(IsPropertyNameMatch)
+                .UseLog4Net()
                 .UseAuditLog();
         }
 

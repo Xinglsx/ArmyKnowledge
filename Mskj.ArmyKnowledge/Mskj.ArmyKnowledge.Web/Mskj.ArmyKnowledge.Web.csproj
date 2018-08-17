@@ -46,31 +46,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\libs\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="QuickShare.LiteFramework">
-      <HintPath>..\..\libs\QuickShare.LiteFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickShare.LiteFramework.Events">
-      <HintPath>..\..\libs\Plugins\QuickShare.LiteFramework.Events.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickShare.LiteFramework.FileStore">
-      <HintPath>..\..\libs\Plugins\QuickShare.LiteFramework.FileStore.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickShare.LiteFramework.Log4net">
-      <HintPath>..\..\libs\Plugins\QuickShare.LiteFramework.Log4net.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickShare.LiteFramework.Reports">
-      <HintPath>..\..\libs\Plugins\QuickShare.LiteFramework.Reports.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickShare.LiteFramework.ScriptPatch">
-      <HintPath>..\..\libs\Plugins\QuickShare.LiteFramework.ScriptPatch.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickShare.LiteFramework.TinyMapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\libs\Plugins\QuickShare.LiteFramework.TinyMapper.dll</HintPath>
-    </Reference>
-    <Reference Include="QuickShare.LiteFramework.WebApi">
-      <HintPath>..\..\libs\QuickShare.LiteFramework.WebApi.dll</HintPath>
-    </Reference>
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -101,7 +76,7 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\ArmyKnowledge_0000\0000_InsertAdmin.sql" />
+    <Content Include="App_Data\ArmyKnowledge_0000\0000_CreateTables.sql" />
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
     <Content Include="Web.config">
@@ -126,6 +101,22 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework.Log4net\QuickShare.LiteFramework.Log4net.csproj">
+      <Project>{6ada58c8-054f-4b8d-838f-389ae52ecd64}</Project>
+      <Name>QuickShare.LiteFramework.Log4net</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework.TinyMapper\QuickShare.LiteFramework.TinyMapper.csproj">
+      <Project>{3f7dbc10-3ed2-4a1d-8d78-73563dbb3f81}</Project>
+      <Name>QuickShare.LiteFramework.TinyMapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework.WebApi\QuickShare.LiteFramework.WebApi.csproj">
+      <Project>{ad156b74-a5cc-40a3-9837-a92ae958a5ca}</Project>
+      <Name>QuickShare.LiteFramework.WebApi</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework\QuickShare.LiteFramework.csproj">
+      <Project>{56f059b9-0aa7-4f5b-aa7f-69512cdb70b5}</Project>
+      <Name>QuickShare.LiteFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mskj.ArmyKnowledge.Common\Mskj.ArmyKnowledge.Common.csproj">
       <Project>{bf59d032-c9fc-4106-a1a7-230371e25063}</Project>
       <Name>Mskj.ArmyKnowledge.Common</Name>

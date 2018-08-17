@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QuickShare.LiteFramework">
-      <HintPath>..\..\libs\QuickShare.LiteFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -53,6 +50,10 @@
     <ProjectReference Include="..\..\Mskj.ArmyKnowledge\Mskj.ArmyKnowledge.Common\Mskj.ArmyKnowledge.Common.csproj">
       <Project>{bf59d032-c9fc-4106-a1a7-230371e25063}</Project>
       <Name>Mskj.ArmyKnowledge.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework\QuickShare.LiteFramework.csproj">
+      <Project>{56f059b9-0aa7-4f5b-aa7f-69512cdb70b5}</Project>
+      <Name>QuickShare.LiteFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mskj.ArmyKnowledge.All.ServiceContracts\Mskj.ArmyKnowledge.All.ServiceContracts.csproj">
       <Project>{3cee5e99-2192-43bd-801e-0111ee195de8}</Project>

@@ -34,9 +34,6 @@
     <Reference Include="EntityFramework">
       <HintPath>..\..\libs\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="QuickShare.LiteFramework">
-      <HintPath>..\..\libs\QuickShare.LiteFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -46,11 +43,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnswerMap.cs" />
+    <Compile Include="NoticeMap.cs" />
+    <Compile Include="MsgDetailMap.cs" />
+    <Compile Include="MsgMap.cs" />
+    <Compile Include="FollowerMap.cs" />
+    <Compile Include="FansMap.cs" />
+    <Compile Include="DemandMap.cs" />
+    <Compile Include="ProductMap.cs" />
+    <Compile Include="RecordMap.cs" />
+    <Compile Include="QuestionMap.cs" />
+    <Compile Include="CertMap.cs" />
     <Compile Include="UsersMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="AllEntityMap.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework\QuickShare.LiteFramework.csproj">
+      <Project>{56f059b9-0aa7-4f5b-aa7f-69512cdb70b5}</Project>
+      <Name>QuickShare.LiteFramework</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mskj.ArmyKnowledge.All.Domains\Mskj.ArmyKnowledge.All.Domains.csproj">
       <Project>{8f34319b-c79f-4304-a092-7d6b87ae2ea2}</Project>
       <Name>Mskj.ArmyKnowledge.All.Domains</Name>

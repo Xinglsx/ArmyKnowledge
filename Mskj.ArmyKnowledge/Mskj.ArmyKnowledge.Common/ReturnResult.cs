@@ -19,6 +19,9 @@ namespace Mskj.ArmyKnowledge.Common.DataObject
         }
         /// <summary>
         /// 返回编码
+        /// 1  正常返回
+        /// -1 异常错误
+        /// -2 逻辑错误
         /// </summary>
         [DataMember(Order = 0)]
         public int code { get; set; }

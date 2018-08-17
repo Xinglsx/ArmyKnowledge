@@ -31,9 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QuickShare.LiteFramework">
-      <HintPath>..\..\libs\QuickShare.LiteFramework.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,8 +40,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Record.cs" />
+    <Compile Include="Answer.cs" />
+    <Compile Include="Product.cs" />
+    <Compile Include="Notice.cs" />
+    <Compile Include="MsgDetail.cs" />
+    <Compile Include="Msg.cs" />
+    <Compile Include="Follower.cs" />
+    <Compile Include="Fans.cs" />
+    <Compile Include="Cert.cs" />
+    <Compile Include="Demand.cs" />
+    <Compile Include="Question.cs" />
     <Compile Include="Users.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework\QuickShare.LiteFramework.csproj">
+      <Project>{56f059b9-0aa7-4f5b-aa7f-69512cdb70b5}</Project>
+      <Name>QuickShare.LiteFramework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

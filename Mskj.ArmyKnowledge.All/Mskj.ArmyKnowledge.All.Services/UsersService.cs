@@ -55,7 +55,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// 新增用户
         /// </summary>
         /// <param name="user">用户信息</param>
-        public ReturnResult<bool> AddUser(Users user)
+        public ReturnResult<Users> AddUser(Users user)
         {
             bool saveResult = false;
             user.id = Guid.NewGuid().ToString();
@@ -65,7 +65,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             if (existUser != null)
             {
                 //获取验证码的时候应该就要校验了，这个地方只是确保一下。
-                return new ReturnResult<bool>(-2, false, "手机号已被使用，请更换！");
+                return new ReturnResult<Users>(-2, "手机号已被使用，请更换！");
             }
             try
             {
@@ -73,15 +73,15 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                return new ReturnResult<Users>(-1, exp.Message);
             }
             if (saveResult)
             {
-                return new ReturnResult<bool>(1, saveResult);
+                return new ReturnResult<Users>(1, user);
             }
             else
             {
-                return new ReturnResult<bool>(-2, saveResult, "数据保存失败！");
+                return new ReturnResult<Users>(-2, "用户信息保存失败！");
             }
         }
 

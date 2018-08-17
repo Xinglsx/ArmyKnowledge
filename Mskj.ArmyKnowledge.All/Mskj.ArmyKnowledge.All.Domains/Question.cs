@@ -23,5 +23,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public int praisecount { get; set; }
         public int commentcount { get; set; }
         public int heatcount { get; set; }
+        public int questionstate { get; set; }
     }
 }

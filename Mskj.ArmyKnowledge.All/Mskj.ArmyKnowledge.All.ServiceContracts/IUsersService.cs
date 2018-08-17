@@ -16,7 +16,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// 新增用户
         /// </summary>
         /// <param name="user">用户信息</param>
-        ReturnResult<bool> AddUser(Users user);
+        ReturnResult<Users> AddUser(Users user);
         /// <summary>
         /// 更新用户信息
         /// </summary>

@@ -83,6 +83,7 @@ begin
 	   praisecount          int                            null,
 	   commentcount         int                            null,
 	   heatcount            int                            null,
+	   questionstate        int                            null,
 	   constraint PK_QUESTION primary key clustered (id)
 	);
 end
@@ -95,7 +96,7 @@ begin
 	create table answer 
 	(
 	   id                   varchar(36)                    not null,
-	   articleid            varchar(36)                    null,
+	   questionid           varchar(36)                    null,
 	   userid               varchar(36)                    null,
 	   nickname             varchar(32)                    null,
 	   publishtime          datetime                       null,

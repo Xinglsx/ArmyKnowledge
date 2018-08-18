@@ -14,6 +14,8 @@ namespace Mskj.ArmyKnowledge.All.EntityConfigs
             this.ToTable("product");
             this.HasKey(p => p.id);
             this.Property(p => p.id).HasMaxLength(36);
+            this.Property(p => p.userid).HasMaxLength(36);
+            this.Property(p => p.nickname).HasMaxLength(36);
             this.Property(p => p.proname).HasMaxLength(64);
             this.Property(p => p.price).HasMaxLength(32);
             this.Property(p => p.introduction).HasMaxLength(2000);

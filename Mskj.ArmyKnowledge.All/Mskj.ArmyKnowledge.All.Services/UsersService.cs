@@ -16,6 +16,7 @@ namespace Mskj.ArmyKnowledge.All.Services
     public class UsersService : BaseService<Users, Users>,IUsersService
     {
         #region 构造函数
+        private readonly IRepository<Users> _UsersRepository;
         private readonly IRepository<Cert> _CertRepository;
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
@@ -24,6 +25,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         public UsersService(IRepository<Users> usersRepository,
             IRepository<Cert> certRepository) : base(usersRepository)
         {
+            _UsersRepository = usersRepository;
             this._CertRepository = certRepository;
         }
         #endregion
@@ -61,6 +63,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             user.id = Guid.NewGuid().ToString();
             user.loginname = user.phonenumber;
             user.nickname = "新用户" + user.phonenumber;
+            user.registertime = DateTime.Now;
             var existUser = this.GetOne(p => p.phonenumber == user.phonenumber);
             if (existUser != null)
             {
@@ -252,26 +255,35 @@ namespace Mskj.ArmyKnowledge.All.Services
                 return new ReturnResult<bool>(-2, "待审核的认证信息状态不是[提交审核状态]！");
             }
             cert.certstate = 2;
-            return this.UpdateCert(cert);
+            var res = UpdateCert(cert);
+            if(res.code > 1)
+            {
+                Users user = GetOne(p => p.id == cert.userid);
+                user.iscertification = 2;
+                res = UpdateUser(user);
+            }
+            return res;
         }
         /// <summary>
         /// 提交审核用户认证信息
         /// </summary>
         public ReturnResult<bool> SubmitCert(Cert cert)
         {
-            if (string.IsNullOrEmpty(cert.id))
-            {
-                cert.certstate = 1;
-                return AddCert(cert);
-            }
-            else if (cert.certstate != 0)
+            if (cert.certstate != 0)
             {
                 return new ReturnResult<bool>(-2, "待提交审核的认证信息状态不是[新建状态]！");
             }
             else
             {
                 cert.certstate = 1;
-                return UpdateCert(cert);
+                var res = UpdateCert(cert);
+                if (res.code > 0)
+                {
+                    Users user = GetOne(p => p.id == cert.userid);
+                    user.iscertification = 2;
+                    res = UpdateUser(user);
+                }
+                return res;
             }
         }
         /// <summary>
@@ -282,7 +294,17 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<Cert> SaveAndSubmitCert(Cert cert)
         {
             cert.certstate = 1;
-            return AddCert(cert);
+            var res = AddCert(cert);
+            if (res.code > 1)
+            {
+                Users user = GetOne(p => p.id == cert.userid);
+                user.iscertification = 2;
+                if(UpdateUser(user).code < 0)
+                {
+                    return new ReturnResult<Cert>(-2, "认证申请成功，基础信息更新失败！");
+                }
+            }
+            return res;
         }
         /// <summary>
         /// 通过用户ID获取用户认证信息
@@ -298,5 +320,88 @@ namespace Mskj.ArmyKnowledge.All.Services
         }
         #endregion
 
+        #region 专家用户信息
+        /// <summary>
+        /// 获取已有专业分类
+        /// </summary>
+        public ReturnResult<List<string>> GetProductCategory()
+        {
+            List<string> categorys = new List<string> { "全部" };
+            var res = _UsersRepository.Find()
+                .Where(p => p.usertype == 2 && p.iscertification >= 1)
+                .Select(p => p.profession).Distinct().ToList();
+            if (res != null && res.Count > 0)
+            {
+                categorys.AddRange(res);
+                return new ReturnResult<List<string>>(1, res);
+            }
+            else
+            {
+                return new ReturnResult<List<string>>(1, categorys);
+            }
+        }
+        /// <summary>
+        /// 分页获取专家用户列表
+        /// </summary>
+        /// <param name="type">用户类型 100-获取全部</param>
+        /// <param name="state">状态</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <param name="sortType">排序方式</param>
+        /// <returns></returns>
+        public ReturnResult<IPagedData<Users>> GetUserss(int type = 2,
+            int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0)
+        {
+            Expression<Func<Users, bool>> expression;
+            if (type == 100)
+            {
+                expression = x => x.userstate == state;
+            }
+            else
+            {
+                expression = x => x.userstate == state && x.usertype == type;
+
+            }
+            return GetBaseUserss(pageIndex, pageSize, sortType, expression);
+        }
+        /// <summary>
+        /// 分页获取专家用户列表(封装排序方式)
+        /// </summary>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <param name="sortType">排序方式 0-综合排序 1-最新发布</param>
+        /// <param name="expression">查询表达示</param>
+        /// <returns></returns>
+        private ReturnResult<IPagedData<Users>> GetBaseUserss(int pageIndex,
+            int pageSize, int sortType, Expression<Func<Users, bool>> expression)
+        {
+            List<SortInfo<Users>> sorts = new List<SortInfo<Users>>();
+            SortInfo<Users> sort;
+            switch (sortType)
+            {
+                case 0:
+                    sort = new SortInfo<Users>(p => p.compositescores,
+                        SortOrder.Descending);
+                    break;
+                case 1:
+                    sort = new SortInfo<Users>(p => p.answercount,
+                        SortOrder.Descending);
+                    break;
+                case 2:
+                    sort = new SortInfo<Users>(p => p.adoptedcount,
+                        SortOrder.Ascending);
+                    break;
+                default:
+                    sort = new SortInfo<Users>(p => p.compositescores,
+                        SortOrder.Descending);
+                    break;
+            }
+            sorts.Add(sort);
+            //所有排序之后，再按时间降序
+            sorts.Add(new SortInfo<Users>(p => p.registertime, SortOrder.Descending));
+            return new ReturnResult<IPagedData<Users>>(1,
+                    GetPage(pageIndex, pageSize, sorts, expression));
+        }
+        #endregion
     }
 }

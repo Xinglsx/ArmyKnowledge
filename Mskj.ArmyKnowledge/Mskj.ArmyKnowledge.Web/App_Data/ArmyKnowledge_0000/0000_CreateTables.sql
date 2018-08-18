@@ -30,6 +30,7 @@ begin
 	   followcount          int                            null,
 	   fanscount            int                            null,
 	   userstate            int                            null,
+	   registertime			datetime					   null,
 	   constraint PK_USERS primary key clustered (id)
 	);
 end
@@ -102,7 +103,7 @@ begin
 	   publishtime          datetime                       null,
 	   content              varchar(8000)                  null,
 	   images               varchar(4000)                  null,
-	   isaccept             bit                            null,
+	   isadopt              bit                            null,
 	   praisecount          int                            null
 	   constraint PK_ANSWER primary key clustered (id)
 	);
@@ -129,6 +130,9 @@ begin
 	   homeimage            varchar(512)                   null,
 	   readcount            int                            null,
 	   heatcount            int                            null,
+	   category             varchar(16)                    null,
+	   demandstate          int                            null,
+	   demandscores         int                            null,
 	   constraint PK_DEMAND primary key clustered (id)
 	);
 end
@@ -221,21 +225,23 @@ IF NOT EXISTS( SELECT * FROM sys.objects WHERE name='product' AND type='U')
 begin
 	create table product 
 	(
-	   id                   varchar(36)                    not null,
-	   proname              varchar(64)                    null,
-	   price                varchar(32)                    null,
-	   introduction         varchar(2000)                  null,
-	   protype              varchar(32)                    null,
-	   publishtime          datetime                       null,
-	   compositescore       decimal                        null,
-	   materialcode         varchar(32)                    null,
-	   productiondate       varchar(10)                    null,
-	   prodetail			varchar(2000)				   null,
-	   category             varchar(64)                    null,
-	   contacts             varchar(32)                    null,
-	   contactphone         varchar(11)                    null,
-	   prostate             int                            null,
-	   proscores			int							   null  --综合得分
+	   id                   varchar(36)                    not null,	--主键ID
+	   userid               varchar(36)                    null,		--发布用户ID
+	   nickname             varchar(32)                    null,		--发布用户昵称
+	   proname              varchar(64)                    null,		--产品名称
+	   price                varchar(32)                    null,		--价格
+	   introduction         varchar(2000)                  null,		--简介
+	   protype              varchar(32)                    null,		--
+	   publishtime          datetime                       null,		--
+	   compositescore       decimal                        null,		--
+	   materialcode         varchar(32)                    null,		--
+	   productiondate       varchar(10)                    null,		--
+	   prodetail			varchar(2000)				   null,		--
+	   category             varchar(64)                    null,		--
+	   contacts             varchar(32)                    null,		--
+	   contactphone         varchar(11)                    null,		--
+	   prostate             int                            null,		--
+	   proscores			int							   null			--综合得分
 	   constraint PK_PRODUCT primary key clustered (id)
 	);
 end

@@ -10,6 +10,8 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string price { get; set; }
         public string introduction { get; set; }
         public string protype { get; set; }
+        public string userid { get; set; }
+        public string nickname { get; set; }
         public DateTime publishtime { get; set; }
         public decimal compositescore { get; set; }
         public string materialcode { get; set; }

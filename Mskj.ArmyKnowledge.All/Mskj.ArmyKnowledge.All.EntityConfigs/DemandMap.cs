@@ -20,6 +20,7 @@ namespace Mskj.ArmyKnowledge.All.EntityConfigs
             this.Property(p => p.introduction).HasMaxLength(512);
             this.Property(p => p.images).HasMaxLength(4000);
             this.Property(p => p.homeimage).HasMaxLength(512);
+            this.Property(p => p.category).HasMaxLength(16);
         }
     }
 }

@@ -13,55 +13,55 @@ using System.Threading.Tasks;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
-    public class ProductService : BaseService<Product, Product>, IProductService
+    public class DemandService : BaseService<Demand, Demand>, IDemandService
     {
 
         #region 构造函数
-        private readonly IRepository<Product> _ProductRepository;
+        private readonly IRepository<Demand> _DemandRepository;
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
         /// </summary>
         /// <param name="goodsRepository"></param>
-        public ProductService(IRepository<Product> productRepository) : base(productRepository)
+        public DemandService(IRepository<Demand> demandRepository) : base(demandRepository)
         {
 
         }
         #endregion
 
-        #region 产品相关
+        #region 需求相关
         /// <summary>
-        /// 新增产品信息
+        /// 新增需求信息
         /// </summary>
-        public ReturnResult<Product> AddProduct(Product product)
+        public ReturnResult<Demand> AddDemand(Demand demand)
         {
             bool saveResult = false;
-            product.id = Guid.NewGuid().ToString();
+            demand.id = Guid.NewGuid().ToString();
             try
             {
-                saveResult = Add(product);
+                saveResult = Add(demand);
             }
             catch (Exception exp)
             {
-                return new ReturnResult<Product>(-1, exp.Message);
+                return new ReturnResult<Demand>(-1, exp.Message);
             }
             if (saveResult)
             {
-                return new ReturnResult<Product>(1, product);
+                return new ReturnResult<Demand>(1, demand);
             }
             else
             {
-                return new ReturnResult<Product>(-2, "用户信息保存失败！");
+                return new ReturnResult<Demand>(-2, "用户信息保存失败！");
             }
         }
         /// <summary>
-        /// 更新产品信息
+        /// 更新需求信息
         /// </summary>
-        public ReturnResult<bool> UpdateProduct(Product product)
+        public ReturnResult<bool> UpdateDemand(Demand demand)
         {
             bool updateResult = false;
             try
             {
-                updateResult = this.Update(product);
+                updateResult = this.Update(demand);
             }
             catch (Exception exp)
             {
@@ -77,10 +77,10 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
         }
         /// <summary>
-        /// 删除产品信息
+        /// 删除需求信息
         /// </summary>
-        /// <param name="id">产品ID</param>
-        public ReturnResult<bool> DeleteProduct(string id)
+        /// <param name="id">需求ID</param>
+        public ReturnResult<bool> DeleteDemand(string id)
         {
             bool deleteResult = false;
             try
@@ -101,47 +101,47 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
         }
         /// <summary>
-        /// 审核产品信息
+        /// 审核需求信息
         /// </summary>
-        public ReturnResult<bool> AuditProduct(Product product)
+        public ReturnResult<bool> AuditDemand(Demand demand)
         {
-            if (product.prostate != 1)
+            if (demand.demandstate != 1)
             {
-                return new ReturnResult<bool>(-2, "待审核的产品信息状态不是[提交审核状态]！");
+                return new ReturnResult<bool>(-2, "待审核的需求信息状态不是[提交审核状态]！");
             }
-            product.prostate = 2;
-            return UpdateProduct(product);
+            demand.demandstate = 2;
+            return UpdateDemand(demand);
         }
         /// <summary>
-        /// 提交审核产品信息
+        /// 提交审核需求信息
         /// </summary>
-        public ReturnResult<bool> SubmitProduct(Product product)
+        public ReturnResult<bool> SubmitDemand(Demand demand)
         {
-            if (product.prostate != 0)
+            if (demand.demandstate != 0)
             {
                 return new ReturnResult<bool>(-2, "待提交审核的认证信息状态不是[新建状态]！");
             }
             else
             {
-                product.prostate = 1;
-                return UpdateProduct(product);
+                demand.demandstate = 1;
+                return UpdateDemand(demand);
             }
         }
         /// <summary>
-        /// 保存并提交产品信息
+        /// 保存并提交需求信息
         /// </summary>
-        public ReturnResult<Product> SaveAndSubmitProduct(Product product)
+        public ReturnResult<Demand> SaveAndSubmitDemand(Demand demand)
         {
-            product.prostate = 1;
-            return this.AddProduct(product);
+            demand.demandstate = 1;
+            return this.AddDemand(demand);
         }
         /// <summary>
-        /// 获取已有产品分类
+        /// 获取已有需求分类
         /// </summary>
-        public ReturnResult<List<string>> GetProductCategory()
+        public ReturnResult<List<string>> GetDemandCategory()
         {
             List<string> categorys = new List<string> { "全部" };
-            var res = _ProductRepository.Find().Select(p => p.category).Distinct().ToList();
+            var res = _DemandRepository.Find().Select(p => p.category).Distinct().ToList();
             if(res != null && res.Count > 0)
             {
                 categorys.AddRange(res);
@@ -153,7 +153,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
         }
         /// <summary>
-        /// 分页获取用户对应的产品列表
+        /// 分页获取对应用户的需求列表
         /// </summary>
         /// <param name="category">分类</param>
         /// <param name="state">状态</param>
@@ -161,14 +161,14 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Product>> GetUserProducts(string userid,
-            int pageIndex = 1, int pageSize = 10, int sortType = 0)
+        public ReturnResult<IPagedData<Demand>> GetUserDemands(string userid,
+            int pageIndex = 1,int pageSize = 10, int sortType = 0)
         {
-            Expression<Func<Product, bool>> expression = x => x.userid == userid;
-            return GetBaseProducts(pageIndex, pageSize, sortType, expression);
+            Expression<Func<Demand, bool>> expression = x => x.author == userid;
+            return GetBaseDemands(pageIndex, pageSize, sortType, expression);
         }
         /// <summary>
-        /// 分页获取产品列表
+        /// 分页获取需求列表
         /// </summary>
         /// <param name="category">分类</param>
         /// <param name="state">状态</param>
@@ -176,57 +176,50 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Product>> GetProducts(string category = "全部",
-            int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0)
+        public ReturnResult<IPagedData<Demand>> GetDemands(string category = "全部",
+            int state = 0,int pageIndex = 1,int pageSize = 10, int sortType = 0)
         {
-            Expression<Func<Product, bool>> expression;
+            Expression<Func<Demand, bool>> expression;
             if ("全部".Equals(category))
             {
-                expression = x => x.prostate == state;
+                expression = x => x.demandstate == state;
             }
             else
             {
-                expression = x => x.prostate == state && x.category == category;
+                expression = x => x.demandstate == state && x.category == category;
 
             }
-            return GetBaseProducts(pageIndex, pageSize, sortType, expression);
+            return GetBaseDemands(pageIndex, pageSize, sortType, expression);
         }
         /// <summary>
-        /// 分页获取产品列表(封装排序方式)
+        /// 分页获取需求列表(封装排序方式)
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式 0-综合排序 1-最新发布</param>
         /// <param name="expression">查询表达示</param>
         /// <returns></returns>
-        private ReturnResult<IPagedData<Product>> GetBaseProducts(int pageIndex,
-            int pageSize, int sortType, Expression<Func<Product, bool>> expression)
+        private ReturnResult<IPagedData<Demand>> GetBaseDemands(int pageIndex,
+            int pageSize, int sortType, Expression<Func<Demand, bool>> expression)
         {
-            List<SortInfo<Product>> sorts = new List<SortInfo<Product>>();
-            SortInfo<Product> sort;
+            List<SortInfo<Demand>> sorts = new List<SortInfo<Demand>>();
+            SortInfo<Demand> sort;
             switch (sortType)
             {
                 case 0:
-                    sort = new SortInfo<Product>(p => p.proscores,
+                    sort = new SortInfo<Demand>(p => p.demandscores,
                         SortOrder.Descending);
                     break;
                 case 1:
-                    sort = new SortInfo<Product>(p => p.publishtime,
-                        SortOrder.Descending);
-                    break;
-                case 2:
-                    sort = new SortInfo<Product>(p => p.price,
-                        SortOrder.Ascending);
-                    break;
                 default:
-                    sort = new SortInfo<Product>(p => p.price,
+                    sort = new SortInfo<Demand>(p => p.publishtime,
                         SortOrder.Descending);
                     break;
             }
             sorts.Add(sort);
             //所有排序之后，再按时间降序
-            sorts.Add(new SortInfo<Product>(p => p.publishtime, SortOrder.Descending));
-            return new ReturnResult<IPagedData<Product>>(1,
+            sorts.Add(new SortInfo<Demand>(p => p.publishtime,SortOrder.Descending));
+            return new ReturnResult<IPagedData<Demand>>(1,
                     GetPage(pageIndex, pageSize, sorts, expression));
         }
         #endregion

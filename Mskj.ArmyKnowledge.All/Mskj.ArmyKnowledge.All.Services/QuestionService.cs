@@ -129,11 +129,64 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="sortType">排序规则 0-首页 1-热榜 2-推荐 3-最新</param>
         /// <param name="filter">查询关键字</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<QuestionModel>> GetQuestions(
-            int pageIndex = 1,int pageSize = 10, int sortType = 0, string filter = "")
+        public ReturnResult<IPagedData<QuestionModel>> GetQuestions(string filter = "",
+            int state = 2,int pageIndex = 1,int pageSize = 10, int sortType = 0)
+        {
+            Expression<Func<QuestionModel, bool>> expression;
+            if (string.IsNullOrEmpty(filter))
+            {
+                expression = x => x.QuestionState == state;
+            }
+            else
+            {
+                expression = x => x.QuestionState == state && (
+                    x.Title.Contains(filter) || x.AuthorNickname.Contains(filter) ||
+                    x.Introduction.Contains(filter) || x.Content.Contains(filter)
+                    );
+
+            }
+            return GetBaseQuestionModels(pageIndex, pageSize, sortType, expression);
+        }
+        /// <summary>
+        /// 分页获取用户对应的问题列表
+        /// </summary>
+        /// <param name="category">分类</param>
+        /// <param name="state">状态</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <param name="sortType">排序方式</param>
+        /// <returns></returns>
+        public ReturnResult<IPagedData<QuestionModel>> GetUserQuestionModels(string userid,
+            string filter = "",int pageIndex = 1, int pageSize = 10, int sortType = 0)
+        {
+            Expression<Func<QuestionModel, bool>> expression;
+            if (string.IsNullOrEmpty(filter))
+            {
+                expression = x => x.Author == userid;
+            }
+            else
+            {
+                expression = x => x.Author == userid && (
+                    x.Title.Contains(filter) || x.AuthorNickname.Contains(filter) ||
+                    x.Introduction.Contains(filter) || x.Content.Contains(filter)
+                    );
+
+            }
+            return GetBaseQuestionModels(pageIndex, pageSize, sortType, expression);
+        }
+        /// <summary>
+        /// 分页获取问题列表(封装排序方式)
+        /// </summary>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <param name="sortType">排序方式 0-综合排序 1-最新发布</param>
+        /// <param name="expression">查询表达示</param>
+        /// <returns></returns>
+        private ReturnResult<IPagedData<QuestionModel>> GetBaseQuestionModels(int pageIndex,
+            int pageSize, int sortType, Expression<Func<QuestionModel, bool>> expression)
         {
             List<SortInfo<QuestionModel>> sorts = new List<SortInfo<QuestionModel>>();
-            SortInfo<QuestionModel> sort ;
+            SortInfo<QuestionModel> sort;
             switch (sortType)
             {
                 case 0:
@@ -148,25 +201,16 @@ namespace Mskj.ArmyKnowledge.All.Services
                     sort = new SortInfo<QuestionModel>(p => p.CommentCount,
                         SortOrder.Descending);
                     break;
+                case 3:
                 default:
                     sort = new SortInfo<QuestionModel>(p => p.Publishtime,
                         SortOrder.Descending);
                     break;
             }
             sorts.Add(sort);
-            sorts.Add(new SortInfo<QuestionModel>(p => p.Publishtime,SortOrder.Descending));
-            if (string.IsNullOrEmpty(filter))
-            {
-                return new ReturnResult<IPagedData<QuestionModel>>(1, 
-                    GetPage(pageIndex, pageSize, sorts));
-            }
-            else
-            {
-                Expression<Func<QuestionModel, bool>> expression = x => x.Author.Contains(filter) ||
-                    x.Content.Contains(filter) || x.Title.Contains(filter) || x.Introduction.Contains(filter);
-                return new ReturnResult<IPagedData<QuestionModel>>( 1, 
+            sorts.Add(new SortInfo<QuestionModel>(p => p.Publishtime, SortOrder.Descending));
+            return new ReturnResult<IPagedData<QuestionModel>>(1,
                     GetPage(pageIndex, pageSize, sorts, expression));
-            }
         }
         /// <summary>
         /// 分页获取问题的回答
@@ -181,6 +225,23 @@ namespace Mskj.ArmyKnowledge.All.Services
             IQueryable<Answer> query = _AnswerDetailRepository.Find().OrderByDescending(p => p.publishtime);
             var res = query.ToPage(pageIndex, pageSize);
             return new ReturnResult<IPagedData<Answer>>(1, res);
+        }
+        /// <summary>
+        /// 分页获取对应用户回答的问题
+        /// </summary>
+        /// <param name="questionId">问题ID</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        public ReturnResult<IPagedData<Question>> GetUserAnswers(string userid,
+            string questionId, int pageIndex = 1, int pageSize = 10)
+        {
+            var res = (from answer in _AnswerDetailRepository.Find()
+                       join question in _QuestionRepository.Find() on answer.questionid equals question.id
+                       where answer.userid == userid
+                       orderby answer.publishtime descending
+                       select question).ToPage(pageIndex, pageSize);
+            return new ReturnResult<IPagedData<Question>>(1, res);
         }
         /// <summary>
         /// 获取一个问题

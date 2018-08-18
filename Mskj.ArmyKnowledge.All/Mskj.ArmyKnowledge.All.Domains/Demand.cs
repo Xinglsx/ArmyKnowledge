@@ -21,5 +21,8 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string homeimage { get; set; }
         public int readcount { get; set; }
         public int heatcount { get; set; }
+        public string category { get; set; }
+        public int demandstate { get; set; }
+        public int demandscores { get; set; }
     }
 }

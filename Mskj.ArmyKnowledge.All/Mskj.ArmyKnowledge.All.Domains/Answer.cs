@@ -16,7 +16,7 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public DateTime publishtime { get; set; }
         public string content { get; set; }
         public string images { get; set; }
-        public bool isaccept { get; set; }
+        public bool isadopt { get; set; }
         public int praisecount { get; set; }
     }
 }

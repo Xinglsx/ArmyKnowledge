@@ -41,7 +41,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <summary>
         /// 新增用户认证信息
         /// </summary>
-        ReturnResult<bool> AddCert(Cert cert);
+        ReturnResult<Cert> AddCert(Cert cert);
         /// <summary>
         /// 更新用户认证信息
         /// </summary>

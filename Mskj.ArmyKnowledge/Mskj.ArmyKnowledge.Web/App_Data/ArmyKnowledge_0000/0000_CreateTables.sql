@@ -144,16 +144,20 @@ IF NOT EXISTS( SELECT * FROM sys.objects WHERE name='fans' AND type='U')
 begin
 	create table fans 
 	(
-	   id						varchar(36)                    not null,
-	   userid					varchar(36)                    null,
-	   fansuserid		        varchar(36)                    null,
-	   fansstate                int                            null
+	   id						varchar(36)                    not null,	--主键ID
+	   userid1					varchar(36)                    null,		--用户ID1
+	   userid1			        varchar(36)                    null,		--用户ID2
+	   fansstate                int                            null,		--关注状态 
+																			--0-互粉 
+																			--1-用户2关注用户1
+																			--2-用户1关注用户2
+	   updatetime				datetime					   null,		--更新时间
 	   constraint PK_FANS primary key clustered (id)
 	);
 end
 
 /*==============================================================*/
-/* Table: follower                 关注列表                     */
+/* Table: follower            关注列表（暂不用）                */
 /*==============================================================*/
 IF NOT EXISTS( SELECT * FROM sys.objects WHERE name='follower' AND type='U')
 begin

@@ -9,32 +9,32 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
     public interface IDemandService : IBaseService<Demand>,IServiceContract
     {
         /// <summary>
-        /// 新增产品信息
+        /// 新增需求信息
         /// </summary>
         ReturnResult<Demand> AddDemand(Demand demand);
         /// <summary>
-        /// 更新产品信息
+        /// 更新需求信息
         /// </summary>
         ReturnResult<bool> UpdateDemand(Demand demand);
         /// <summary>
-        /// 删除产品信息
+        /// 删除需求信息
         /// </summary>
-        /// <param name="id">产品ID</param>
+        /// <param name="id">需求ID</param>
         ReturnResult<bool> DeleteDemand(string id);
         /// <summary>
-        /// 审核产品信息
+        /// 审核需求信息
         /// </summary>
         ReturnResult<bool> AuditDemand(Demand demand);
         /// <summary>
-        /// 提交审核产品信息
+        /// 提交审核需求信息
         /// </summary>
         ReturnResult<bool> SubmitDemand(Demand demand);
         /// <summary>
-        /// 保存关提交产品信息
+        /// 保存并提交需求信息
         /// </summary>
         ReturnResult<Demand> SaveAndSubmitDemand(Demand demand);
         /// <summary>
-        /// 获取已有产品分类
+        /// 获取已有需求分类
         /// </summary>
         ReturnResult<List<string>> GetDemandCategory();
         /// <summary>

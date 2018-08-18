@@ -1,6 +1,8 @@
 ﻿using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using QuickShare.LiteFramework.Base;
+using QuickShare.LiteFramework.Common;
+using System.Collections.Generic;
 
 namespace Mskj.ArmyKnowledge.All.ServiceContracts
 {
@@ -64,6 +66,60 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// 通过用户ID获取用户认证信息
         /// </summary>
         ReturnResult<Cert> GetCert(string userid);
+        #endregion
+
+        #region 专家用户信息
+        /// <summary>
+        /// 获取已有专业分类
+        /// </summary>
+        ReturnResult<List<string>> GetProductCategory();
+        /// <summary>
+        /// 分页获取专家用户列表
+        /// </summary>
+        /// <param name="type">用户类型 100-获取全部</param>
+        /// <param name="state">状态</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <param name="sortType">排序方式</param>
+        /// <returns></returns>
+        ReturnResult<IPagedData<Users>> GetUserss(int type = 2,
+            int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0);
+        #endregion
+
+        #region 用户关注(粉丝)信息
+        /// <summary>
+        /// 增加粉丝信息
+        /// </summary>
+        ReturnResult<Fans> AddFans(Fans fans);
+        /// <summary>
+        /// 删除粉丝信息
+        /// </summary>
+        ReturnResult<Fans> DeleteFans(Fans fans);
+        /// <summary>
+        /// 获取用户间粉丝关系信息
+        /// </summary>
+        /// <param name="userid1">用户1ID</param>
+        /// <param name="userid2">用户2ID</param>
+        /// <returns></returns>
+        ReturnResult<Fans> GetFans(string userid1, string userid2);
+        /// <summary>
+        /// 获取用户的粉丝信息
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        ReturnResult<IPagedData<Fans>> GetFans(string userid,
+            int pageIndex = 1, int pageSize = 10);
+        /// <summary>
+        /// 获取用户的关注信息
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        ReturnResult<IPagedData<Fans>> GetFollows(string userid,
+            int pageIndex = 1, int pageSize = 10);
         #endregion
     }
 }

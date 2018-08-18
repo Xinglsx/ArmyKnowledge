@@ -45,7 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataObj\QuestionModel.cs" />
-    <Compile Include="IFansService.cs" />
     <Compile Include="IDemandService.cs" />
     <Compile Include="IProductService.cs" />
     <Compile Include="IMsgService.cs" />

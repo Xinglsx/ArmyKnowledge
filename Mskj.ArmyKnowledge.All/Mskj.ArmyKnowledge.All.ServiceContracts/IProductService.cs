@@ -30,7 +30,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// </summary>
         ReturnResult<bool> SubmitProduct(Product product);
         /// <summary>
-        /// 保存关提交产品信息
+        /// 保存并提交产品信息
         /// </summary>
         ReturnResult<Product> SaveAndSubmitProduct(Product product);
         /// <summary>

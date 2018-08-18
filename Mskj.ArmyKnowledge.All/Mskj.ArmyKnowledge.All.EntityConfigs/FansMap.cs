@@ -14,8 +14,8 @@ namespace Mskj.ArmyKnowledge.All.EntityConfigs
             this.ToTable("fans");
             this.HasKey(p => p.id);
             this.Property(p => p.id).HasMaxLength(36);
-            this.Property(p => p.userid).HasMaxLength(36);
-            this.Property(p => p.fansuserid).HasMaxLength(36);
+            this.Property(p => p.userid1).HasMaxLength(36);
+            this.Property(p => p.userid2).HasMaxLength(36);
         }
     }
 }

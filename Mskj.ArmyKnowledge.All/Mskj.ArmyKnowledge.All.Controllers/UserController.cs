@@ -111,21 +111,34 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <summary>
         /// 提交审核用户认证信息
         /// </summary>
-        [Route("SubmitAuditCert")]
+        [Route("SubmitCert")]
         [HttpPost]
-        public object SubmitAuditCert(Cert cert)
+        public object SubmitCert(Cert cert)
         {
-            return _UsersService.SubmitAuditCert(cert);
+            return _UsersService.SubmitCert(cert);
+        }
+        /// <summary>
+        /// 提交审核用户认证信息
+        /// </summary>
+        [Route("SaveAndSubmitCert")]
+        [HttpPost]
+        public object SaveAndSubmitCert(Cert cert)
+        {
+            return _UsersService.SaveAndSubmitCert(cert);
         }
         /// <summary>
         /// 通过用户ID获取其认证信息
         /// </summary>
-        [Route("SubmitAuditCert")]
+        [Route("GetCert")]
         [HttpPost]
         public object GetCert(string userid)
         {
             return _UsersService.GetCert(userid);
         }
+        #endregion
+
+        #region 用户粉丝信息处理
+
         #endregion
 
     }

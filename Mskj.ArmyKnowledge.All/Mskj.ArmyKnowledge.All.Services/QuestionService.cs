@@ -484,7 +484,10 @@ namespace Mskj.ArmyKnowledge.All.Services
         {
             var res = (from question in _QuestionRepository.Find()
                        join record in _RecordRepository.Find() on question.id equals record.questionid
-                       where record.userid == userid && record.iscollect
+                       where record.userid == userid && record.iscollect &&
+                       (filter == "" || 
+                       (question.title.Contains(filter) || question.content.Contains(filter) ||
+                       question.introduction.Contains(filter) || question.author.Contains(filter)))
                        orderby record.lasttime descending
                        select question).ToPage(pageIndex, pageSize).
                        MapTo<Question, QuestionModel>();

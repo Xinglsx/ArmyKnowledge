@@ -195,28 +195,28 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 新增用户认证信息
         /// </summary>
-        public ReturnResult<bool> AddCert(Cert cert)
+        public ReturnResult<Cert> AddCert(Cert cert)
         {
             cert.id = Guid.NewGuid().ToString();
             bool addRes = false;
             try
             {
                 addRes = _CertRepository.Add(cert);
-                var user = this.GetOne(p => p.id == cert.userid);
+                var user = GetOne(p => p.id == cert.userid);
                 user.usertype = cert.userType;
-                addRes = this.Update(user);
+                addRes = Update(user);
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                return new ReturnResult<Cert>(-1, exp.Message);
             }
             if(addRes)
             {
-                return new ReturnResult<bool>(1, true);
+                return new ReturnResult<Cert>(1, cert);
             }
             else
             {
-                return new ReturnResult<bool>(-2, "新增认证信息失败!");
+                return new ReturnResult<Cert>(-2, "新增认证信息失败!");
             }
         }
         /// <summary>
@@ -257,12 +257,12 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 提交审核用户认证信息
         /// </summary>
-        public ReturnResult<bool> SubmitAuditCert(Cert cert)
+        public ReturnResult<bool> SubmitCert(Cert cert)
         {
             if (string.IsNullOrEmpty(cert.id))
             {
                 cert.certstate = 1;
-                return this.AddCert(cert);
+                return AddCert(cert);
             }
             else if (cert.certstate != 0)
             {
@@ -271,8 +271,18 @@ namespace Mskj.ArmyKnowledge.All.Services
             else
             {
                 cert.certstate = 1;
-                return this.UpdateCert(cert);
+                return UpdateCert(cert);
             }
+        }
+        /// <summary>
+        /// 保存并提交用户认证信息
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        public ReturnResult<Cert> SaveAndSubmitCert(Cert cert)
+        {
+            cert.certstate = 1;
+            return AddCert(cert);
         }
         /// <summary>
         /// 通过用户ID获取用户认证信息

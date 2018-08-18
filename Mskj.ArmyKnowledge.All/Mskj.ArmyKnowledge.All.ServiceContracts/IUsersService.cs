@@ -53,7 +53,13 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <summary>
         /// 提交审核用户认证信息
         /// </summary>
-        ReturnResult<bool> SubmitAuditCert(Cert cert);
+        ReturnResult<bool> SubmitCert(Cert cert);
+        /// <summary>
+        /// 保存并提交用户认证信息
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        ReturnResult<Cert> SaveAndSubmitCert(Cert cert);
         /// <summary>
         /// 通过用户ID获取用户认证信息
         /// </summary>

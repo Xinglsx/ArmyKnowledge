@@ -234,7 +234,8 @@ begin
 	   category             varchar(64)                    null,
 	   contacts             varchar(32)                    null,
 	   contactphone         varchar(11)                    null,
-	   prostate             int                            null
+	   prostate             int                            null,
+	   proscores			int							   null  --综合得分
 	   constraint PK_PRODUCT primary key clustered (id)
 	);
 end

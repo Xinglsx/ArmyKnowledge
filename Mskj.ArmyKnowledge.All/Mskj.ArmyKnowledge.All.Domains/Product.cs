@@ -19,5 +19,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string contacts { get; set; }
         public string contactphone { get; set; }
         public int prostate { get; set; }
+        public int proscores { get; set; }
     }
 }

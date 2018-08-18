@@ -132,6 +132,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<IPagedData<QuestionModel>> GetQuestions(
             int pageIndex = 1,int pageSize = 10, int sortType = 0, string filter = "")
         {
+            List<SortInfo<QuestionModel>> sorts = new List<SortInfo<QuestionModel>>();
             SortInfo<QuestionModel> sort ;
             switch (sortType)
             {
@@ -152,17 +153,19 @@ namespace Mskj.ArmyKnowledge.All.Services
                         SortOrder.Descending);
                     break;
             }
+            sorts.Add(sort);
+            sorts.Add(new SortInfo<QuestionModel>(p => p.Publishtime,SortOrder.Descending));
             if (string.IsNullOrEmpty(filter))
             {
                 return new ReturnResult<IPagedData<QuestionModel>>(1, 
-                    GetPage(pageIndex, pageSize, sort));
+                    GetPage(pageIndex, pageSize, sorts));
             }
             else
             {
                 Expression<Func<QuestionModel, bool>> expression = x => x.Author.Contains(filter) ||
                     x.Content.Contains(filter) || x.Title.Contains(filter) || x.Introduction.Contains(filter);
                 return new ReturnResult<IPagedData<QuestionModel>>( 1, 
-                    GetPage(pageIndex, pageSize, sort, expression));
+                    GetPage(pageIndex, pageSize, sorts, expression));
             }
         }
         /// <summary>
@@ -399,6 +402,9 @@ namespace Mskj.ArmyKnowledge.All.Services
                        MapTo<Question,QuestionModel>();
             return new ReturnResult<IPagedData<QuestionModel>>(1, res);
         }
+        /// <summary>
+        /// 增加最近浏览
+        /// </summary>
         public ReturnResult<bool> AddCollect(Record record)
         {
             record.iscollect = true;

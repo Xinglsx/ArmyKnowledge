@@ -32,6 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -41,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DemandService.cs" />
+    <Compile Include="SystemService.cs" />
     <Compile Include="ProductService.cs" />
     <Compile Include="QuestionService.cs" />
     <Compile Include="MsgService.cs" />

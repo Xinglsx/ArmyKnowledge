@@ -17,6 +17,7 @@ namespace Mskj.ArmyKnowledge.All.Services
 {
     public class QuestionService : BaseService<QuestionModel, Question>, IQuestionService
     {
+        #region 构造函数
         private readonly IRepository<Question> _QuestionRepository;
         private readonly IRepository<Answer> _AnswerDetailRepository;
         private readonly IRepository<Record> _RecordRepository;
@@ -26,13 +27,15 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         public QuestionService(IRepository<Question> questionRepository,
             IRepository<Answer> answerDetailRepository,
-            IRepository<Record> recordRepository):
+            IRepository<Record> recordRepository) :
             base(questionRepository)
         {
             this._QuestionRepository = questionRepository;
             this._AnswerDetailRepository = answerDetailRepository;
             this._RecordRepository = recordRepository;
         }
+
+        #endregion
 
         #region 问题回答
         /// <summary>
@@ -44,6 +47,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         {
             question.Id = Guid.NewGuid().ToString();
             question.HeatCount = 1000;//初始分为1000
+            question.Publishtime = DateTime.Now;
             bool res = false;
             try
             {
@@ -85,6 +89,18 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 return new ReturnResult<bool>(-2, res, "用户信息更新失败！");
             }
+        }
+        /// <summary>
+        /// 提交审核问题
+        /// </summary>
+        public ReturnResult<bool> SubmitQuestion(QuestionModel question)
+        {
+            if (question.QuestionState != 0)
+            {
+                return new ReturnResult<bool>(-2, "问题状态不是[新建状态]！");
+            }
+            question.QuestionState = 1;
+            return this.UpdateQuestion(question);
         }
         /// <summary>
         /// 审核通过问题
@@ -317,7 +333,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<bool> UpdateCommentCount(string questionId)
         {
             QuestionModel question = this.GetOne(p => p.Id == questionId);
-            if (question != null && !string.IsNullOrEmpty(question.Id))
+            if (question == null || string.IsNullOrEmpty(question.Id))
             {
                 return new ReturnResult<bool>(-2, "问题ID不存在！");
             }
@@ -325,42 +341,52 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 question.CommentCount++;
                 var res = UpdateQuestion(question);
-                if (res.code > 0)
-                {
-                    UpdateHeatCount(question);
-                }
                 return res;
             }
         }
         /// <summary>
         /// 更新热度
         /// </summary>
-        /// <param name="questionId"></param>
-        /// <param name="userid"></param>
+        /// <param name="questionId">问题ID</param>
+        /// <returns></returns>
+        public void UpdateHeatCount(string questionId)
+        {
+            var question = GetOne(p => p.Id == questionId);
+            if(question == null || string.IsNullOrEmpty(question.Id))
+            {
+                return;
+            }
+            this.UpdateHeatCount(question);
+        }
+        /// <summary>
+        /// 更新热度
+        /// </summary>
+        /// <param name="question">问题对象</param>
         /// <returns></returns>
         public void UpdateHeatCount(QuestionModel question)
         {
-            question.HeatCount = question.ReadCount;
+            question.HeatCount = 1000 + question.ReadCount;
             question.HeatCount += question.PraiseCount * 5;
             question.HeatCount += question.CommentCount * 10;
             //距离现在的时间越长，减分也越大。
             int hours = (DateTime.Now - question.Publishtime).Hours;
             //当天的，每过一个小时减5
-            if(hours <= 24)
+            if (hours <= 24)
             {
                 question.HeatCount -= hours * 5;
             }
             //2~5天的，每过一个小时减10
-            else if(hours <= 120 && hours >24)
+            else if (hours <= 120 && hours > 24)
             {
-                question.HeatCount -= 120 + (hours-24) * 10;
+                question.HeatCount -= 120 + (hours - 24) * 10;
             }
             //5天以上的，每过一个小时减100
             else
             {
                 question.HeatCount -= 1080 + (hours - 120) * 100;
             }
-            this.UpdateQuestion(question);
+
+            this.Update(question);
         }
         /// <summary>
         /// 增加评论
@@ -407,7 +433,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 return new ReturnResult<bool>(-2, "未找到待保存的用户ID！");
             }
-            var existRecord = _RecordRepository.FindInclude(p => p.questionid == record.questionid
+            var existRecord = _RecordRepository.Find().Where(p => p.questionid == record.questionid
                 && p.userid == record.userid).FirstOrDefault();
             bool res = false;
             if(existRecord == null || string.IsNullOrEmpty(existRecord.id))
@@ -426,6 +452,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             else
             {
                 existRecord.lasttime = DateTime.Now;
+                existRecord.iscollect = record.iscollect;
                 try
                 {
                     res = _RecordRepository.Update(existRecord);
@@ -437,11 +464,11 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             if (res)
             {
-                return new ReturnResult<bool>(-2, "更新最近浏览失败！");
+                return new ReturnResult<bool>(1, res);
             }
             else
             {
-                return new ReturnResult<bool>(1, res);
+                return new ReturnResult<bool>(-2, "更新最近浏览失败！");
             }
         }
         /// <summary>

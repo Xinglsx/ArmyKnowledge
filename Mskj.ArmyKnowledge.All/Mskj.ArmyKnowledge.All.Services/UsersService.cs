@@ -201,6 +201,13 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         public ReturnResult<Cert> AddCert(Cert cert)
         {
+            //先要判断是否已经存在认证信息
+            var existUser = GetOne(p => p.id == cert.userid);
+            if(existUser != null && !string.IsNullOrEmpty(existUser.id))
+            {
+                return new ReturnResult<Cert>(-2, "已存在认证信息，无法新增!");
+            }
+
             cert.id = Guid.NewGuid().ToString();
             bool addRes = false;
             try
@@ -232,6 +239,29 @@ namespace Mskj.ArmyKnowledge.All.Services
             try
             {
                 res = _CertRepository.Update(cert);
+            }
+            catch (Exception exp)
+            {
+                return new ReturnResult<bool>(-1, exp.Message);
+            }
+            if (res)
+            {
+                return new ReturnResult<bool>(1, true);
+            }
+            else
+            {
+                return new ReturnResult<bool>(-2, "更新认证信息失败!");
+            }
+        }
+        /// <summary>
+        /// 删除用户认证信息
+        /// </summary>
+        public ReturnResult<bool> DeleteCert(string certid)
+        {
+            bool res = false;
+            try
+            {
+                res = _CertRepository.Delete(certid);
             }
             catch (Exception exp)
             {
@@ -312,7 +342,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         public ReturnResult<Cert> GetCert(string userid)
         {
-            var cert = _CertRepository.FindInclude(p => p.userid == userid).FirstOrDefault();
+            var cert = _CertRepository.Find().Where(p => p.userid == userid).FirstOrDefault();
             if(cert == null || string.IsNullOrEmpty(cert.id))
             {
                 return new ReturnResult<Cert>(-2, "未找到该用户认证信息！");
@@ -325,7 +355,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 获取已有专业分类
         /// </summary>
-        public ReturnResult<List<string>> GetProductCategory()
+        public ReturnResult<List<string>> GetProfessionCategory()
         {
             List<string> categorys = new List<string> { "全部" };
             var res = _UsersRepository.Find()
@@ -334,12 +364,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             if (res != null && res.Count > 0)
             {
                 categorys.AddRange(res);
-                return new ReturnResult<List<string>>(1, res);
             }
-            else
-            {
-                return new ReturnResult<List<string>>(1, categorys);
-            }
+            return new ReturnResult<List<string>>(1, categorys);
         }
         /// <summary>
         /// 分页获取专家用户列表
@@ -350,7 +376,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Users>> GetUserss(int type = 2,
+        public ReturnResult<IPagedData<Users>> GetUsers(int type = 2,
             int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
             Expression<Func<Users, bool>> expression;
@@ -363,7 +389,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                 expression = x => x.userstate == state && x.usertype == type;
 
             }
-            return GetBaseUserss(pageIndex, pageSize, sortType, expression);
+            return GetBaseUsers(pageIndex, pageSize, sortType, expression);
         }
         /// <summary>
         /// 分页获取专家用户列表(封装排序方式)
@@ -373,7 +399,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="sortType">排序方式 0-综合排序 1-最新发布</param>
         /// <param name="expression">查询表达示</param>
         /// <returns></returns>
-        private ReturnResult<IPagedData<Users>> GetBaseUserss(int pageIndex,
+        private ReturnResult<IPagedData<Users>> GetBaseUsers(int pageIndex,
             int pageSize, int sortType, Expression<Func<Users, bool>> expression)
         {
             List<SortInfo<Users>> sorts = new List<SortInfo<Users>>();
@@ -429,7 +455,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         {
             bool res = false;
             //是否存在用户1关注用户2的粉丝信息，存在则更新成互粉
-            var existFans = _FansRepository.FindInclude(p => p.userid1 == fans.userid1
+            var existFans = _FansRepository.Find().Where(p => p.userid1 == fans.userid1
                 && p.userid2 == fans.userid2).FirstOrDefault(); 
             if(existFans != null && !string.IsNullOrEmpty(existFans.id))
             {
@@ -461,7 +487,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                 }
             }
             //反查是否存在用户2关注用户1的粉丝信息，存在者直接更新成互粉
-            existFans = _FansRepository.FindInclude(p => p.userid1 == fans.userid2
+            existFans = _FansRepository.Find().Where(p => p.userid1 == fans.userid2
                 && p.userid2 == fans.userid1).FirstOrDefault();
             if (existFans != null && !string.IsNullOrEmpty(existFans.id))
             {
@@ -494,7 +520,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                 }
             }
             fans.id = Guid.NewGuid().ToString();
-            existFans.updatetime = DateTime.Now;
+            fans.updatetime = DateTime.Now;
+            fans.fansstate = 1;
             try
             {
                 res = _FansRepository.Add(fans);
@@ -506,7 +533,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             if (res)
             {
                 //更新用户基本信息中的粉丝数
-                UpdateFansCount(existFans.userid1, existFans.userid2, 1);
+                UpdateFansCount(fans.userid1, fans.userid2, 1);
                 return new ReturnResult<Fans>(1, fans);
             }
             else
@@ -521,7 +548,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         {
             bool res = false;
             //是否存在用户1与用户2的粉丝信息
-            var existFans = _FansRepository.FindInclude(p => p.userid1 == fans.userid1
+            var existFans = _FansRepository.Find().Where(p => p.userid1 == fans.userid1
                 && p.userid2 == fans.userid2).FirstOrDefault();
             if (existFans != null && !string.IsNullOrEmpty(existFans.id))
             {
@@ -574,7 +601,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                 }
             }
             ////反查是否存在被关注信息
-            existFans = _FansRepository.FindInclude(p => p.userid1 == fans.userid2
+            existFans = _FansRepository.Find().Where(p => p.userid1 == fans.userid2
                 && p.userid2 == fans.userid1).FirstOrDefault();
             if (existFans != null && !string.IsNullOrEmpty(existFans.id))
             {
@@ -636,7 +663,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <returns></returns>
         public ReturnResult<Fans> GetFans(string userid1, string userid2)
         {
-            var existFans = _FansRepository.FindInclude(p => 
+            var existFans = _FansRepository.Find().Where(p => 
                 (p.userid1 == userid1 && p.userid2 == userid2) || 
                 (p.userid1 == userid2 && p.userid2 == userid1)).FirstOrDefault();
             return new ReturnResult<Fans>(1, existFans);

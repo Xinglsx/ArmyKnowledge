@@ -20,6 +20,10 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// </summary>
         ReturnResult<bool> UpdateQuestion(QuestionModel question);
         /// <summary>
+        /// 提交审核问题
+        /// </summary>
+        ReturnResult<bool> SubmitQuestion(QuestionModel question);
+        /// <summary>
         /// 审核通过问题
         /// </summary>
         ReturnResult<bool> AuditQuestion(QuestionModel question);
@@ -97,7 +101,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="questionId"></param>
         /// <param name="userid"></param>
         /// <returns></returns>
-        void UpdateHeatCount(QuestionModel question);
+        void UpdateHeatCount(string questionId);
         /// <summary>
         /// 增加评论
         /// </summary>

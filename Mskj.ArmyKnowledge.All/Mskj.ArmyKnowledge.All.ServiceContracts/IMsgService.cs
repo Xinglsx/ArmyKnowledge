@@ -20,7 +20,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// </summary>
         /// <param name="msgDetails"></param>
         /// <returns></returns>
-        ReturnResult<List<MsgDetail>> AddMsgDetail(List<MsgDetail> msgDetails);
+        ReturnResult<MsgDetail> AddMsgDetail(MsgDetail msgDetails);
         /// <summary>
         /// 删除消息会话
         /// </summary>
@@ -34,42 +34,13 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <returns></returns>
         ReturnResult<bool> DeleteMsgDetails(List<string> msgDetailIds);
         /// <summary>
-        /// 获取问题列表
+        /// 获取消息明细列表
         /// </summary>
         /// <param name="filter">查询关键字</param>
         /// <param name="pageIndex">页数</param>
         /// <param name="pageSize">每页条数</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<MsgDetail>> GetQuestions(string filter = "",
-            int pageIndex = 1, int pageSize = 30);
-        #endregion
-
-        #region 通知信息
-        /// <summary>
-        /// 新增通知
-        /// </summary>
-        ReturnResult<Notice> AddNotice(Notice notice);
-        /// <summary>
-        /// 更新通知信息
-        /// </summary>
-        /// <param name="notice">新的通知信息</param>
-        ReturnResult<bool> UpdateNotice(Notice notice);
-        /// <summary>
-        /// 删除通知信息
-        /// </summary>
-        /// <param name="id">通知ID</param>
-        ReturnResult<bool> DeleteNotice(string id);
-        /// <summary>
-        /// 发布（审核）通知
-        /// </summary>
-        ReturnResult<bool> AuditNotice(Notice notice);
-        /// <summary>
-        /// 获取通知列表
-        /// </summary>
-        /// <param name="filter">查询关键字</param>
-        /// <param name="pageIndex">页数</param>
-        /// <param name="pageSize">每页条数</param>
-        ReturnResult<IPagedData<Notice>> GetNotices(string filter = "",
+        ReturnResult<IPagedData<MsgDetail>> GetMsgDetail(string filter = "",
             int pageIndex = 1, int pageSize = 30);
         #endregion
     }

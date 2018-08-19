@@ -85,7 +85,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception ex)
             {
-                return new ReturnResult<VersionInfo>(1, ex.Message);
+                return new ReturnResult<VersionInfo>(-1, ex.Message);
             }
         }
 

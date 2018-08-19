@@ -12,7 +12,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts.DataObj
         /// <summary>
         /// 版本号
         /// </summary>
-        [JsonProperty("versionNumber")]
+        [JsonProperty("versionnumber")]
         public int VersionNumber { get; set; }
         /// <summary>
         /// 版本编号

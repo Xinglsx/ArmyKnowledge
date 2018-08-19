@@ -4,6 +4,20 @@
 /* Copyright :     MSKJ                                         */
 /*==============================================================*/
 
+/*                           删除所有的表                       */
+--drop table answer
+--drop table cert
+--drop table demand
+--drop table fans
+--drop table follower
+--drop table msg
+--drop table msgdetail
+--drop table notice
+--drop table product 
+--drop table question
+--drop table record
+--drop table users
+
 /*==============================================================*/
 /* Table: Users            用户信息                             */
 /*==============================================================*/
@@ -146,7 +160,7 @@ begin
 	(
 	   id						varchar(36)                    not null,	--主键ID
 	   userid1					varchar(36)                    null,		--用户ID1
-	   userid1			        varchar(36)                    null,		--用户ID2
+	   userid2			        varchar(36)                    null,		--用户ID2
 	   fansstate                int                            null,		--关注状态 
 																			--0-互粉 
 																			--1-用户2关注用户1

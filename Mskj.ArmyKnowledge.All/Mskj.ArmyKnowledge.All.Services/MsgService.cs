@@ -41,6 +41,13 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <returns></returns>
         public ReturnResult<Msg> AddMsg(Msg msg)
         {
+            var existMsg = GetOne(p => (p.userid1 == msg.userid1 && p.userid2 == msg.userid2)
+                || (p.userid1 == msg.userid2 && p.userid2 == msg.userid1));
+            if(existMsg != null && !string.IsNullOrEmpty(existMsg.id))
+            {
+                return new ReturnResult<Msg>(1, existMsg, "已存在消息会话!");
+            }
+
             msg.id = Guid.NewGuid().ToString();
             bool saveResult = false;
             try
@@ -65,32 +72,26 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         /// <param name="msgDetails"></param>
         /// <returns></returns>
-        public ReturnResult<List<MsgDetail>> AddMsgDetail(List<MsgDetail> msgDetails)
+        public ReturnResult<MsgDetail> AddMsgDetail(MsgDetail msgDetail)
         {
-            if (msgDetails == null || msgDetails.Count <= 0)
-            {
-                return new ReturnResult<List<MsgDetail>>(-2, "没有要保存的消息明细数据！");
-            }
-            int addCount = 0;
-            msgDetails.ForEach(p => {
-                p.id = Guid.NewGuid().ToString();
-                p.sendtime = DateTime.Now;
-            });
+            bool addRes = false;
+            msgDetail.id = Guid.NewGuid().ToString();
+            msgDetail.sendtime = DateTime.Now;
             try
             {
-                addCount = _MsgDetailRepository.Add(msgDetails);
+                addRes = _MsgDetailRepository.Add(msgDetail);
             }
             catch (Exception exp)
             {
-                return new ReturnResult<List<MsgDetail>>(-1, exp.Message);
+                return new ReturnResult<MsgDetail>(-1, exp.Message);
             }
-            if (addCount > 0)
+            if (addRes)
             {
-                return new ReturnResult<List<MsgDetail>>(1, msgDetails, string.Format("已经保存{0}消息!", addCount));
+                return new ReturnResult<MsgDetail>(1, msgDetail);
             }
             else
             {
-                return new ReturnResult<List<MsgDetail>>(-2, "消息信息保存失败！");
+                return new ReturnResult<MsgDetail>(-2, "消息信息保存失败！");
             }
         }
         /// <summary>
@@ -150,13 +151,13 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
         }
         /// <summary>
-        /// 获取问题列表
+        /// 获取消息明细列表
         /// </summary>
         /// <param name="filter">查询关键字</param>
         /// <param name="pageIndex">页数</param>
         /// <param name="pageSize">每页条数</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<MsgDetail>> GetQuestions(string filter = "",
+        public ReturnResult<IPagedData<MsgDetail>> GetMsgDetail(string filter = "",
             int pageIndex = 1, int pageSize = 30)
         {
             Expression<Func<MsgDetail, bool>> expression = x =>
@@ -167,107 +168,6 @@ namespace Mskj.ArmyKnowledge.All.Services
             return new ReturnResult<IPagedData<MsgDetail>>(1, res);
         }
         #endregion
-
-        #region 通知信息
-        /// <summary>
-        /// 新增通知
-        /// </summary>
-        public ReturnResult<Notice> AddNotice(Notice notice)
-        {
-            notice.id = Guid.NewGuid().ToString();
-            notice.noticestate = 0;//新增状态
-            bool saveResult = false;
-            try
-            {
-                saveResult = _NoticeRepository.Add(notice);
-            }
-            catch (Exception exp)
-            {
-                return new ReturnResult<Notice>(-1, exp.Message);
-            }
-            if (saveResult)
-            {
-                return new ReturnResult<Notice>(1, notice);
-            }
-            else
-            {
-                return new ReturnResult<Notice>(-2, "通知发布保存失败！");
-            }
-        }
-        /// <summary>
-        /// 更新通知信息
-        /// </summary>
-        /// <param name="notice">新的通知信息</param>
-        public ReturnResult<bool> UpdateNotice(Notice notice)
-        {
-            bool updateResult = false;
-            try
-            {
-                updateResult = _NoticeRepository.Update(notice);
-            }
-            catch (Exception exp)
-            {
-                return new ReturnResult<bool>(-1, false, exp.Message);
-            }
-            if (updateResult)
-            {
-                return new ReturnResult<bool>(1, updateResult);
-            }
-            else
-            {
-                return new ReturnResult<bool>(-2, updateResult, "通知信息更新失败！");
-            }
-        }
-        /// <summary>
-        /// 删除通知信息
-        /// </summary>
-        /// <param name="id">通知ID</param>
-        public ReturnResult<bool> DeleteNotice(string id)
-        {
-            bool deleteResult = false;
-            try
-            {
-                deleteResult = _NoticeRepository.Delete(id);
-            }
-            catch (Exception exp)
-            {
-                return new ReturnResult<bool>(-1, exp.Message);
-            }
-            if (deleteResult)
-            {
-                return new ReturnResult<bool>(1, deleteResult);
-            }
-            else
-            {
-                return new ReturnResult<bool>(-2, deleteResult, "通知信息删除失败！");
-            }
-        }
-        /// <summary>
-        /// 发布（审核）通知
-        /// </summary>
-        public ReturnResult<bool> AuditNotice(Notice notice)
-        {
-            notice.noticestate = 1;//新增状态
-            return this.UpdateNotice(notice);
-        }
-        /// <summary>
-        /// 获取通知列表
-        /// </summary>
-        /// <param name="filter">查询关键字</param>
-        /// <param name="pageIndex">页数</param>
-        /// <param name="pageSize">每页条数</param>
-        /// <returns></returns>
-        public ReturnResult<IPagedData<Notice>> GetNotices(string filter = "",
-            int pageIndex = 1, int pageSize = 30)
-        {
-            Expression<Func<Notice, bool>> expression = x =>
-                filter == "" || (filter != "" && x.content.Contains(filter));
-            SortInfo<Notice> sort = new SortInfo<Notice>(p => p.publishtime, SortOrder.Descending);
-            var res = _NoticeRepository.Find().Where(p => filter == "" || (filter != "" && 
-                (p.content.Contains(filter) || p.title.Contains(filter))))
-                .OrderByDescending(q => q.publishtime).ToPage(pageIndex, pageSize);
-            return new ReturnResult<IPagedData<Notice>>(1, res);
-        }
-        #endregion
+        
     }
 }

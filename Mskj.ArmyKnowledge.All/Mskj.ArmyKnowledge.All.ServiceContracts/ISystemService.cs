@@ -9,7 +9,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
 {
     public interface ISystemService : IServiceContract
     {
-        #region 消息信息
+        #region 版本信息
         /// <summary>
         /// 获取版本信息
         /// </summary>

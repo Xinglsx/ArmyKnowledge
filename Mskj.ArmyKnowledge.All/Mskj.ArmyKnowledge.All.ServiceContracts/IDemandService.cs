@@ -8,6 +8,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
 {
     public interface IDemandService : IBaseService<Demand>,IServiceContract
     {
+        #region 需求信息
         /// <summary>
         /// 新增需求信息
         /// </summary>
@@ -59,5 +60,6 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <returns></returns>
         ReturnResult<IPagedData<Demand>> GetDemands(string category = "全部",
             int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0);
+        #endregion
     }
 }

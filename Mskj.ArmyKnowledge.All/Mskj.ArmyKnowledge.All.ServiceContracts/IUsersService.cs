@@ -49,6 +49,10 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// </summary>
         ReturnResult<bool> UpdateCert(Cert cert);
         /// <summary>
+        /// 删除用户认证信息
+        /// </summary>
+        ReturnResult<bool> DeleteCert(string certid);
+        /// <summary>
         /// 审核用户认证信息
         /// </summary>
         ReturnResult<bool> AuditCert(Cert cert);
@@ -72,7 +76,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <summary>
         /// 获取已有专业分类
         /// </summary>
-        ReturnResult<List<string>> GetProductCategory();
+        ReturnResult<List<string>> GetProfessionCategory();
         /// <summary>
         /// 分页获取专家用户列表
         /// </summary>
@@ -82,7 +86,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<Users>> GetUserss(int type = 2,
+        ReturnResult<IPagedData<Users>> GetUsers(int type = 2,
             int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0);
         #endregion
 

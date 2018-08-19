@@ -8,6 +8,7 @@ using Top.Api.Response;
 using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using System.Collections.Generic;
+using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.Controllers
 {
@@ -63,10 +64,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         /// <param name="id">用户ID</param>
         [Route("DeleteUser")]
-        [HttpPost]
-        public object DeleteUser(string id)
+        [HttpDelete]
+        public object DeleteUser(PostId user)
         {
-            return _UsersService.DeleteUser(id);
+            return _UsersService.DeleteUser(user.Id);
         }
 
         /// <summary>
@@ -100,6 +101,15 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             return _UsersService.UpdateCert(cert);
         }
         /// <summary>
+        /// 删除用户认证信息
+        /// </summary>
+        [Route("DeleteCert")]
+        [HttpDelete]
+        public object DeleteCert(PostId cert)
+        {
+            return _UsersService.DeleteCert(cert.Id);
+        }
+        /// <summary>
         /// 审核用户认证信息
         /// </summary>
         [Route("AuditCert")]
@@ -130,15 +140,101 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// 通过用户ID获取其认证信息
         /// </summary>
         [Route("GetCert")]
-        [HttpPost]
+        [HttpGet]
         public object GetCert(string userid)
         {
             return _UsersService.GetCert(userid);
         }
         #endregion
 
-        #region 用户粉丝信息处理
+        #region 专家用户信息
+        /// <summary>
+        /// 获取已有专业分类
+        /// </summary>
+        [Route("GetProfessionCategory")]
+        [HttpGet]
+        public object GetProfessionCategory()
+        {
+            return _UsersService.GetProfessionCategory();
+        }
+        /// <summary>
+        /// 分页获取专家用户列表
+        /// </summary>
+        /// <param name="type">用户类型 100-获取全部</param>
+        /// <param name="state">状态</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <param name="sortType">排序方式</param>
+        /// <returns></returns>
+        [Route("GetUsers")]
+        [HttpGet]
+        public object GetUsers(int type = 2,
+            int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0)
+        {
+            return _UsersService.GetUsers();
+        }
+        #endregion
 
+        #region 用户关注(粉丝)信息
+        /// <summary>
+        /// 增加粉丝信息
+        /// </summary>
+        [Route("AddFans")]
+        [HttpPost]
+        public object AddFans(Fans fans)
+        {
+            return _UsersService.AddFans(fans);
+        }
+        /// <summary>
+        /// 删除粉丝信息
+        /// </summary>
+        [Route("DeleteFans")]
+        [HttpPost]
+        public object DeleteFans(Fans fans)
+        {
+            return _UsersService.DeleteFans(fans);
+        }
+        /// <summary>
+        /// <summary>
+        /// 获取用户间粉丝关系信息
+        /// </summary>
+        /// <param name="userid1">用户1ID</param>
+        /// <param name="userid2">用户2ID</param>
+        /// <returns></returns>
+        [Route("GetFansContact")]
+        [HttpGet]
+        public object GetFansContact(string userid1, string userid2)
+        {
+            return _UsersService.GetFans(userid1, userid2);
+        }
+        /// <summary>
+        /// <summary>
+        /// 获取用户的粉丝信息
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        [Route("GetUserFans")]
+        [HttpGet]
+        public object GetUserFans(string userid,int pageIndex = 1, int pageSize = 10)
+        {
+            return _UsersService.GetFans(userid, pageIndex, pageSize);
+        }
+        /// <summary>
+        /// <summary>
+        /// 获取用户的关注信息
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        [Route("GetUserFollows")]
+        [HttpGet]
+        public object GetFollows(string userid,int pageIndex = 1, int pageSize = 10)
+        {
+            return _UsersService.GetFollows(userid, pageIndex, pageSize);
+        }
         #endregion
 
     }

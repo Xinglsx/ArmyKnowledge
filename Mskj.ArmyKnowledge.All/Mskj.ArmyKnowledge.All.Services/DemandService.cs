@@ -17,7 +17,7 @@ namespace Mskj.ArmyKnowledge.All.Services
     {
 
         #region 构造函数
-        private readonly IRepository<Demand> _DemandRepository;
+        //private readonly IRepository<Demand> _DemandRepository;
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
         /// </summary>
@@ -36,6 +36,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         {
             bool saveResult = false;
             demand.id = Guid.NewGuid().ToString();
+            demand.publishtime = DateTime.Now;
             try
             {
                 saveResult = Add(demand);
@@ -141,16 +142,12 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<List<string>> GetDemandCategory()
         {
             List<string> categorys = new List<string> { "全部" };
-            var res = _DemandRepository.Find().Select(p => p.category).Distinct().ToList();
+            var res = this.GetAll().Select(p => p.category).Distinct().ToList();
             if(res != null && res.Count > 0)
             {
                 categorys.AddRange(res);
-                return new ReturnResult<List<string>>(1, res);
             }
-            else
-            {
-                return new ReturnResult<List<string>>(1, categorys);
-            }
+            return new ReturnResult<List<string>>(1, categorys);
         }
         /// <summary>
         /// 分页获取对应用户的需求列表

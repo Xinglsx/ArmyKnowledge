@@ -1,13 +1,11 @@
 ﻿using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.All.ServiceContracts;
-using Mskj.ArmyKnowledge.All.Services;
 using Mskj.ArmyKnowledge.Common;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web;
+using Mskj.ArmyKnowledge.Common.DataObject;
+using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.Controllers
 {
@@ -38,14 +36,34 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         {
             return _SystemService.GetVersionInfo();
         }
+        /// <summary>
+        /// 文件上传
+        /// </summary>
+        [Route("UploadFile")]
+        [HttpGet]
+        public object UploadFile()
+        {
+            HttpContext context = HttpContext.Current;
+            string fileName = @"D:\abc.jpg";
+            //保存文件，此处跟普通MVC一样
+            context.Request.Files[0].SaveAs(fileName);
+            return new ReturnResult<string>(1,"文件地址","上传成功");
+        }
+        /// <summary>
+        /// 发送移动手机短信
+        /// </summary>
+        [Route("SendMobileMessage")]
+        [HttpPost]
+        public object SendMobileMessage(PostUser phone)
+        {
+            return _SystemService.SendMobileMessage(phone.PhoneNumber);
+        }
         #endregion
 
         #region 消息信息
         /// <summary>
         /// 新增消息会话
         /// </summary>
-        /// <param name="msg"></param>
-        /// <returns></returns>
         [Route("AddMsg")]
         [HttpPost]
         public object AddMsg(Msg msg)

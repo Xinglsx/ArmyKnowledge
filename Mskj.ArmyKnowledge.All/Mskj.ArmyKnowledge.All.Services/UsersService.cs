@@ -10,6 +10,9 @@ using System.Linq.Expressions;
 using System.Data.SqlClient;
 using Mskj.ArmyKnowledge.Core;
 using Mskj.ArmyKnowledge.All.Domains;
+using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
+using QuickShare.LiteFramework.Foundation;
+using QuickShare.LiteFramework;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -54,6 +57,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             else
             {
+                existUser.pwd = "";
                 return new ReturnResult<Users>(1, existUser);
             }
         }
@@ -61,8 +65,24 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// 新增用户
         /// </summary>
         /// <param name="user">用户信息</param>
-        public ReturnResult<Users> AddUser(Users user)
+        public ReturnResult<Users> AddUser(PostUser addUser)
         {
+            if(addUser == null)
+            {
+                return new ReturnResult<Users>(-2, "参数传入错误！");
+            }
+            //识别验证码
+            //发送成功之后，将发送成功的code和手机号保存在缓存中
+            ICache cache = AppInstance.Current.Resolve<ICache>();
+            string tempCode = cache.GetObject("mobilecode-" + addUser.PhoneNumber).ToString();
+            if(!tempCode.Equals(addUser.VerificationCode))
+            {
+                return new ReturnResult<Users>(-2, "验证码错误！");
+            }
+
+            Users user = new Users();
+            user.phonenumber = addUser.PhoneNumber;
+            user.pwd = addUser.Pwd;
             bool saveResult = false;
             user.id = Guid.NewGuid().ToString();
             user.loginname = user.phonenumber;
@@ -84,6 +104,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             if (saveResult)
             {
+                user.pwd = "";
                 return new ReturnResult<Users>(1, user);
             }
             else

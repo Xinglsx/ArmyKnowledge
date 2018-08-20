@@ -79,9 +79,6 @@
     <Content Include="App_Data\ArmyKnowledge_0000\0000_CreateTables.sql" />
     <Content Include="Global.asax" />
     <Content Include="Index.html" />
-    <Content Include="Web.config">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Global.asax.cs">
@@ -93,12 +90,6 @@
     <Content Include="NLog.config" />
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Properties\PublishProfiles\Shareping.pubxml" />
-    <None Include="Web.Debug.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework.Log4net\QuickShare.LiteFramework.Log4net.csproj">

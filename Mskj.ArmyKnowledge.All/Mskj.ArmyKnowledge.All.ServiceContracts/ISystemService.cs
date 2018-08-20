@@ -16,5 +16,12 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         ReturnResult<VersionInfo> GetVersionInfo();
         #endregion
 
+        #region 阿里云发送消息
+        /// <summary>
+        /// 阿里云往指定手机号发送验证码
+        /// </summary>
+        /// <param name="phoneNumber">手机号</param>
+        ReturnResult<bool> SendMobileMessage(string phoneNumber);
+        #endregion
     }
 }

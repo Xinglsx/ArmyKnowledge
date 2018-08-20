@@ -43,7 +43,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <param name="user">用户信息</param>
         [Route("Register")]
         [HttpPost]
-        public object AddUser(Users user)
+        public object AddUser(PostUser user)
         {
             return _UsersService.AddUser(user);
         }

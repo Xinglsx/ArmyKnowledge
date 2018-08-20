@@ -1,4 +1,5 @@
 ﻿using Mskj.ArmyKnowledge.All.Domains;
+using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using QuickShare.LiteFramework.Base;
 using QuickShare.LiteFramework.Common;
@@ -18,7 +19,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// 新增用户
         /// </summary>
         /// <param name="user">用户信息</param>
-        ReturnResult<Users> AddUser(Users user);
+        ReturnResult<Users> AddUser(PostUser addUser);
         /// <summary>
         /// 更新用户信息
         /// </summary>

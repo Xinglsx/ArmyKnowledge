@@ -121,15 +121,13 @@ namespace Mskj.ArmyKnowledge.All.Services
                 p.id != user.id);
             if (existUser != null)
             {
-                //获取验证码的时候应该就要校验了，这个地方只是确保一下。
                 return new ReturnResult<bool>(-2, false, "手机号已被使用，请更换！");
             }
             existUser = this.GetOne(p => p.loginname == user.loginname &&
                 p.id != user.id);
             if (existUser != null)
             {
-                //获取验证码的时候应该就要校验了，这个地方只是确保一下。
-                return new ReturnResult<bool>(-2, false, "用户名已被使用，请更换！");
+                return new ReturnResult<bool>(-2, false, "登录名已被使用，请更换！");
             }
             bool updateResult = false;
             try

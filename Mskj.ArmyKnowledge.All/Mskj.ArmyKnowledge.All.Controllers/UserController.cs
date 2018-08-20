@@ -69,7 +69,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("ChangePassword")]
         [HttpPost]
-        public object ChangePassword(ChangeUserApiModel pwd)
+        public object ChangePassword(PostUser pwd)
         {
             return _UsersService.ChangePassword(pwd.id, pwd.oldPwd, pwd.newPwd);
         }
@@ -231,11 +231,5 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         }
         #endregion
 
-    }
-    public class ChangeUserApiModel
-    {
-        public string id { get; set; }
-        public string oldPwd { get; set; }
-        public string newPwd { get; set; }
     }
 }

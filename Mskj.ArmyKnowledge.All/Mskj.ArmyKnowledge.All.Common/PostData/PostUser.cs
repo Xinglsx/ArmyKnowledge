@@ -13,11 +13,15 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
     /// </summary>
     public class PostUser
     {
+        #region 获取验证码及注册时使用
         /// <summary>
         /// 手机号码
         /// </summary>
         [JsonProperty("phonenumber")]
         public string PhoneNumber { get; set; }
+        #endregion
+
+        #region 注册时使用
         /// <summary>
         /// 密码
         /// </summary>
@@ -28,5 +32,24 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
         /// </summary>
         [JsonProperty("verificationcode")]
         public string VerificationCode { get; set; }
+        #endregion
+
+        #region 修改密码时用
+        /// <summary>
+        /// 用户ID
+        /// </summary>
+        [JsonProperty("id")]
+        public string id { get; set; }
+        /// <summary>
+        /// 旧密码
+        /// </summary>
+        [JsonProperty("oldpwd")]
+        public string oldPwd { get; set; }
+        /// <summary>
+        /// 新密码
+        /// </summary>
+        [JsonProperty("newpwd")]
+        public string newPwd { get; set; }
+        #endregion
     }
 }

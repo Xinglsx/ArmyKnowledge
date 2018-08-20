@@ -8,11 +8,10 @@ using QuickShare.LiteFramework.Common;
 using QuickShare.LiteFramework.Common.Extenstions;
 using System.Linq.Expressions;
 using System.Data.SqlClient;
-using Mskj.ArmyKnowledge.Core;
 using Mskj.ArmyKnowledge.All.Domains;
-using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
 using QuickShare.LiteFramework.Foundation;
 using QuickShare.LiteFramework;
+using Mskj.ArmyKnowledge.All.Common.PostData;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -213,6 +212,20 @@ namespace Mskj.ArmyKnowledge.All.Services
                     return new ReturnResult<bool>(-2, updateResult, "用户密码更新失败！");
                 }
             }
+        }
+        /// <summary>
+        /// 手机号是否被使用
+        /// </summary>
+        /// <param name="mobileNumber"></param>
+        /// <returns>true 已经被使用 false</returns>
+        public bool IsMobileNumberCanUse(string mobileNumber)
+        {
+            var user = this.GetOne(p => p.phonenumber == mobileNumber);
+            if(user != null && !string.IsNullOrEmpty(user.id))
+            {
+                return false;
+            }
+            return true;
         }
         #endregion
 

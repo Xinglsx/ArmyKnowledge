@@ -5,7 +5,8 @@ using System.Collections.Generic;
 using System.Web.Http;
 using System.Web;
 using Mskj.ArmyKnowledge.Common.DataObject;
-using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
+using Mskj.ArmyKnowledge.All.Common.PostData;
+using Mskj.ArmyKnowledge.All.Common.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.Controllers
 {
@@ -16,13 +17,15 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         private readonly ISystemService _SystemService;
         private readonly IMsgService _MsgService;
         private readonly INoticeService _NoticeService;
+        private readonly IUsersService _UsersService;
 
         public SystemController(ISystemService systemService, IMsgService msgService,
-            INoticeService noticeService)
+            INoticeService noticeService, IUsersService usersService)
         {
             _SystemService = systemService;
             _MsgService = msgService;
             _NoticeService = noticeService;
+            _UsersService = usersService;
         }
         #endregion
 
@@ -56,6 +59,11 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object SendMobileMessage(PostUser phone)
         {
+            var canUse = _UsersService.IsMobileNumberCanUse(phone.PhoneNumber);
+            if (!canUse)
+            {
+                return new ReturnResult<bool> (-2,"手机号已经被使用，请更换！");
+            }
             return _SystemService.SendMobileMessage(phone.PhoneNumber);
         }
         #endregion

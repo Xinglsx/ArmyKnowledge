@@ -1,14 +1,8 @@
 ﻿using Mskj.ArmyKnowledge.Common;
 using Mskj.ArmyKnowledge.All.ServiceContracts;
-using System;
 using System.Web.Http;
-using Top.Api;
-using Top.Api.Request;
-using Top.Api.Response;
 using Mskj.ArmyKnowledge.All.Domains;
-using Mskj.ArmyKnowledge.Common.DataObject;
-using System.Collections.Generic;
-using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
+using Mskj.ArmyKnowledge.All.Common.PostData;
 
 namespace Mskj.ArmyKnowledge.All.Controllers
 {
@@ -60,11 +54,11 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         }
 
         /// <summary>
-        /// 删除用户信息
+        /// 删除用户信息（暂时不提供调用）
         /// </summary>
         /// <param name="id">用户ID</param>
-        [Route("DeleteUser")]
-        [HttpDelete]
+        //[Route("DeleteUser")]
+        //[HttpDelete]
         public object DeleteUser(PostId user)
         {
             return _UsersService.DeleteUser(user.Id);

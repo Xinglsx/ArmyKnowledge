@@ -249,16 +249,18 @@ begin
 	   proname              varchar(64)                    null,		--产品名称
 	   price                varchar(32)                    null,		--价格
 	   introduction         varchar(2000)                  null,		--简介
-	   protype              varchar(32)                    null,		--
-	   publishtime          datetime                       null,		--
-	   compositescore       decimal                        null,		--
-	   materialcode         varchar(32)                    null,		--
-	   productiondate       varchar(10)                    null,		--
-	   prodetail			varchar(2000)				   null,		--
-	   category             varchar(64)                    null,		--
-	   contacts             varchar(32)                    null,		--
-	   contactphone         varchar(11)                    null,		--
-	   prostate             int                            null,		--
+	   images               varchar(4000)                  null,		--产品图片
+	   isrecommend          bit                            null,		--是否推荐
+	   homeimage            varchar(512)                   null,		--首页图片
+	   publishtime          datetime                       null,		--发布时间
+	   compositescore       decimal                        null,		--综合得分
+	   materialcode         varchar(32)                    null,		--物资编码
+	   productiondate       varchar(10)                    null,		--生产日期
+	   prodetail			varchar(2000)				   null,		--产品明细信息
+	   category             varchar(64)                    null,		--产品分类
+	   contacts             varchar(32)                    null,		--联系人
+	   contactphone         varchar(11)                    null,		--联系电话
+	   prostate             int                            null,		--产品状态 0-新建 1-提交审核 2-审核通过
 	   proscores			int							   null			--综合得分
 	   constraint PK_PRODUCT primary key clustered (id)
 	);

@@ -204,11 +204,11 @@ namespace Mskj.ArmyKnowledge.All.Services
             switch (sortType)
             {
                 case 0:
-                    sort = new SortInfo<Product>(p => p.proscores,
+                    sort = new SortInfo<Product>(p => new { p.proscores },
                         SortOrder.Descending);
                     break;
                 case 1:
-                    sort = new SortInfo<Product>(p => p.publishtime,
+                    sort = new SortInfo<Product>(p => new { p.publishtime },
                         SortOrder.Descending);
                     break;
                 case 2:
@@ -222,7 +222,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             sorts.Add(sort);
             //所有排序之后，再按时间降序
-            sorts.Add(new SortInfo<Product>(p => p.publishtime, SortOrder.Descending));
+            sorts.Add(new SortInfo<Product>(p => new { p.publishtime }, SortOrder.Descending));
             return new ReturnResult<IPagedData<Product>>(1,
                     GetPage(pageIndex, pageSize, sorts, expression));
         }

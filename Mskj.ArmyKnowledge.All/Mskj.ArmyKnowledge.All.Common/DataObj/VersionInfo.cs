@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mskj.ArmyKnowledge.All.ServiceContracts.DataObj
+namespace Mskj.ArmyKnowledge.All.Common.DataObj
 {
     public class VersionInfo
     {

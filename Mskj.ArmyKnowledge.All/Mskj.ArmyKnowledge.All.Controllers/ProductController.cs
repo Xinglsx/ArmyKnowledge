@@ -1,4 +1,5 @@
-﻿using Mskj.ArmyKnowledge.All.Domains;
+﻿using Mskj.ArmyKnowledge.All.Common.PostData;
+using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.All.ServiceContracts;
 using Mskj.ArmyKnowledge.Common;
 using System.Web.Http;
@@ -23,9 +24,9 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("AddProduct")]
         [HttpPost]
-        public object AddProduct(Product product)
+        public object AddProduct(PostProduct product)
         {
-            return _ProductService.AddProduct(product);
+            return _ProductService.AddProduct(product.ToModel());
         }
         /// <summary>
         /// 更新产品信息

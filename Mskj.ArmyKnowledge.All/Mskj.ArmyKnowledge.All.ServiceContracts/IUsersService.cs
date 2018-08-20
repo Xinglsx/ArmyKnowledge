@@ -1,5 +1,5 @@
-﻿using Mskj.ArmyKnowledge.All.Domains;
-using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
+﻿using Mskj.ArmyKnowledge.All.Common.PostData;
+using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using QuickShare.LiteFramework.Base;
 using QuickShare.LiteFramework.Common;
@@ -38,6 +38,12 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="newPwd">新密码</param>
         /// <returns></returns>
         ReturnResult<bool> ChangePassword(string id, string oldPwd, string newPwd);
+        /// <summary>
+        /// 手机号是否被使用
+        /// </summary>
+        /// <param name="mobileNumber">手机号</param>
+        /// <returns></returns>
+        bool IsMobileNumberCanUse(string mobileNumber);
         #endregion
 
         #region 用户认证信息

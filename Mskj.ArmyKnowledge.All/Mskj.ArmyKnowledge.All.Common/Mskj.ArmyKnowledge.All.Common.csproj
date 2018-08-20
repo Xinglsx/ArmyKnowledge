@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -44,6 +48,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataObj\QuestionModel.cs" />
+    <Compile Include="DataObj\VersionInfo.cs" />
+    <Compile Include="PostData\PostDemand.cs" />
+    <Compile Include="PostData\PostId.cs" />
+    <Compile Include="PostData\PostProduct.cs" />
+    <Compile Include="PostData\PostQuestion.cs" />
+    <Compile Include="PostData\PostUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -55,9 +66,9 @@
       <Project>{56f059b9-0aa7-4f5b-aa7f-69512cdb70b5}</Project>
       <Name>QuickShare.LiteFramework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Mskj.ArmyKnowledge.All.ServiceContracts\Mskj.ArmyKnowledge.All.ServiceContracts.csproj">
-      <Project>{3cee5e99-2192-43bd-801e-0111ee195de8}</Project>
-      <Name>Mskj.ArmyKnowledge.All.ServiceContracts</Name>
+    <ProjectReference Include="..\Mskj.ArmyKnowledge.All.Domains\Mskj.ArmyKnowledge.All.Domains.csproj">
+      <Project>{8f34319b-c79f-4304-a092-7d6b87ae2ea2}</Project>
+      <Name>Mskj.ArmyKnowledge.All.Domains</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

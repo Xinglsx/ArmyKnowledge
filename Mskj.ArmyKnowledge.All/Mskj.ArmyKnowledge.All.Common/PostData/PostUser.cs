@@ -1,20 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using Mskj.ArmyKnowledge.All.Domains;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Mskj.ArmyKnowledge.All.ServiceContracts.DataObj
+namespace Mskj.ArmyKnowledge.All.Common.PostData
 {
-    public class PostId
-    {
-        /// <summary>
-        /// ID
-        /// </summary>
-        [JsonProperty("id")]
-        public string Id { get; set; }
-    }
+    /// <summary>
+    /// 用户信息
+    /// </summary>
     public class PostUser
     {
         /// <summary>

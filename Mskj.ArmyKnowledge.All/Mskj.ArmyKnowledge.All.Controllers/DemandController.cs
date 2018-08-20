@@ -1,6 +1,6 @@
-﻿using Mskj.ArmyKnowledge.All.Domains;
+﻿using Mskj.ArmyKnowledge.All.Common.PostData;
+using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.All.ServiceContracts;
-using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
 using Mskj.ArmyKnowledge.Common;
 using System.Web.Http;
 
@@ -24,9 +24,9 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("AddDemand")]
         [HttpPost]
-        public object AddDemand(Demand demand)
+        public object AddDemand(PostDemand demand)
         {
-            return _DemandService.AddDemand(demand);
+            return _DemandService.AddDemand(demand.ToModel());
         }
         /// <summary>
         /// 更新需求信息

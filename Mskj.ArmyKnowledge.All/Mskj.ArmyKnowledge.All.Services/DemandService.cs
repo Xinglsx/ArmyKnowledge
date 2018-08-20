@@ -204,18 +204,18 @@ namespace Mskj.ArmyKnowledge.All.Services
             switch (sortType)
             {
                 case 0:
-                    sort = new SortInfo<Demand>(p => p.demandscores,
+                    sort = new SortInfo<Demand>(p => new { p.demandscores },
                         SortOrder.Descending);
                     break;
                 case 1:
                 default:
-                    sort = new SortInfo<Demand>(p => p.publishtime,
+                    sort = new SortInfo<Demand>(p => new { p.publishtime },
                         SortOrder.Descending);
                     break;
             }
             sorts.Add(sort);
             //所有排序之后，再按时间降序
-            sorts.Add(new SortInfo<Demand>(p => p.publishtime,SortOrder.Descending));
+            sorts.Add(new SortInfo<Demand>(p => new { p.publishtime },SortOrder.Descending));
             return new ReturnResult<IPagedData<Demand>>(1,
                     GetPage(pageIndex, pageSize, sorts, expression));
         }

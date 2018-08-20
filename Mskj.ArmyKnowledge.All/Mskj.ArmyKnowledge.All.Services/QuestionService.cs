@@ -3,7 +3,6 @@ using QuickShare.LiteFramework.Base;
 using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using System;
-using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
 using QuickShare.LiteFramework.Common;
 using System.Data.SqlClient;
 using System.Linq.Expressions;
@@ -12,6 +11,7 @@ using QuickShare.LiteFramework.Common.Extenstions;
 using System.Collections.Generic;
 using QuickShare.LiteFramework.Mapper;
 using System.Threading.Tasks;
+using Mskj.ArmyKnowledge.All.Common.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -206,25 +206,25 @@ namespace Mskj.ArmyKnowledge.All.Services
             switch (sortType)
             {
                 case 0:
-                    sort = new SortInfo<QuestionModel>(p => p.Publishtime,
+                    sort = new SortInfo<QuestionModel>(p => new { p.Publishtime },
                         SortOrder.Descending);
                     break;
                 case 1:
-                    sort = new SortInfo<QuestionModel>(p => p.HeatCount,
+                    sort = new SortInfo<QuestionModel>(p => new { p.HeatCount },
                         SortOrder.Descending);
                     break;
                 case 2:
-                    sort = new SortInfo<QuestionModel>(p => p.CommentCount,
+                    sort = new SortInfo<QuestionModel>(p => new { p.CommentCount },
                         SortOrder.Descending);
                     break;
                 case 3:
                 default:
-                    sort = new SortInfo<QuestionModel>(p => p.Publishtime,
+                    sort = new SortInfo<QuestionModel>(p => new { p.Publishtime },
                         SortOrder.Descending);
                     break;
             }
             sorts.Add(sort);
-            sorts.Add(new SortInfo<QuestionModel>(p => p.Publishtime, SortOrder.Descending));
+            sorts.Add(new SortInfo<QuestionModel>(p => new { p.Publishtime }, SortOrder.Descending));
             return new ReturnResult<IPagedData<QuestionModel>>(1,
                     GetPage(pageIndex, pageSize, sorts, expression));
         }

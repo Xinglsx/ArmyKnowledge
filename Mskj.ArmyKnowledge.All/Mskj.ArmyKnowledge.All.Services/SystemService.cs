@@ -2,7 +2,6 @@
 using Mskj.ArmyKnowledge.Common.DataObject;
 using System;
 using System.Configuration;
-using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
 using System.IO;
 using Aliyun.Acs.Core.Profile;
 using Aliyun.Acs.Core;
@@ -10,6 +9,7 @@ using Aliyun.Acs.Dysmsapi.Model.V20170525;
 using Aliyun.Acs.Core.Exceptions;
 using QuickShare.LiteFramework.Foundation;
 using QuickShare.LiteFramework;
+using Mskj.ArmyKnowledge.All.Common.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -118,6 +118,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             String accessKeyId = ConfigurationManager.AppSettings["AliyunAccessKeyId"];//"LTAIWm8fNYkE3W5b";//你的accessKeyId
             String accessKeySecret = ConfigurationManager.AppSettings["AliyunAccessKeySecret"];// "WG5MsiwrKqnrIlTJtlWeJM3GolcAnU";//你的accessKeySecret
 
+            //accessKeyId = "LTAIoae9O4UxOJIG";
+            //accessKeySecret = "qtFsyoEWYpobLbSoC8TzWiyjvp6vhK";
             IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", accessKeyId, accessKeySecret);
             //IAcsClient client = new DefaultAcsClient(profile);
             // SingleSendSmsRequest request = new SingleSendSmsRequest();
@@ -146,7 +148,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                 request.OutId = "21212121211";
                 //请求失败这里会抛ClientException异常
                 SendSmsResponse sendSmsResponse = acsClient.GetAcsResponse(request);
-                //LogUtil.WebLog(sendSmsResponse.Message);
+                //Test
+                //sendSmsResponse.Code = "OK";
                 if ("OK".Equals(sendSmsResponse.Code))
                 {
                     //发送成功之后，将发送成功的code和手机号保存在缓存中

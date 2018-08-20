@@ -3,7 +3,8 @@ using Mskj.ArmyKnowledge.Common.DataObject;
 using Mskj.ArmyKnowledge.All.ServiceContracts;
 using System.Web.Http;
 using Mskj.ArmyKnowledge.All.Domains;
-using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
+using Mskj.ArmyKnowledge.All.Common.PostData;
+using Mskj.ArmyKnowledge.All.Common.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.Controllers
 {
@@ -28,9 +29,9 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <returns></returns>
         [Route("AddQuestion")]
         [HttpPost]
-        public object AddQuestion(QuestionModel question)
+        public object AddQuestion(PostQuestion question)
         {
-            return _QuestionService.AddQuestion(question);
+            return _QuestionService.AddQuestion(question.ToModel());
         }
         /// <summary>
         /// 更新问题

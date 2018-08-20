@@ -1,8 +1,8 @@
 ﻿using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using QuickShare.LiteFramework.Base;
-using Mskj.ArmyKnowledge.All.ServiceContracts.DataObj;
 using QuickShare.LiteFramework.Common;
+using Mskj.ArmyKnowledge.All.Common.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.ServiceContracts
 {

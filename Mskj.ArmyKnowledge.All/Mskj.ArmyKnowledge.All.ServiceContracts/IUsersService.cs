@@ -1,4 +1,5 @@
-﻿using Mskj.ArmyKnowledge.All.Common.PostData;
+﻿using Mskj.ArmyKnowledge.All.Common.DataObj;
+using Mskj.ArmyKnowledge.All.Common.PostData;
 using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using QuickShare.LiteFramework.Base;
@@ -120,7 +121,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<Fans>> GetFans(string userid,
+        ReturnResult<IPagedData<UserFansModel>> GetFans(string userid,
             int pageIndex = 1, int pageSize = 10);
         /// <summary>
         /// 获取用户的关注信息
@@ -129,7 +130,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<Fans>> GetFollows(string userid,
+        ReturnResult<IPagedData<UserFansModel>> GetFollows(string userid,
             int pageIndex = 1, int pageSize = 10);
         #endregion
     }

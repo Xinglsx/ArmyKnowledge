@@ -12,6 +12,7 @@ using Mskj.ArmyKnowledge.All.Domains;
 using QuickShare.LiteFramework.Foundation;
 using QuickShare.LiteFramework;
 using Mskj.ArmyKnowledge.All.Common.PostData;
+using Mskj.ArmyKnowledge.All.Common.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -707,15 +708,55 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Fans>> GetFans(string userid,
+        public ReturnResult<IPagedData<UserFansModel>> GetFans(string userid,
             int pageIndex = 1, int pageSize = 10)
         {
-            var res = _FansRepository.Find()
-                .Where(p =>
-                (p.userid1 == userid && (p.fansstate == 0 || p.fansstate == 1)) ||
-                (p.userid2 == userid && (p.fansstate == 0 || p.fansstate == 2)))
-                .OrderByDescending(p => p.updatetime).ToPage(pageIndex,pageSize);
-            return new ReturnResult<IPagedData<Fans>>(1, res);
+            //var res = _FansRepository.Find()
+            //    .Where(p =>
+            //    (p.userid1 == userid && (p.fansstate == 0 || p.fansstate == 1)) ||
+            //    (p.userid2 == userid && (p.fansstate == 0 || p.fansstate == 2)))
+            //    .OrderByDescending(p => p.updatetime).ToPage(pageIndex,pageSize);
+
+            var res = (from fans in _FansRepository.Find()
+                        join user1 in _UsersRepository.Find() on fans.userid1 equals user1.id
+                        join user in _UsersRepository.Find() on fans.userid2 equals user.id
+                        where fans.userid1 == userid && (fans.fansstate == 0 || fans.fansstate == 1)
+                        select new UserFansModel{
+                            Id = user.id,
+                            Nickname =user.nickname,
+                            Avatar = user.avatar,
+                            AnswerCount = user.answercount,
+                            FansCount = user.fanscount,
+                            FollowCount = user.followcount,
+                            AdoptedCount = user.adoptedcount,
+                            CompositeScores = user.compositescores,
+                            IsCertification = user.iscertification,
+                            Signatures = user.signatures,
+                            Usertype = user.usertype,
+                            FansUpdateTime = fans.updatetime,
+                        })
+                        .Concat
+                        (from fans in _FansRepository.Find()
+                         join user1 in _UsersRepository.Find() on fans.userid1 equals user1.id
+                         join user in _UsersRepository.Find() on fans.userid2 equals user.id
+                         where fans.userid2 == userid && (fans.fansstate == 0 || fans.fansstate == 2)
+                         select new UserFansModel
+                         {
+                             Id = user.id,
+                             Nickname = user.nickname,
+                             Avatar = user.avatar,
+                             AnswerCount = user.answercount,
+                             FansCount = user.fanscount,
+                             FollowCount = user.followcount,
+                             AdoptedCount = user.adoptedcount,
+                             CompositeScores = user.compositescores,
+                             IsCertification = user.iscertification,
+                             Signatures = user.signatures,
+                             Usertype = user.usertype,
+                             FansUpdateTime = fans.updatetime,
+                         }).OrderByDescending(p => new { p.FansUpdateTime }).ToPage(pageIndex, pageSize);
+
+            return new ReturnResult<IPagedData<UserFansModel>>(1, res);
         }
         /// <summary>
         /// 获取用户的关注信息
@@ -724,15 +765,54 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Fans>> GetFollows(string userid,
+        public ReturnResult<IPagedData<UserFansModel>> GetFollows(string userid,
             int pageIndex = 1, int pageSize = 10)
         {
-            var res = _FansRepository.Find()
-                .Where(p =>
-                (p.userid1 == userid && (p.fansstate == 0 || p.fansstate == 2)) ||
-                (p.userid2 == userid && (p.fansstate == 0 || p.fansstate == 1)))
-                .OrderByDescending(p => p.updatetime).ToPage(pageIndex, pageSize);
-            return new ReturnResult<IPagedData<Fans>>(1, res);
+            //var res = _FansRepository.Find()
+            //    .Where(p =>
+            //    (p.userid1 == userid && (p.fansstate == 0 || p.fansstate == 2)) ||
+            //    (p.userid2 == userid && (p.fansstate == 0 || p.fansstate == 1)))
+            //    .OrderByDescending(p => p.updatetime).ToPage(pageIndex, pageSize);
+
+            var res = (from fans in _FansRepository.Find()
+                       join user in _UsersRepository.Find() on fans.userid1 equals user.id
+                       where fans.userid1 == userid && (fans.fansstate == 0 || fans.fansstate == 2)
+                       select new UserFansModel
+                       {
+                           Id = user.id,
+                           Nickname = user.nickname,
+                           Avatar = user.avatar,
+                           AnswerCount = user.answercount,
+                           FansCount = user.fanscount,
+                           FollowCount = user.followcount,
+                           AdoptedCount = user.adoptedcount,
+                           CompositeScores = user.compositescores,
+                           IsCertification = user.iscertification,
+                           Signatures = user.signatures,
+                           Usertype = user.usertype,
+                           FansUpdateTime = fans.updatetime,
+                       })
+                        .Concat
+                        (from fans in _FansRepository.Find()
+                         join user in _UsersRepository.Find() on fans.userid1 equals user.id
+                         where fans.userid2 == userid && (fans.fansstate == 0 || fans.fansstate == 1)
+                         select new UserFansModel
+                         {
+                             Id = user.id,
+                             Nickname = user.nickname,
+                             Avatar = user.avatar,
+                             AnswerCount = user.answercount,
+                             FansCount = user.fanscount,
+                             FollowCount = user.followcount,
+                             AdoptedCount = user.adoptedcount,
+                             CompositeScores = user.compositescores,
+                             IsCertification = user.iscertification,
+                             Signatures = user.signatures,
+                             Usertype = user.usertype,
+                             FansUpdateTime = fans.updatetime,
+                         }).OrderByDescending(p => new { p.FansUpdateTime }).ToPage(pageIndex, pageSize);
+
+            return new ReturnResult<IPagedData<UserFansModel>>(1, res);
         }
         #endregion
     }

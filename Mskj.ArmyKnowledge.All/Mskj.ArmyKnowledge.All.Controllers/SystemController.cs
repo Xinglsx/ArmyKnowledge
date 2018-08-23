@@ -34,7 +34,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// 获取版本信息
         /// </summary>
         [Route("GetVersionInfo")]
-        [HttpGet]
+        [HttpPost]
         public object GetVersionInfo()
         {
             return _SystemService.GetVersionInfo();
@@ -52,19 +52,53 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             context.Request.Files[0].SaveAs(fileName);
             return new ReturnResult<string>(1,"文件地址","上传成功");
         }
+        #endregion
+
+        #region 阿里云消息
         /// <summary>
-        /// 发送移动手机短信
+        /// 新增用户时，发送手机短信
         /// </summary>
         [Route("SendMobileMessage")]
         [HttpPost]
-        public object SendMobileMessage(PostUser phone)
+        public object AddUserSendMessage(PostUser phone)
         {
-            var canUse = _UsersService.IsMobileNumberCanUse(phone.PhoneNumber);
-            if (!canUse)
+            var isExist = _UsersService.ExistsUserByPhoneNumber(phone.PhoneNumber);
+            if (isExist)
             {
-                return new ReturnResult<bool> (-2,"手机号已经被使用，请更换！");
+                return new ReturnResult<bool>(-2, "手机号已经被使用，请更换！");
             }
             return _SystemService.SendMobileMessage(phone.PhoneNumber);
+        }
+        /// <summary>
+        /// 修改密码时，发送手机短信
+        /// </summary>
+        [Route("ChangePwdSendMessage")]
+        [HttpPost]
+        public object ChangePwdSendMessage(PostUser phone)
+        {
+            if (phone == null)
+            {
+                return new ReturnResult<bool>(-2, "参数传入错误");
+            }
+            var isExist = _UsersService.ExistsUserByPhoneNumber(phone.PhoneNumber);
+            if (!isExist)
+            {
+                return new ReturnResult<bool>(-2, "手机号未注册！");
+            }
+            return _SystemService.SendMobileMessage(phone.PhoneNumber);
+        }
+        /// <summary>
+        /// 验证手机号
+        /// </summary>
+        [Route("ValidationCode")]
+        [HttpPost]
+        public object ValidationCode(PostUser phoneCode)
+        {
+            if (phoneCode == null)
+            {
+                return new ReturnResult<bool>(-2, "参数传入错误");
+            }
+            return _SystemService.ValidationCode(phoneCode.PhoneNumber, phoneCode.VerificationCode);
         }
         #endregion
 

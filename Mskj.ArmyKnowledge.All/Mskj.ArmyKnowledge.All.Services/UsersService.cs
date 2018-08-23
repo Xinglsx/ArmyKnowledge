@@ -23,6 +23,10 @@ namespace Mskj.ArmyKnowledge.All.Services
         private readonly IRepository<Cert> _CertRepository;
         private readonly IRepository<Fans> _FansRepository;
         private readonly IRepository<Follower> _FollowerRepository;//暂时先不用，只用Fans表
+        ILogger logger;
+        ICache cache;
+
+
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
         /// </summary>
@@ -32,9 +36,12 @@ namespace Mskj.ArmyKnowledge.All.Services
             : base(usersRepository)
         {
             _UsersRepository = usersRepository;
-            this._CertRepository = certRepository;
+            _CertRepository = certRepository;
             _FansRepository = fansRepository;
             _FollowerRepository = followerRepository;
+
+            logger = AppInstance.Current.Resolve<ILogger>();
+            cache = AppInstance.Current.Resolve<ICache>();
         }
         #endregion
 
@@ -45,6 +52,8 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="user">登录信息，主要传loginname和加密后的pwd</param>
         public ReturnResult<Users> Login(Users user)
         {
+            logger.LogInfo("loginname:"+ user.loginname+" pwd"+user.pwd);
+            logger.LogInfo(user);
             var existUser = this.GetOne(p => p.phonenumber == user.loginname ||
                 p.loginname == user.loginname);
             if (existUser == null)
@@ -65,24 +74,22 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// 新增用户
         /// </summary>
         /// <param name="user">用户信息</param>
-        public ReturnResult<Users> AddUser(PostUser addUser)
+        public ReturnResult<Users> AddUser(string phoneNumber,
+            string pwd, string verificationCode)
         {
-            if(addUser == null)
-            {
-                return new ReturnResult<Users>(-2, "参数传入错误！");
-            }
+            logger.LogInfo(string.Format("PhoneNumber:{0} Pwd:{1} VerificationCode:{2}",
+                phoneNumber, pwd, verificationCode));
             //识别验证码
             //发送成功之后，将发送成功的code和手机号保存在缓存中
-            ICache cache = AppInstance.Current.Resolve<ICache>();
-            string tempCode = cache.GetObject("mobilecode-" + addUser.PhoneNumber).ToString();
-            if(!tempCode.Equals(addUser.VerificationCode))
+            var  tempCode = cache.GetObject("mobilecode-" + phoneNumber);
+            if(tempCode == null || !tempCode.ToString().Equals(verificationCode))
             {
                 return new ReturnResult<Users>(-2, "验证码错误！");
             }
 
             Users user = new Users();
-            user.phonenumber = addUser.PhoneNumber;
-            user.pwd = addUser.Pwd;
+            user.phonenumber = phoneNumber;
+            user.pwd = pwd;
             bool saveResult = false;
             user.id = Guid.NewGuid().ToString();
             user.loginname = user.phonenumber;
@@ -118,6 +125,8 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="user">新的用户信息</param>
         public ReturnResult<bool> UpdateUser(Users user)
         {
+            logger.LogInfo(string.Format("phonenumber:{0} id:{1}",
+                user.phonenumber, user.id));
             var existUser = this.GetOne(p => p.phonenumber == user.phonenumber &&
                 p.id != user.id);
             if (existUser != null)
@@ -133,6 +142,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             bool updateResult = false;
             try
             {
+                user.isadmin = false;//接口不可将些字段更新为true,只能后台update
                 updateResult = this.Update(user);
             }
             catch (Exception exp)
@@ -181,6 +191,8 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <returns></returns>
         public ReturnResult<bool> ChangePassword(string id, string oldPwd, string newPwd)
         {
+            logger.LogInfo(string.Format("id:{0} oldPwd:{1} newPwd:{2}",
+                id, oldPwd,newPwd));
             var user = this.GetOne(p => p.id == id);
             if (user == null)
             {
@@ -213,19 +225,59 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
         }
         /// <summary>
-        /// 手机号是否被使用
+        /// 是否存在用户
         /// </summary>
         /// <param name="mobileNumber"></param>
         /// <returns>true 已经被使用 false</returns>
-        public bool IsMobileNumberCanUse(string mobileNumber)
+        public bool ExistsUserByPhoneNumber(string mobileNumber)
         {
+            logger.LogInfo(string.Format("mobileNumber:{0}", mobileNumber));
             var user = this.GetOne(p => p.phonenumber == mobileNumber);
             if(user != null && !string.IsNullOrEmpty(user.id))
             {
-                return false;
+                return true;
             }
-            return true;
+            return false;
         }
+        /// <summary>
+        /// 通过手机号及验证码修改密码
+        /// </summary>
+        /// <param name="phoneNumber">电话号码</param>
+        /// <param name="newPwd">新密码</param>
+        /// <param name="verificationcode">验证码</param>
+        /// <returns></returns>
+        public ReturnResult<bool> ChangePasswordByPhoneNumber(string phoneNumber,
+            string newPwd,string verficationCode)
+        {
+            var tempCode = cache.GetObject("mobilecode-" + phoneNumber);
+            if (tempCode == null || !tempCode.ToString().Equals(verficationCode))
+            {
+                return new ReturnResult<bool>(-2, "验证码错误！");
+            }
+
+            var temp = GetOne(p => p.phonenumber == phoneNumber);
+            if (temp == null || string.IsNullOrEmpty(temp.id))
+            {
+                return new ReturnResult<bool>(-2, "电话号码未注册！");
+            }
+            temp.pwd = newPwd;
+            return UpdateUser(temp);
+        }
+        /// <summary>
+        /// 通过手机号获取用户信息
+        /// </summary>
+        /// <param name="phoneNumber">手机号</param>
+        /// <returns></returns>
+        public ReturnResult<Users> GetUserByPhoneNumber(string phoneNumber)
+        {
+            var temp = GetOne(p => p.phonenumber == phoneNumber);
+            if(temp == null || string.IsNullOrEmpty(temp.id))
+            {
+                return new ReturnResult<Users>(-2, "电话号码未注册！");
+            }
+            return new ReturnResult<Users>(1, temp);
+        }
+
         #endregion
 
         #region 用户认证信息

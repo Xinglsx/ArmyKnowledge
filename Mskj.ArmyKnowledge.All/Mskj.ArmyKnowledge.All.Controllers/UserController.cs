@@ -3,6 +3,7 @@ using Mskj.ArmyKnowledge.All.ServiceContracts;
 using System.Web.Http;
 using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.All.Common.PostData;
+using Mskj.ArmyKnowledge.Common.DataObject;
 
 namespace Mskj.ArmyKnowledge.All.Controllers
 {
@@ -28,6 +29,11 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object Login(Users user)
         {
+            if (user == null || string.IsNullOrEmpty(user.loginname) ||
+                string.IsNullOrEmpty(user.pwd))
+            {
+                return new ReturnResult<Users>(-2, "传入参数错误！");
+            }
             return _UsersService.Login(user);
         }
 
@@ -39,7 +45,12 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object AddUser(PostUser user)
         {
-            return _UsersService.AddUser(user);
+            if(user == null || string.IsNullOrEmpty(user.VerificationCode) || 
+                string.IsNullOrEmpty(user.Pwd) || string.IsNullOrEmpty(user.PhoneNumber))
+            {
+                return new ReturnResult<Users>(-2, "传入参数错误！");
+            }
+            return _UsersService.AddUser(user.PhoneNumber, user.Pwd, user.VerificationCode);
         }
 
         /// <summary>
@@ -61,6 +72,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         //[HttpDelete]
         public object DeleteUser(PostId user)
         {
+            if (user == null || string.IsNullOrEmpty(user.Id))
+            {
+                return new ReturnResult<bool>(-2, "传入参数错误！");
+            }
             return _UsersService.DeleteUser(user.Id);
         }
 
@@ -71,7 +86,27 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object ChangePassword(PostUser pwd)
         {
-            return _UsersService.ChangePassword(pwd.id, pwd.oldPwd, pwd.newPwd);
+            if (pwd == null || string.IsNullOrEmpty(pwd.Id) ||
+                string.IsNullOrEmpty(pwd.OldPwd) || string.IsNullOrEmpty(pwd.NewPwd))
+            {
+                return new ReturnResult<bool>(-2, "传入参数错误！");
+            }
+            return _UsersService.ChangePassword(pwd.Id, pwd.OldPwd, pwd.NewPwd);
+        }
+        /// <summary>
+        /// 通过手机验证修改用户密码
+        /// </summary>
+        [Route("ChangePasswordByPhoneNumber")]
+        [HttpPost]
+        public object ChangePasswordByPhoneNumber(PostUser newPwd)
+        {
+            if (newPwd == null || string.IsNullOrEmpty(newPwd.PhoneNumber) ||
+                string.IsNullOrEmpty(newPwd.NewPwd) || string.IsNullOrEmpty(newPwd.VerificationCode))
+            {
+                return new ReturnResult<bool>(-2, "传入参数错误！");
+            } 
+            return _UsersService.ChangePasswordByPhoneNumber(newPwd.PhoneNumber,
+                newPwd.NewPwd, newPwd.VerificationCode);
         }
         #endregion
 
@@ -83,6 +118,11 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object AddCert(Cert cert)
         {
+            if (cert == null || string.IsNullOrEmpty(cert.userid) 
+                || string.IsNullOrEmpty(cert.idcardno))
+            {
+                return new ReturnResult<Cert>(-2, "传入参数错误！");
+            }
             return _UsersService.AddCert(cert);
         }
         /// <summary>
@@ -101,6 +141,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpDelete]
         public object DeleteCert(PostId cert)
         {
+            if (cert == null || string.IsNullOrEmpty(cert.Id))
+            {
+                return new ReturnResult<bool>(-2, "传入参数错误！");
+            }
             return _UsersService.DeleteCert(cert.Id);
         }
         /// <summary>
@@ -177,6 +221,11 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object AddFans(Fans fans)
         {
+            if (fans == null || string.IsNullOrEmpty(fans.userid1) ||
+                string.IsNullOrEmpty(fans.userid2))
+            {
+                return new ReturnResult<Fans>(-2, "传入参数错误！");
+            }
             return _UsersService.AddFans(fans);
         }
         /// <summary>
@@ -186,6 +235,11 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object DeleteFans(Fans fans)
         {
+            if (fans == null || string.IsNullOrEmpty(fans.userid1) ||
+                string.IsNullOrEmpty(fans.userid2))
+            {
+                return new ReturnResult<Fans>(-2, "传入参数错误！");
+            }
             return _UsersService.DeleteFans(fans);
         }
         /// <summary>

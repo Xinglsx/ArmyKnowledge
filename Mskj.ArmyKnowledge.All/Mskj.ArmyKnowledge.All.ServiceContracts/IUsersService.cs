@@ -20,7 +20,8 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// 新增用户
         /// </summary>
         /// <param name="user">用户信息</param>
-        ReturnResult<Users> AddUser(PostUser addUser);
+        ReturnResult<Users> AddUser(string phoneNumber,
+            string pwd, string verificationCode);
         /// <summary>
         /// 更新用户信息
         /// </summary>
@@ -40,11 +41,26 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <returns></returns>
         ReturnResult<bool> ChangePassword(string id, string oldPwd, string newPwd);
         /// <summary>
-        /// 手机号是否被使用
+        /// 是否存在用户
         /// </summary>
         /// <param name="mobileNumber">手机号</param>
         /// <returns></returns>
-        bool IsMobileNumberCanUse(string mobileNumber);
+        bool ExistsUserByPhoneNumber(string mobileNumber);
+        /// <summary>
+        /// 通过手机号及验证码修改密码
+        /// </summary>
+        /// <param name="phoneNumber">电话号码</param>
+        /// <param name="newPwd">新密码</param>
+        /// <param name="verificationcode">验证码</param>
+        /// <returns></returns>
+        ReturnResult<bool> ChangePasswordByPhoneNumber(string phoneNumber,
+            string newPwd, string verficationCode);
+        /// <summary>
+        /// 通过手机号获取用户信息
+        /// </summary>
+        /// <param name="phoneNumber">手机号</param>
+        /// <returns></returns>
+        ReturnResult<Users> GetUserByPhoneNumber(string phoneNumber);
         #endregion
 
         #region 用户认证信息

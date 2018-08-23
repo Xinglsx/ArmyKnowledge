@@ -106,6 +106,11 @@ namespace Mskj.ArmyKnowledge.All.Services
         #endregion
 
         #region 阿里云发送消息
+        /// <summary>
+        /// 发送信息到指定的手机号码
+        /// </summary>
+        /// <param name="phoneNumber">指定的手机号码</param>
+        /// <returns></returns>
         public ReturnResult<bool> SendMobileMessage(string phoneNumber)
         {
             if(string.IsNullOrEmpty(phoneNumber) || phoneNumber.Length != 11)
@@ -177,6 +182,25 @@ namespace Mskj.ArmyKnowledge.All.Services
                 result.message = e.Message;
             }
             return result;
+        }
+        /// <summary>
+        /// 验证手机号及获取到的验证码
+        /// </summary>
+        /// <param name="phoneNumber">手机号</param>
+        /// <param name="code">验证码</param>
+        /// <returns></returns>
+        public ReturnResult<bool> ValidationCode(string phoneNumber,string verificationCode)
+        {
+            ICache cache = AppInstance.Current.Resolve<ICache>();
+            var tempCode = cache.GetObject("mobilecode-" + phoneNumber);
+            if (tempCode == null || !tempCode.ToString().Equals(verificationCode))
+            {
+                return new ReturnResult<bool>(-2, "验证码错误！");
+            }
+            else
+            {
+                return new ReturnResult<bool>(1, true, "验证通过");
+            }
         }
         #endregion
     }

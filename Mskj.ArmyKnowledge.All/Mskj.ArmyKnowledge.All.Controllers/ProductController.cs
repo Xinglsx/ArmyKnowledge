@@ -2,6 +2,7 @@
 using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.All.ServiceContracts;
 using Mskj.ArmyKnowledge.Common;
+using Mskj.ArmyKnowledge.Common.DataObject;
 using System.Web.Http;
 
 namespace Mskj.ArmyKnowledge.All.Controllers
@@ -26,6 +27,11 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object AddProduct(PostProduct product)
         {
+            if (product == null || string.IsNullOrEmpty(product.Userid) ||
+                string.IsNullOrEmpty(product.ProName) || string.IsNullOrEmpty(product.ContactPhone))
+            {
+                return new ReturnResult<Product>(-2, "参数传入错误");
+            }
             return _ProductService.AddProduct(product.ToModel());
         }
         /// <summary>
@@ -43,9 +49,13 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <param name="id">产品ID</param>
         [Route("DeleteProduct")]
         [HttpPost]
-        public object DeleteProduct(string id)
-        {
-            return _ProductService.DeleteProduct(id);
+        public object DeleteProduct(PostId product)
+        { 
+            if (product == null || string.IsNullOrEmpty(product.Id))
+            {
+                return new ReturnResult<bool>(-2, "参数传入错误");
+            }
+            return _ProductService.DeleteProduct(product.Id);
         }
         /// <summary>
         /// 审核产品信息

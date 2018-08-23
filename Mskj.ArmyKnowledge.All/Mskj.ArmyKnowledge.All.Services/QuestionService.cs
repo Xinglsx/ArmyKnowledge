@@ -172,7 +172,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<QuestionModel>> GetUserQuestionModels(string userid,
+        public ReturnResult<IPagedData<QuestionModel>> GetUserQuestion(string userid,
             string filter = "",int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
             Expression<Func<QuestionModel, bool>> expression;
@@ -250,7 +250,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
         public ReturnResult<IPagedData<Question>> GetUserAnswers(string userid,
-            string questionId, int pageIndex = 1, int pageSize = 10)
+            int pageIndex = 1, int pageSize = 10)
         {
             var res = (from answer in _AnswerDetailRepository.Find()
                        join question in _QuestionRepository.Find() on answer.questionid equals question.id

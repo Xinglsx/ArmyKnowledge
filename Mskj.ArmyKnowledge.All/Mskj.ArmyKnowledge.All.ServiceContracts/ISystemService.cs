@@ -22,6 +22,12 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// </summary>
         /// <param name="phoneNumber">手机号</param>
         ReturnResult<bool> SendMobileMessage(string phoneNumber);
+        /// <summary>
+        /// 验证手机号及获取到的验证码
+        /// </summary>
+        /// <param name="phoneNumber">手机号</param>
+        /// <param name="verificationCode">验证码</param>
+        ReturnResult<bool> ValidationCode(string phoneNumber, string verificationCode);
         #endregion
     }
 }

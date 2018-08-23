@@ -50,7 +50,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<QuestionModel>> GetUserQuestionModels(string userid,
+        ReturnResult<IPagedData<QuestionModel>> GetUserQuestion(string userid,
             string filter = "", int pageIndex = 1, int pageSize = 10, int sortType = 0);
         /// <summary>
         /// 分页获取问题的回答
@@ -68,8 +68,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<Question>> GetUserAnswers(string userid,
-            string questionId, int pageIndex = 1, int pageSize = 10);
+        ReturnResult<IPagedData<Question>> GetUserAnswers(string userid,int pageIndex = 1, int pageSize = 10);
         /// <summary>
         /// 获取一个问题
         /// </summary>

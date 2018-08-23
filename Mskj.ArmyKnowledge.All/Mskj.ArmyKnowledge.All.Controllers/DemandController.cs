@@ -2,6 +2,7 @@
 using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.All.ServiceContracts;
 using Mskj.ArmyKnowledge.Common;
+using Mskj.ArmyKnowledge.Common.DataObject;
 using System.Web.Http;
 
 namespace Mskj.ArmyKnowledge.All.Controllers
@@ -26,6 +27,12 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object AddDemand(PostDemand demand)
         {
+            if (demand == null || string.IsNullOrEmpty(demand.Author) ||
+                string.IsNullOrEmpty(demand.Content) || string.IsNullOrEmpty(demand.Title) ||
+                string.IsNullOrEmpty(demand.Homeimage))
+            {
+                return new ReturnResult<Demand>(-2, "参数传入错误");
+            }
             return _DemandService.AddDemand(demand.ToModel());
         }
         /// <summary>
@@ -45,6 +52,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object DeleteDemand(PostId demand)
         {
+            if (demand == null || string.IsNullOrEmpty(demand.Id))
+            {
+                return new ReturnResult<bool>(-2, "参数传入错误");
+            }
             return _DemandService.DeleteDemand(demand.Id);
         }
         /// <summary>

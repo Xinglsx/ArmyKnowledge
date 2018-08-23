@@ -39,17 +39,17 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
         /// 用户ID
         /// </summary>
         [JsonProperty("id")]
-        public string id { get; set; }
+        public string Id { get; set; }
         /// <summary>
         /// 旧密码
         /// </summary>
         [JsonProperty("oldpwd")]
-        public string oldPwd { get; set; }
+        public string OldPwd { get; set; }
         /// <summary>
         /// 新密码
         /// </summary>
         [JsonProperty("newpwd")]
-        public string newPwd { get; set; }
+        public string NewPwd { get; set; }
         #endregion
     }
 }

@@ -31,6 +31,12 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object AddQuestion(PostQuestion question)
         {
+            if(question == null || string.IsNullOrEmpty(question.Author) || 
+                string.IsNullOrEmpty(question.Content) || string.IsNullOrEmpty(question.Title) || 
+                string.IsNullOrEmpty(question.HomeImage))
+            {
+                return new ReturnResult<QuestionModel>(-2, "传入参数错误!");
+            }
             return _QuestionService.AddQuestion(question.ToModel());
         }
         /// <summary>
@@ -65,9 +71,13 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("DeleteQuestion")]
         [HttpPost]
-        public object DeleteQuestion(PostId Question)
+        public object DeleteQuestion(PostId question)
         {
-            return _QuestionService.DeleteQuestion(Question.Id);
+            if (question == null || string.IsNullOrEmpty(question.Id))
+            {
+                return new ReturnResult<bool>(-2, "参数传入错误");
+            }
+            return _QuestionService.DeleteQuestion(question.Id);
         }
         /// <summary>
         /// 获取问题列表
@@ -93,12 +103,12 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        [Route("GetUserQuestionModels")]
+        [Route("GetUserQuestion")]
         [HttpGet]
-        public object GetUserQuestionModels(string userid,
+        public object GetUserQuestion(string userid,
             string filter = "", int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            return _QuestionService.GetUserQuestionModels(userid,filter, pageIndex, pageSize, sortType);
+            return _QuestionService.GetUserQuestion(userid,filter, pageIndex, pageSize, sortType);
         }
         /// <summary>
         /// 分页获取问题的回答
@@ -123,10 +133,9 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <returns></returns>
         [Route("GetUserAnswers")]
         [HttpGet]
-        public object GetUserAnswers(string userid,
-            string questionId, int pageIndex = 1, int pageSize = 10)
+        public object GetUserAnswers(string userid, int pageIndex = 1, int pageSize = 10)
         {
-            return _QuestionService.GetUserAnswers(userid, questionId, pageIndex, pageSize);
+            return _QuestionService.GetUserAnswers(userid, pageIndex, pageSize);
         }
         /// <summary>
         /// 获取一个问题
@@ -145,9 +154,9 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <returns></returns>
         [Route("UpdateReadCount")]
         [HttpPost]
-        public object UpdateReadCount(PostId Question)
+        public object UpdateReadCount(PostId question)
         {
-            return _QuestionService.UpdateReadCount(Question.Id);
+            return _QuestionService.UpdateReadCount(question.Id);
         }
         /// <summary>
         /// 增加点击数
@@ -157,9 +166,9 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <returns></returns>
         [Route("UpdatePraiseCount")]
         [HttpPost]
-        public object UpdatePraiseCount(PostId Question)
+        public object UpdatePraiseCount(PostId question)
         {
-            return _QuestionService.UpdatePraiseCount(Question.Id);
+            return _QuestionService.UpdatePraiseCount(question.Id);
         }
         /// <summary>
         /// 增加评论数
@@ -169,9 +178,9 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <returns></returns>
         [Route("UpdateCommentCount")]
         [HttpPost]
-        public object UpdateCommentCount(PostId Question)
+        public object UpdateCommentCount(PostId question)
         {
-            return _QuestionService.UpdateCommentCount(Question.Id);
+            return _QuestionService.UpdateCommentCount(question.Id);
         }
         /// <summary>
         /// 更新热度
@@ -208,6 +217,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object AddRecord(Record record)
         {
+            if (record == null || string.IsNullOrEmpty(record.questionid))
+            {
+                return new ReturnResult<bool>(-2, "参数传入错误");
+            }
             return _QuestionService.AddRecord(record);
         }
         /// <summary>
@@ -226,12 +239,16 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             return _QuestionService.GetRecordQuestions(userid, pageIndex, pageSize, filter);
         }
         /// <summary>
-        /// 增加最近浏览
+        /// 增加收藏
         /// </summary>
         [Route("AddCollect")]
         [HttpPost]
         public object AddCollect(Record record)
         {
+            if (record == null || string.IsNullOrEmpty(record.questionid))
+            {
+                return new ReturnResult<bool>(-2, "参数传入错误");
+            }
             return _QuestionService.AddCollect(record);
         }
         /// <summary>

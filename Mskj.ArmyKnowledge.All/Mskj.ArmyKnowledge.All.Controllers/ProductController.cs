@@ -62,8 +62,13 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("AuditProduct")]
         [HttpPost]
-        public object AuditProduct(Product product)
+        public object AuditProduct(PostId pro)
         {
+            if (pro == null || string.IsNullOrEmpty(pro.Id))
+            {
+                return new ReturnResult<bool>(-2, "参数传入错误");
+            }
+            var product = _ProductService.GetOne(p => p.id == pro.Id);
             return _ProductService.AuditProduct(product);
         }
         /// <summary>
@@ -71,8 +76,13 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("SubmitProduct")]
         [HttpPost]
-        public object SubmitProduct(Product product)
+        public object SubmitProduct(PostId pro)
         {
+            if (pro == null || string.IsNullOrEmpty(pro.Id))
+            {
+                return new ReturnResult<bool>(-2, "参数传入错误");
+            }
+            var product = _ProductService.GetOne(p => p.id == pro.Id);
             return _ProductService.SubmitProduct(product);
         }
         /// <summary>

@@ -17,14 +17,15 @@ namespace Mskj.ArmyKnowledge.All.Services
     {
 
         #region 构造函数
-        //private readonly IRepository<Product> _ProductRepository;
+        private readonly IRepository<Dictionary> _DicRepository;
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
         /// </summary>
         /// <param name="goodsRepository"></param>
-        public ProductService(IRepository<Product> productRepository) : base(productRepository)
+        public ProductService(IRepository<Product> productRepository,
+            IRepository<Dictionary> dicRepository) : base(productRepository)
         {
-
+            _DicRepository = dicRepository;
         }
         #endregion
 
@@ -142,10 +143,11 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<List<string>> GetProductCategory()
         {
             List<string> categorys = new List<string> { "全部" };
-            var res = this.GetAll().Select(p => p.category).Distinct().ToList();
-            if(res != null && res.Count > 0)
+            var res = _DicRepository.Find().Where(p => p.dicstate && p.dictype == 2)
+                .Select(q => q.dicname);
+                if(res != null && res.Count() > 0)
             {
-                categorys.AddRange(res);
+                categorys.AddRange(res.ToList());
             }
             return new ReturnResult<List<string>>(1, categorys);
         }
@@ -193,7 +195,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式 0-综合排序 1-最新发布</param>
+        /// <param name="sortType">排序方式 0-综合排序 1-最新发布 2-价格</param>
         /// <param name="expression">查询表达示</param>
         /// <returns></returns>
         private ReturnResult<IPagedData<Product>> GetBaseProducts(int pageIndex,

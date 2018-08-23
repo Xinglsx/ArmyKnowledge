@@ -23,6 +23,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         private readonly IRepository<Cert> _CertRepository;
         private readonly IRepository<Fans> _FansRepository;
         private readonly IRepository<Follower> _FollowerRepository;//暂时先不用，只用Fans表
+        private readonly IRepository<Dictionary> _DicRepository;
         ILogger logger;
         ICache cache;
 
@@ -32,13 +33,14 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         /// <param name="goodsRepository"></param>
         public UsersService(IRepository<Users> usersRepository,IRepository<Cert> certRepository,
-            IRepository<Fans> fansRepository,IRepository<Follower> followerRepository) 
-            : base(usersRepository)
+            IRepository<Fans> fansRepository,IRepository<Follower> followerRepository,
+            IRepository<Dictionary> dicRepository) : base(usersRepository)
         {
             _UsersRepository = usersRepository;
             _CertRepository = certRepository;
             _FansRepository = fansRepository;
             _FollowerRepository = followerRepository;
+            _DicRepository = dicRepository;
 
             logger = AppInstance.Current.Resolve<ILogger>();
             cache = AppInstance.Current.Resolve<ICache>();
@@ -442,36 +444,51 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         public ReturnResult<List<string>> GetProfessionCategory()
         {
-            List<string> categorys = new List<string> { "全部" };
-            var res = _UsersRepository.Find()
-                .Where(p => p.usertype == 2 && p.iscertification >= 1)
-                .Select(p => p.profession).Distinct().ToList();
-            if (res != null && res.Count > 0)
+            List<string> professions = new List<string> { "全部" };
+            var res = _DicRepository.Find().Where(p => p.dicstate && p.dictype == 0)
+                .Select(q => q.dicname);
+
+            if (res != null && res.Count() > 0)
             {
-                categorys.AddRange(res);
+                professions.AddRange(res.ToList());
             }
-            return new ReturnResult<List<string>>(1, categorys);
+            return new ReturnResult<List<string>>(1, professions);
         }
         /// <summary>
         /// 分页获取专家用户列表
         /// </summary>
-        /// <param name="type">用户类型 100-获取全部</param>
+        /// <param name="type">用户类型 -1-获取全部</param>
         /// <param name="state">状态</param>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Users>> GetUsers(int type = 2,
+        public ReturnResult<IPagedData<Users>> GetUsers(string profession = "全部",int type = 2,
             int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
             Expression<Func<Users, bool>> expression;
-            if (type == 100)
+            if (type == -1)
             {
-                expression = x => x.userstate == state;
+                if ("全部".Equals(profession))
+                {
+                    expression = x => x.userstate == state;
+                }
+                else
+                {
+                    expression = x => x.userstate == state & x.profession == profession;
+                }
             }
             else
             {
-                expression = x => x.userstate == state && x.usertype == type;
+                if ("全部".Equals(profession))
+                {
+                    expression = x => x.userstate == state && x.usertype == type;
+
+                }
+                else
+                {
+                    expression = x => x.userstate == state && x.usertype == type & x.profession == profession;
+                }
 
             }
             return GetBaseUsers(pageIndex, pageSize, sortType, expression);
@@ -492,25 +509,25 @@ namespace Mskj.ArmyKnowledge.All.Services
             switch (sortType)
             {
                 case 0:
-                    sort = new SortInfo<Users>(p => p.compositescores,
+                    sort = new SortInfo<Users>(p => new { p.compositescores },
                         SortOrder.Descending);
                     break;
                 case 1:
-                    sort = new SortInfo<Users>(p => p.answercount,
+                    sort = new SortInfo<Users>(p => new { p.answercount },
                         SortOrder.Descending);
                     break;
                 case 2:
-                    sort = new SortInfo<Users>(p => p.adoptedcount,
+                    sort = new SortInfo<Users>(p => new { p.adoptedcount },
                         SortOrder.Ascending);
                     break;
                 default:
-                    sort = new SortInfo<Users>(p => p.compositescores,
+                    sort = new SortInfo<Users>(p => new { p.compositescores },
                         SortOrder.Descending);
                     break;
             }
             sorts.Add(sort);
             //所有排序之后，再按时间降序
-            sorts.Add(new SortInfo<Users>(p => p.registertime, SortOrder.Descending));
+            sorts.Add(new SortInfo<Users>(p => new { p.registertime }, SortOrder.Descending));
             return new ReturnResult<IPagedData<Users>>(1,
                     GetPage(pageIndex, pageSize, sorts, expression));
         }

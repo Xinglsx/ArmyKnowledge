@@ -110,7 +110,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<Users>> GetUsers(int type = 2,
+        ReturnResult<IPagedData<Users>> GetUsers(string profession = "全部",int type = 2,
             int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0);
         #endregion
 

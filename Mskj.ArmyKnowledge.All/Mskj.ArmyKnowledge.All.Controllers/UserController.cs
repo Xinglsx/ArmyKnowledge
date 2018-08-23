@@ -206,10 +206,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <returns></returns>
         [Route("GetUsers")]
         [HttpGet]
-        public object GetUsers(int type = 2,
+        public object GetUsers(string profession = "全部",int type = 2,
             int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            return _UsersService.GetUsers();
+            return _UsersService.GetUsers(profession,type,state,pageIndex,pageSize,sortType);
         }
         #endregion
 

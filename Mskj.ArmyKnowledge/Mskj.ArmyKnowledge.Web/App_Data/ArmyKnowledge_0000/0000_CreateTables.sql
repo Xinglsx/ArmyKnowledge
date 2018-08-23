@@ -299,3 +299,68 @@ IF NOT EXISTS( SELECT * FROM sys.objects WHERE name='record' AND type='U')
 	   constraint PK_RECORD primary key clustered (id)
 	);
 end
+
+/*==============================================================*/
+/* Table: dictionary               字典表                       */
+/*==============================================================*/
+IF NOT EXISTS( SELECT * FROM sys.objects WHERE name='dictionary' AND type='U')
+	begin
+	create table dictionary 
+	(
+	   id                   varchar(36)                    not null,	--字典主键ID
+	   dictype              int							   null,		--用户分类
+																		--0-专家专业
+																		--1-需求类型
+																		--2-产品类型
+	   diccode				varchar(2)                     null,		--字典Code
+	   dicname              varchar(36)                    null,		--字典名称
+	   dicstate             bit                            null,		--字典状态
+	   constraint PK_DICTIONARY primary key clustered (id)
+	);
+end
+/*插入专家专业字典*/
+if not exists (select 1 from dictionary where id = '2302B295-14F3-43FF-AA52-55B4C565F718')
+begin
+	insert into dictionary select '2302B295-14F3-43FF-AA52-55B4C565F718',0,'01','电子信息技术',1
+end
+if not exists (select 1 from dictionary where id ='D0C3DBB3-B560-452B-B232-6CEB2CD9AF4E')
+begin
+	insert into dictionary select 'D0C3DBB3-B560-452B-B232-6CEB2CD9AF4E',0,'02','能源环保技术',1
+end
+if not exists (select 1 from dictionary where id ='97A3B449-9DEF-4F34-973C-93A6F3E5B90F')
+begin
+	insert into dictionary select '97A3B449-9DEF-4F34-973C-93A6F3E5B90F',0,'03','新材料技术',1
+end
+if not exists (select 1 from dictionary where id ='DE6D57D2-19AA-4F10-8A50-8289F0C20C63')
+begin
+	insert into dictionary select 'DE6D57D2-19AA-4F10-8A50-8289F0C20C63',0,'04','航空航天技术',1
+end
+if not exists (select 1 from dictionary where id ='6CCA67BA-10B7-47E7-A4B3-16ECA796E9DE')
+begin
+	insert into dictionary select '6CCA67BA-10B7-47E7-A4B3-16ECA796E9DE',0,'05','光机电一休化',1
+end
+if not exists (select 1 from dictionary where id ='2B8E58AE-B8A2-458E-A1A0-01A4C6442872')
+begin
+	insert into dictionary select '2B8E58AE-B8A2-458E-A1A0-01A4C6442872',0,'06','生物医药技术',1
+end
+/*插入产品类型字典*/
+if not exists (select 1 from dictionary where id ='049D0A85-3514-4940-9417-FCAF99405880')
+begin
+	insert into dictionary select '049D0A85-3514-4940-9417-FCAF99405880',2,'01','元器件',1
+end
+if not exists (select 1 from dictionary where id ='A4D7377B-AB1B-4919-B9AC-AB590FB82BC7')
+begin
+	insert into dictionary select 'A4D7377B-AB1B-4919-B9AC-AB590FB82BC7',2,'02','电力装备',1
+end
+if not exists (select 1 from dictionary where id ='E34E8614-C6EF-4E0B-B89A-BC5BBF30DDAE')
+begin
+	insert into dictionary select 'E34E8614-C6EF-4E0B-B89A-BC5BBF30DDAE',2,'03','工业基础件',1
+end
+if not exists (select 1 from dictionary where id ='AFEBD3E9-5BCA-4413-94A8-AF48042221A8')
+begin
+	insert into dictionary select 'AFEBD3E9-5BCA-4413-94A8-AF48042221A8',2,'04','应急救援保障',1
+end
+if not exists (select 1 from dictionary where id ='AE69E62E-876B-4345-B507-587674BA0A1A')
+begin
+	insert into dictionary select 'AE69E62E-876B-4345-B507-587674BA0A1A',2,'05','新材料',1
+end

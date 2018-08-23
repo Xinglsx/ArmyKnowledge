@@ -18,13 +18,15 @@ namespace Mskj.ArmyKnowledge.All.Services
 
         #region 构造函数
         //private readonly IRepository<Demand> _DemandRepository;
+        private readonly IRepository<Dictionary> _DicRepository;
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
         /// </summary>
         /// <param name="goodsRepository"></param>
-        public DemandService(IRepository<Demand> demandRepository) : base(demandRepository)
+        public DemandService(IRepository<Demand> demandRepository,
+            IRepository<Dictionary> dicRepository) : base(demandRepository)
         {
-
+            _DicRepository = dicRepository;
         }
         #endregion
 
@@ -141,13 +143,14 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         public ReturnResult<List<string>> GetDemandCategory()
         {
-            List<string> categorys = new List<string> { "全部" };
-            var res = this.GetAll().Select(p => p.category).Distinct().ToList();
-            if(res != null && res.Count > 0)
+            List<string> professions = new List<string> { "全部" };
+            var res = _DicRepository.Find().Where(p => p.dicstate && p.dictype == 1)
+                .Select(q => q.dicname);
+            if (res != null && res.Count() > 0)
             {
-                categorys.AddRange(res);
+                professions.AddRange(res.ToList());
             }
-            return new ReturnResult<List<string>>(1, categorys);
+            return new ReturnResult<List<string>>(1, professions);
         }
         /// <summary>
         /// 分页获取对应用户的需求列表

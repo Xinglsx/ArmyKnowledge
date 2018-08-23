@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnswerMap.cs" />
+    <Compile Include="DictionaryMap.cs" />
     <Compile Include="NoticeMap.cs" />
     <Compile Include="MsgDetailMap.cs" />
     <Compile Include="MsgMap.cs" />

@@ -1,0 +1,51 @@
+﻿<h3>我上传的产品</h3>
+<div class="product-audit-main">
+    @*<table class="table table-striped ">
+            <tr>
+                <th>名称</th>
+                <th>简介</th>
+                <th>作者</th>
+                <th>时间</th>
+                <th>状态</th>
+            </tr>
+            <tr>
+                <td>产品名称</td>
+                <td>便宜好用，明天涨价</td>
+                <td>李士新</td>
+                <td>2018-08-23 09:48:27.000</td>
+                <td>2</td>
+            </tr>
+        </table>*@
+</div>
+<script type="text/javascript">
+    onload = function () {
+        checkLogin();
+        getMyProduct(1);
+    }
+
+    function checkLogin() {
+        var isLogin = getCookie('isLogin');
+        if (isLogin != "true") {
+            location.href = "/ArmyKnowledge/ManageWeb/Home/Login";
+        }
+    }
+
+    function getMyProduct(curPageNo) {
+        $.getJSON("/ArmyKnowledge/Product/GetUserProducts?userid=9defbf33-3015-4445-9f0e-c2acc9717423&pageIndex=" + curPageNo + "&pageSize=10&sortType=0").then(function (data) {
+            $(".product-audit-main").html("");
+            $(".product-audit-main").append("<table class='table table-striped'><tbody>");
+            $(".table").append("<tr><th>名称</th><th>简介</th><th>作者</th><th>时间</th><th>状态</th><th>操作</th></tr>");
+            $.each(data.data.data, function (i, item) {
+                $(".table").append("<tr>"
+                    + "<td>" + item.proname + "</td>"
+                    + "<td>" + item.introduction + "</td>"
+                    + "<td>" + item.nickname + "</td>"
+                    + "<td>" + item.publishtime + "</td>"
+                    + "<td>" + item.prostate + "</td>"
+                    + "<td><button>查看明细</button></td>"
+                    +"</tr>");
+            });
+        })
+
+    }
+</script>

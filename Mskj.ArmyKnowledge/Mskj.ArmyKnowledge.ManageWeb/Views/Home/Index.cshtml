@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "首页";
+}
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>首页 - 军融汇管理平台</title>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
+    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="status-login-register"></div>
+    <script type="text/javascript">
+        var isLogin = getCookie('isLogin');
+        if (isLogin != "true") {
+            location.href = "/ArmyKnowledge/ManageWeb/Home/Login";
+        }else{
+            $(".status-login-register").html("<p>&nbsp;&nbsp;<a href=''>" + localStorage.username + "</a>，欢迎您！  <a onclick='userExit()' href='#'>退出</a></p>");
+        }
+
+        function userExit() {
+            setCookie("isLogin", false, 1, '/');
+            location.href = "/ArmyKnowledge/ManageWeb/Home/Login";
+        }
+    </script>
+</body>
+</html>

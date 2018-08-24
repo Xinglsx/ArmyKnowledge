@@ -1,8 +1,10 @@
-﻿using Mskj.ArmyKnowledge.All.Domains;
+﻿using Mskj.ArmyKnowledge.All.Common.PostData;
+using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.All.ServiceContracts;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using QuickShare.LiteFramework.Base;
 using QuickShare.LiteFramework.Common;
+using QuickShare.LiteFramework.Common.Extenstions;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -105,11 +107,16 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 审核产品信息
         /// </summary>
-        public ReturnResult<bool> AuditProduct(Product product)
+        public ReturnResult<bool> AuditProduct(string id)
         {
-            if (product.prostate != 1)
+            var product = GetOne(p => p.id == id);
+            if(product == null || string.IsNullOrEmpty(product.id))
             {
-                return new ReturnResult<bool>(-2, "待审核的产品信息状态不是[提交审核状态]！");
+                return new ReturnResult<bool>(-2, "未找到对应产品信息！");
+            }
+            else if (product.prostate != 1)
+            {
+                return new ReturnResult<bool>(-2, "产品信息状态不是[提交审核状态]！");
             }
             product.prostate = 2;
             return UpdateProduct(product);
@@ -117,17 +124,19 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 提交审核产品信息
         /// </summary>
-        public ReturnResult<bool> SubmitProduct(Product product)
+        public ReturnResult<bool> SubmitProduct(string id)
         {
-            if (product.prostate != 0)
+            var product = GetOne(p => p.id == id);
+            if (product == null || string.IsNullOrEmpty(product.id))
             {
-                return new ReturnResult<bool>(-2, "待提交审核的认证信息状态不是[新建状态]！");
+                return new ReturnResult<bool>(-2, "未找到对应产品信息！");
             }
-            else
+            else if (product.prostate != 1)
             {
-                product.prostate = 1;
-                return UpdateProduct(product);
+                return new ReturnResult<bool>(-2, "产品信息状态不是[提交审核状态]！");
             }
+            product.prostate = 1;
+            return UpdateProduct(product);
         }
         /// <summary>
         /// 保存并提交产品信息
@@ -136,6 +145,18 @@ namespace Mskj.ArmyKnowledge.All.Services
         {
             product.prostate = 1;
             return this.AddProduct(product);
+        }
+        /// <summary>
+        /// 获取一个产品信息
+        /// </summary>
+        public ReturnResult<Product> GetOneProduct(string id)
+        {
+            var res = GetOne(p => p.id == id);
+            if(res == null || string.IsNullOrEmpty(res.id))
+            {
+                return new ReturnResult<Product>(-2, "找不到对应产品！");
+            }
+            return new ReturnResult<Product>(1, res);
         }
         /// <summary>
         /// 获取已有产品分类
@@ -175,20 +196,26 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Product>> GetProducts(string category = "全部",
-            int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0)
+        public ReturnResult<IPagedData<Product>> GetProducts(string filter = "", string category = "全部",
+            int state = 2, int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            Expression<Func<Product, bool>> expression;
-            if ("全部".Equals(category))
+            Expression<Func<Product, bool>> exp1 = x => true;
+            Expression<Func<Product, bool>> exp2 = x => true;
+            Expression<Func<Product, bool>> exp3 = x => true;
+            if (state != -1)
             {
-                expression = x => x.prostate == state;
+                exp1 = x => x.prostate == state;
             }
-            else
+            if (!"全部".Equals(category))
             {
-                expression = x => x.prostate == state && x.category == category;
-
+                exp2 = x => x.category == category;
             }
-            return GetBaseProducts(pageIndex, pageSize, sortType, expression);
+            if (!string.IsNullOrEmpty(filter))
+            {
+                exp3 = x => x.prodetail.Contains(filter) || x.proname.Contains(filter) ||
+                    x.category.Contains(filter) || x.contacts.Contains(filter);
+            }
+            return GetBaseProducts(pageIndex, pageSize, sortType, exp1.AndAlso(exp2).AndAlso(exp3));
         }
         /// <summary>
         /// 分页获取产品列表(封装排序方式)

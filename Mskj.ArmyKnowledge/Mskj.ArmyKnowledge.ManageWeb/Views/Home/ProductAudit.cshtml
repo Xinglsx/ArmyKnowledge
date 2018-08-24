@@ -28,12 +28,13 @@
                     + "<td>" + item.nickname + "</td>"
                     + "<td>" + item.publishtime + "</td>"
                     + "<td>" + item.prostate + "</td>"
-                    + "<td><button class='btnDetail' data-id='" + item.id + "'>查看明细</button></td>"
+                    + "<td><button class='btnDetail' data-id='" + item.id + "'>查看详情</button></td>"
                     +"</tr>");
             });
             $(".btnDetail").on("click", function (e) {
                 var id = $(this).attr("data-id");
-                alert("进入明细" + id);
+                //alert("进入明细" + id);
+                location.href = "/ArmyKnowledge/ManageWeb/Home/ProductAuditDetail?id=" + id;
             })
         })
 

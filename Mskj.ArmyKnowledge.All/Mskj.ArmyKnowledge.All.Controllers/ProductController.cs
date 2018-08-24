@@ -30,7 +30,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             if (product == null || string.IsNullOrEmpty(product.Userid) ||
                 string.IsNullOrEmpty(product.ProName) || string.IsNullOrEmpty(product.ContactPhone))
             {
-                return new ReturnResult<Product>(-2, "参数传入错误");
+                return new ReturnResult<Product>(-4, "参数传入错误！");
             }
             return _ProductService.AddProduct(product.ToModel());
         }
@@ -53,7 +53,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         { 
             if (product == null || string.IsNullOrEmpty(product.Id))
             {
-                return new ReturnResult<bool>(-2, "参数传入错误");
+                return new ReturnResult<bool>(-4, "参数传入错误！");
             }
             return _ProductService.DeleteProduct(product.Id);
         }
@@ -66,10 +66,9 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         {
             if (pro == null || string.IsNullOrEmpty(pro.Id))
             {
-                return new ReturnResult<bool>(-2, "参数传入错误");
+                return new ReturnResult<bool>(-4, "参数传入错误！");
             }
-            var product = _ProductService.GetOne(p => p.id == pro.Id);
-            return _ProductService.AuditProduct(product);
+            return _ProductService.AuditProduct(pro.Id);
         }
         /// <summary>
         /// 提交审核产品信息
@@ -80,21 +79,24 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         {
             if (pro == null || string.IsNullOrEmpty(pro.Id))
             {
-                return new ReturnResult<bool>(-2, "参数传入错误");
+                return new ReturnResult<bool>(-4, "参数传入错误！");
             }
-            var product = _ProductService.GetOne(p => p.id == pro.Id);
-            return _ProductService.SubmitProduct(product);
+            return _ProductService.SubmitProduct(pro.Id);
         }
         /// <summary>
         /// 保存并提交产品信息
         /// </summary>
         [Route("SaveAndSubmitProduct")]
         [HttpPost]
-        public object SaveAndSubmitProduct(Product product)
+        public object SaveAndSubmitProduct(PostProduct product)
         {
-            return _ProductService.SaveAndSubmitProduct(product);
+            if (product == null || string.IsNullOrEmpty(product.Userid) ||
+                string.IsNullOrEmpty(product.ProName) || string.IsNullOrEmpty(product.ContactPhone))
+            {
+                return new ReturnResult<Product>(-4, "参数传入错误！");
+            }
+            return _ProductService.SaveAndSubmitProduct(product.ToModel());
         }
-        /// <summar
         /// <summary>
         /// 获取已有产品分类
         /// </summary>
@@ -103,6 +105,15 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         public object GetProductCategory()
         {
             return _ProductService.GetProductCategory();
+        }
+        /// <summary>
+        /// 获取一个产品详情
+        /// </summary>
+        [Route("GetOneProduct")]
+        [HttpGet]
+        public object GetOneProduct(string proid)
+        {
+            return _ProductService.GetOneProduct(proid);
         }
         /// <summary>
         /// 分页获取对应用户的产品列表
@@ -131,10 +142,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <returns></returns>
         [Route("GetProducts")]
         [HttpGet]
-        public object GetProducts(string category = "全部",int state = 0, int pageIndex = 1, 
-            int pageSize = 10, int sortType = 0)
+        public object GetProducts(string filter = "",string category = "全部",
+            int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            return _ProductService.GetProducts(category, state, pageIndex, pageSize, sortType);
+            return _ProductService.GetProducts(filter,category, state, pageIndex, pageSize, sortType);
         }
         #endregion
     }

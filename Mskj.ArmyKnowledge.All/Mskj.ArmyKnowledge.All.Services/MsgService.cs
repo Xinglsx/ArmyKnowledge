@@ -49,6 +49,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
 
             msg.id = Guid.NewGuid().ToString();
+            msg.updatetime = DateTime.Now;
             bool saveResult = false;
             try
             {
@@ -87,6 +88,12 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             if (addRes)
             {
+                var msg = GetOne(p => p.id == msgDetail.msgid);
+                if(msg != null && !string.IsNullOrEmpty(msg.id))
+                {
+                    msg.updatetime = DateTime.Now;
+                    Update(msg);
+                }
                 return new ReturnResult<MsgDetail>(1, msgDetail);
             }
             else
@@ -160,12 +167,23 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<IPagedData<MsgDetail>> GetMsgDetail(string filter = "",
             int pageIndex = 1, int pageSize = 30)
         {
-            Expression<Func<MsgDetail, bool>> expression = x =>
-                filter == "" || (filter != "" && x.content.Contains(filter));
-            SortInfo<MsgDetail> sort = new SortInfo<MsgDetail>(p => p.sendtime, SortOrder.Descending);
             var res = _MsgDetailRepository.Find().Where(p => filter == "" || (filter != "" && p.content.Contains(filter)))
                 .OrderByDescending(q => q.sendtime).ToPage(pageIndex, pageSize);
             return new ReturnResult<IPagedData<MsgDetail>>(1, res);
+        }
+        /// <summary>
+        /// 获取用户的消息列表
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="pageIndex">页数</param>
+        /// <param name="pageSize">每页条数</param>
+        /// <returns></returns>
+        public ReturnResult<IPagedData<Msg>> GetUserMsgs(string userid,int pageIndex = 1,int pageSize = 30)
+        {
+            Expression<Func<Msg, bool>> expression = x => x.userid1 == userid || x.userid2 == userid;
+            SortInfo<Msg> sort = new SortInfo<Msg>(p => new { p.updatetime }, SortOrder.Descending);
+            var res = GetPage(pageIndex, pageSize, sort, expression);
+            return new ReturnResult<IPagedData<Msg>>(1, res);
         }
         #endregion
         

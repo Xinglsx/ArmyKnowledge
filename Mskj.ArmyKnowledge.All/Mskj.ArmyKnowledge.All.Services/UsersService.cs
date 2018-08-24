@@ -366,11 +366,16 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 审核用户认证信息
         /// </summary>
-        public ReturnResult<bool> AuditCert(Cert cert)
+        public ReturnResult<bool> AuditCert(string id)
         {
-            if (cert.certstate != 1)
+            Cert cert = _CertRepository.Find().Where(p => p.id == id).FirstOrDefault();
+            if(cert == null || string.IsNullOrEmpty(cert.id))
             {
-                return new ReturnResult<bool>(-2, "待审核的认证信息状态不是[提交审核状态]！");
+                return new ReturnResult<bool>(-2, "未找到认证信息！");
+            }
+            else if (cert.certstate != 1)
+            {
+                return new ReturnResult<bool>(-2, "认证信息状态不是[提交审核状态]！");
             }
             cert.certstate = 2;
             var res = UpdateCert(cert);
@@ -385,11 +390,16 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 提交审核用户认证信息
         /// </summary>
-        public ReturnResult<bool> SubmitCert(Cert cert)
+        public ReturnResult<bool> SubmitCert(string id)
         {
-            if (cert.certstate != 0)
+            Cert cert = _CertRepository.Find().Where(p => p.id == id).FirstOrDefault();
+            if (cert == null || string.IsNullOrEmpty(cert.id))
             {
-                return new ReturnResult<bool>(-2, "待提交审核的认证信息状态不是[新建状态]！");
+                return new ReturnResult<bool>(-2, "未找到认证信息！");
+            }
+            else if (cert.certstate != 0)
+            {
+                return new ReturnResult<bool>(-2, "认证信息状态不是[新建状态]！");
             }
             else
             {
@@ -455,50 +465,43 @@ namespace Mskj.ArmyKnowledge.All.Services
             return new ReturnResult<List<string>>(1, professions);
         }
         /// <summary>
-        /// 分页获取专家用户列表
+        /// 分页获取用户列表
         /// </summary>
-        /// <param name="type">用户类型 -1-获取全部</param>
-        /// <param name="state">状态</param>
+        /// <param name="filter">查寻条件</param>
+        /// <param name="profession">专业</param>
+        /// <param name="userType">用户类型 -1-获取全部</param>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式</param>
+        /// <param name="sortType">排序方式 0-综合排序 1-回答问题数 2-采纳问题数</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Users>> GetUsers(string profession = "全部",int type = 2,
-            int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0)
+        public ReturnResult<IPagedData<Users>> GetUsers(string filter = "",string profession = "全部",
+            int userType = 2, int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            Expression<Func<Users, bool>> expression;
-            if (type == -1)
+            Expression<Func<Users, bool>> exp1 = x => true;
+            Expression<Func<Users, bool>> exp2 = x => true;
+            Expression<Func<Users, bool>> exp3 = x => true;
+            if (userType != -1)
             {
-                if ("全部".Equals(profession))
-                {
-                    expression = x => x.userstate == state;
-                }
-                else
-                {
-                    expression = x => x.userstate == state & x.profession == profession;
-                }
+                exp1 = x => x.usertype == userType;
             }
-            else
+            if(!"全部".Equals(profession))
             {
-                if ("全部".Equals(profession))
-                {
-                    expression = x => x.userstate == state && x.usertype == type;
-
-                }
-                else
-                {
-                    expression = x => x.userstate == state && x.usertype == type & x.profession == profession;
-                }
-
+                exp2 = x => x.profession == profession;
             }
-            return GetBaseUsers(pageIndex, pageSize, sortType, expression);
+            if(!string.IsNullOrEmpty(filter))
+            {
+                exp3 = x => x.nickname.Contains(filter) || x.organization.Contains(filter) || 
+                    x.signatures.Contains(filter);
+            }
+
+            return GetBaseUsers(pageIndex, pageSize, sortType, exp1.AndAlso(exp2).AndAlso(exp3));
         }
         /// <summary>
-        /// 分页获取专家用户列表(封装排序方式)
+        /// 分页获取用户列表(封装排序方式)
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式 0-综合排序 1-最新发布</param>
+        /// <param name="sortType">排序方式 0-综合排序 1-回答问题数 2-采纳问题数</param>
         /// <param name="expression">查询表达示</param>
         /// <returns></returns>
         private ReturnResult<IPagedData<Users>> GetBaseUsers(int pageIndex,

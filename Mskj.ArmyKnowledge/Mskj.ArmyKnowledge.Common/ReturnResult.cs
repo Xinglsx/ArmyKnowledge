@@ -27,6 +27,7 @@ namespace Mskj.ArmyKnowledge.Common.DataObject
         /// -1 异常错误
         /// -2 逻辑错误
         /// -3 阿里短信接口错误
+        /// -4 参数传递错误
         /// </summary>
         [DataMember(Order = 0)]
         public int code { get; set; }

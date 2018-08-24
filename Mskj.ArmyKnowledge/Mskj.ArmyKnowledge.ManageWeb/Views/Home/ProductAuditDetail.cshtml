@@ -1,0 +1,93 @@
+﻿<div class="container">
+    <button id="btnAudit" type="button" class="btn btn-primary">审核通过</button>
+    <button id="btnRefuse" type="button" class="btn btn-info">审核不通过</button>
+</div>
+<div class="container pro">
+</div>
+<style type="text/css">
+    .btn{
+        margin-top:15px;
+    }
+    .image {
+        max-height: 300px;
+        max-width: 300px;
+        margin: 5px;
+    }
+</style>
+<script type="text/javascript">
+    var pro;//全局
+    onload = function () {
+        var id = GetQueryString("id");
+        checkLogin();
+        getOneProduct(id);
+    }
+
+    function checkLogin() {
+        var isLogin = getCookie('isLogin');
+        if (isLogin != "true") {
+            location.href = "/ArmyKnowledge/ManageWeb/Home/Login";
+        }
+    }
+
+    function getOneProduct(id) {
+        $.getJSON("/ArmyKnowledge/Product/GetOneProduct?proid=" + id).then(function (data) {
+            pro = data.data;
+            $(".pro").html("<h3>" + pro.proname + "</h3>");
+            $(".pro").append("<div>发布时间：" + pro.publishtime + "</div>")
+            $(".pro").append("<h5>价格：" + pro.price + "</h5>")
+            $(".pro").append("<h5>简介：" + pro.introduction + "</h5>")
+            $(".pro").append("<h5>商品条码：" + pro.materialcode + "</h5>")
+            $(".pro").append("<h5>生产日期：" + pro.productiondate + "</h5>")
+            $(".pro").append("<h5>更多详情：" + pro.prodetail + "</h5>")
+            $(".pro").append("<h5>商品分类：" + pro.category + "</h5>")
+            $(".pro").append("<h5>联系人：" + pro.contacts + "</h5>")
+            $(".pro").append("<h5>联系人电话：" + pro.contactphone + "</h5>")
+            $(".pro").append("<h5>产品状态：" + pro.prostate + "</h5>")
+            var images = pro.images.toString();
+            var image = images.split(',');
+            $(".pro").append("<div class='container proimg'></div?")
+            for (var i = 0; i < image.length; i++) {
+                $(".proimg").append("<div class='col-md-4'><img class='image' src='" + image[i] + "'></img></div>")
+            }
+            
+        })
+    }
+
+    $("#btnAudit").on("click", function (e) {
+        var data = {
+            id: pro.id
+        };
+        $.ajax({
+            url: "/ArmyKnowledge/Product/AuditProduct",
+            type: "post",
+            data: data,
+            success: function (rst) {
+                if (rst.code > 0) {
+                    alert("审核成功！");
+                    location.href = "/ArmyKnowledge/ManageWeb/Home/ProductAudit";
+                }
+                else {
+                    alert(rst.message);
+                }
+            }
+        });
+    })
+
+    $("#btnRefuse").on("click", function (e) {
+        pro.prostate = 0;
+        $.ajax({
+            url: "/ArmyKnowledge/Product/UpdateProduct",
+            type: "post",
+            data: pro,
+            success: function (rst) {
+                if (rst.code > 0) {
+                    alert("打回成功！");
+                    location.href = "/ArmyKnowledge/ManageWeb/Home/ProductAudit";
+                }
+                else {
+                    alert(rst.message);
+                }
+            }
+        });
+    })
+</script>

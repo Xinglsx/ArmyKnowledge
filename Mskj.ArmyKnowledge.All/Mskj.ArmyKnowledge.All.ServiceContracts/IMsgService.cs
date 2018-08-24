@@ -42,6 +42,13 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <returns></returns>
         ReturnResult<IPagedData<MsgDetail>> GetMsgDetail(string filter = "",
             int pageIndex = 1, int pageSize = 30);
+        /// <summary>
+        /// 获取用户的消息列表
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="pageIndex">页数</param>
+        /// <param name="pageSize">每页条数</param>
+        ReturnResult<IPagedData<Msg>> GetUserMsgs(string userid, int pageIndex = 1, int pageSize = 30);
         #endregion
     }
 }

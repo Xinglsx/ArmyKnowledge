@@ -3,6 +3,7 @@ using Mskj.ArmyKnowledge.Common.DataObject;
 using QuickShare.LiteFramework.Base;
 using QuickShare.LiteFramework.Common;
 using Mskj.ArmyKnowledge.All.Common.DataObj;
+using Mskj.ArmyKnowledge.All.Common.PostData;
 
 namespace Mskj.ArmyKnowledge.All.ServiceContracts
 {
@@ -22,11 +23,11 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <summary>
         /// 提交审核问题
         /// </summary>
-        ReturnResult<bool> SubmitQuestion(QuestionModel question);
+        ReturnResult<bool> SubmitQuestion(string id);
         /// <summary>
         /// 审核通过问题
         /// </summary>
-        ReturnResult<bool> AuditQuestion(QuestionModel question);
+        ReturnResult<bool> AuditQuestion(string id);
         /// <summary>
         /// 删除问题
         /// </summary>
@@ -51,7 +52,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
         ReturnResult<IPagedData<QuestionModel>> GetUserQuestion(string userid,
-            string filter = "", int pageIndex = 1, int pageSize = 10, int sortType = 0);
+            string filter = "", int pageIndex = 1, int pageSize = 10, int sortType = 3);
         /// <summary>
         /// 分页获取问题的回答
         /// </summary>

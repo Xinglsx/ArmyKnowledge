@@ -79,11 +79,11 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <summary>
         /// 审核用户认证信息
         /// </summary>
-        ReturnResult<bool> AuditCert(Cert cert);
+        ReturnResult<bool> AuditCert(string id);
         /// <summary>
         /// 提交审核用户认证信息
         /// </summary>
-        ReturnResult<bool> SubmitCert(Cert cert);
+        ReturnResult<bool> SubmitCert(string id);
         /// <summary>
         /// 保存并提交用户认证信息
         /// </summary>
@@ -102,16 +102,17 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// </summary>
         ReturnResult<List<string>> GetProfessionCategory();
         /// <summary>
-        /// 分页获取专家用户列表
+        /// 分页获取用户列表
         /// </summary>
-        /// <param name="type">用户类型 100-获取全部</param>
-        /// <param name="state">状态</param>
+        /// <param name="filter">查寻条件</param>
+        /// <param name="profession">专业</param>
+        /// <param name="userType">用户类型 -1-获取全部</param>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式</param>
+        /// <param name="sortType">排序方式 0-综合排序 1-回答问题数 2-采纳问题数</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<Users>> GetUsers(string profession = "全部",int type = 2,
-            int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0);
+        ReturnResult<IPagedData<Users>> GetUsers(string filter = "", string profession = "全部",
+            int userType = 2, int pageIndex = 1, int pageSize = 10, int sortType = 0);
         #endregion
 
         #region 用户关注(粉丝)信息

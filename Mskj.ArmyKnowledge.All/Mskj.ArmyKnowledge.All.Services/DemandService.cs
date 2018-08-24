@@ -3,6 +3,7 @@ using Mskj.ArmyKnowledge.All.ServiceContracts;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using QuickShare.LiteFramework.Base;
 using QuickShare.LiteFramework.Common;
+using QuickShare.LiteFramework.Common.Extenstions;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -106,11 +107,16 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 审核需求信息
         /// </summary>
-        public ReturnResult<bool> AuditDemand(Demand demand)
+        public ReturnResult<bool> AuditDemand(string id)
         {
-            if (demand.demandstate != 1)
+            var demand = GetOne(p => p.id == id);
+            if (demand == null || string.IsNullOrEmpty(demand.id))
             {
-                return new ReturnResult<bool>(-2, "待审核的需求信息状态不是[提交审核状态]！");
+                return new ReturnResult<bool>(-2, "未找到对应需求信息！");
+            }
+            else if (demand.demandstate != 1)
+            {
+                return new ReturnResult<bool>(-2, "需求信息状态不是[提交审核状态]！");
             }
             demand.demandstate = 2;
             return UpdateDemand(demand);
@@ -118,17 +124,19 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 提交审核需求信息
         /// </summary>
-        public ReturnResult<bool> SubmitDemand(Demand demand)
+        public ReturnResult<bool> SubmitDemand(string id)
         {
-            if (demand.demandstate != 0)
+            var demand = GetOne(p => p.id == id);
+            if (demand == null || string.IsNullOrEmpty(demand.id))
             {
-                return new ReturnResult<bool>(-2, "待提交审核的认证信息状态不是[新建状态]！");
+                return new ReturnResult<bool>(-2, "未找到对应需求信息！");
             }
-            else
+            else if (demand.demandstate != 1)
             {
-                demand.demandstate = 1;
-                return UpdateDemand(demand);
+                return new ReturnResult<bool>(-2, "需求信息状态不是[新建状态]！");
             }
+            demand.demandstate = 1;
+            return UpdateDemand(demand);
         }
         /// <summary>
         /// 保存并提交需求信息
@@ -176,20 +184,26 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Demand>> GetDemands(string category = "全部",
-            int state = 0,int pageIndex = 1,int pageSize = 10, int sortType = 0)
+        public ReturnResult<IPagedData<Demand>> GetDemands(string filter = "", string category = "全部",
+            int state = 2, int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            Expression<Func<Demand, bool>> expression;
-            if ("全部".Equals(category))
+            Expression<Func<Demand, bool>> exp1 = x => true;
+            Expression<Func<Demand, bool>> exp2 = x => true;
+            Expression<Func<Demand, bool>> exp3 = x => true;
+            if (state != -1)
             {
-                expression = x => x.demandstate == state;
+                exp1 = x => x.demandstate == state;
             }
-            else
+            if (!"全部".Equals(category))
             {
-                expression = x => x.demandstate == state && x.category == category;
-
+                exp2 = x => x.category == category;
             }
-            return GetBaseDemands(pageIndex, pageSize, sortType, expression);
+            if(!string.IsNullOrEmpty(filter))
+            {
+                exp3 = x => x.title.Contains(filter) || x.content.Contains(filter) ||
+                    x.category.Contains(filter);
+            }
+            return GetBaseDemands(pageIndex, pageSize, sortType, exp1.AndAlso(exp2).AndAlso(exp3));
         }
         /// <summary>
         /// 分页获取需求列表(封装排序方式)

@@ -35,7 +35,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
                 string.IsNullOrEmpty(question.Content) || string.IsNullOrEmpty(question.Title) || 
                 string.IsNullOrEmpty(question.HomeImage))
             {
-                return new ReturnResult<QuestionModel>(-2, "传入参数错误!");
+                return new ReturnResult<QuestionModel>(-4, "传入参数错误!");
             }
             return _QuestionService.AddQuestion(question.ToModel());
         }
@@ -53,18 +53,26 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("SubmitQuestion")]
         [HttpPost]
-        public object SubmitQuestion(QuestionModel question)
+        public object SubmitQuestion(PostId question)
         {
-            return _QuestionService.SubmitQuestion(question);
+            if (question == null || string.IsNullOrEmpty(question.Id))
+            {
+                return new ReturnResult<QuestionModel>(-4, "传入参数错误!");
+            }
+            return _QuestionService.SubmitQuestion(question.Id);
         }
         /// <summary>
         /// 审核通过问题
         /// </summary>
         [Route("AuditQuestion")]
         [HttpPost]
-        public object AuditQuestion(QuestionModel question)
+        public object AuditQuestion(PostId question)
         {
-            return _QuestionService.AuditQuestion(question);
+            if (question == null || string.IsNullOrEmpty(question.Id))
+            {
+                return new ReturnResult<QuestionModel>(-4, "传入参数错误!");
+            }
+            return _QuestionService.AuditQuestion(question.Id);
         }
         /// <summary>
         /// 删除问题

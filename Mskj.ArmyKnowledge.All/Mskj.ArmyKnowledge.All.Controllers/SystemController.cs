@@ -18,14 +18,21 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         private readonly IMsgService _MsgService;
         private readonly INoticeService _NoticeService;
         private readonly IUsersService _UsersService;
+        private readonly IProductService _ProductService;
+        private readonly IDemandService _DemandService;
+        private readonly IQuestionService _QuestionService;
 
         public SystemController(ISystemService systemService, IMsgService msgService,
-            INoticeService noticeService, IUsersService usersService)
+            INoticeService noticeService, IUsersService usersService, IDemandService demandService,
+            IProductService productService, IQuestionService questionService)
         {
             _SystemService = systemService;
             _MsgService = msgService;
             _NoticeService = noticeService;
             _UsersService = usersService;
+            _DemandService = demandService;
+            _ProductService = productService;
+            _QuestionService = questionService;
         }
         #endregion
 
@@ -39,6 +46,9 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         {
             return _SystemService.GetVersionInfo();
         }
+        #endregion
+
+        #region 图片上传
         /// <summary>
         /// 文件上传
         /// </summary>
@@ -50,7 +60,48 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             string fileName = @"D:\abc.jpg";
             //保存文件，此处跟普通MVC一样
             context.Request.Files[0].SaveAs(fileName);
-            return new ReturnResult<string>(1,"文件地址","上传成功");
+            return new ReturnResult<string>(1, "文件地址", "上传成功");
+        }
+        #endregion
+
+        #region 全文检索
+        /// <summary>
+        /// 获取版本信息
+        /// </summary>
+        [Route("GetFilterInfos")]
+        [HttpGet]
+        public object GetFilterInfos(string filter,int pageIndex = 1,int pageSize = 10)
+        {
+            if(string.IsNullOrEmpty(filter))
+            {
+                return new ReturnResult<FtrModel>(-4, "请输入搜索内容！");
+            }
+            FtrModel ftr = new FtrModel();
+            //用户
+            var user = _UsersService.GetUsers(filter:filter, userType:-1, pageIndex: pageIndex,pageSize: pageSize);
+            if (user.code > 0)
+            {
+                ftr.UserInfo = user.data;
+            }
+            //提问
+            var question = _QuestionService.GetQuestions(filter: filter, pageIndex: pageIndex, pageSize: pageSize);
+            if(question.code > 0)
+            {
+                ftr.QuestionInfo = question.data;
+            }
+            //产品
+            var product = _ProductService.GetProducts(filter: filter, pageIndex: pageIndex, pageSize: pageSize);
+            if (product.code > 0)
+            {
+                ftr.ProductInfo = product.data;
+            }
+            //需求
+            var demand = _DemandService.GetDemands(filter: filter, pageIndex: pageIndex, pageSize: pageSize);
+            if (demand.code > 0)
+            {
+                ftr.DemandInfo = demand.data;
+            }
+            return new ReturnResult<FtrModel>(1,ftr);
         }
         #endregion
 
@@ -157,6 +208,18 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         public object GetMsgDetail(string filter = "",int pageIndex = 1, int pageSize = 30)
         {
             return _MsgService.GetMsgDetail(filter,pageIndex,pageSize);
+        }
+        /// <summary>
+        /// 获取用户的消息列表
+        /// </summary>
+        /// <param name="userid">用户ID</param>
+        /// <param name="pageIndex">页数</param>
+        /// <param name="pageSize">每页条数</param>
+        [Route("GetUserMsgs")]
+        [HttpGet]
+        public object GetUserMsgs(string userid, int pageIndex = 1, int pageSize = 30)
+        {
+            return _MsgService.GetUserMsgs(userid, pageIndex, pageSize);
         }
         #endregion
 

@@ -209,6 +209,7 @@ begin
 	   nickname1            varchar(32)                    null,		--用户1昵称
 	   userid2              varchar(36)                    null,		--用户2ID
 	   nickname2            varchar(32)                    null,		--用户2昵称
+	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_MSG primary key clustered (id)
 	);
 end

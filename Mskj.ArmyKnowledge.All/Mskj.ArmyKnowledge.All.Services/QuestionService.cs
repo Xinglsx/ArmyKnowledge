@@ -93,11 +93,16 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 提交审核问题
         /// </summary>
-        public ReturnResult<bool> SubmitQuestion(QuestionModel question)
+        public ReturnResult<bool> SubmitQuestion(string id)
         {
+            QuestionModel question = GetOne(p => p.Id == id);
+            if(question == null || string.IsNullOrEmpty(question.Id))
+            {
+                return new ReturnResult<bool>(-2, "未找到对应提问！");
+            }
             if (question.QuestionState != 0)
             {
-                return new ReturnResult<bool>(-2, "问题状态不是[新建状态]！");
+                return new ReturnResult<bool>(-2, "提问状态不是[新建状态]！");
             }
             question.QuestionState = 1;
             return this.UpdateQuestion(question);
@@ -105,11 +110,16 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 审核通过问题
         /// </summary>
-        public ReturnResult<bool> AuditQuestion(QuestionModel question)
+        public ReturnResult<bool> AuditQuestion(string id)
         {
-            if(question.QuestionState != 1)
+            QuestionModel question = GetOne(p => p.Id == id);
+            if (question == null || string.IsNullOrEmpty(question.Id))
             {
-                return new ReturnResult<bool>(-2, "问题状态不是[提交审核状态]！");
+                return new ReturnResult<bool>(-2, "未找到对应提问！");
+            }
+            if (question.QuestionState != 0)
+            {
+                return new ReturnResult<bool>(-2, "提问状态不是[提交审核状态]！");
             }
             question.QuestionState = 2;
             return this.UpdateQuestion(question);

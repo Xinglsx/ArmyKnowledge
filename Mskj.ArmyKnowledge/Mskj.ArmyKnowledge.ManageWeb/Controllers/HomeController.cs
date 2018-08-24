@@ -37,5 +37,10 @@ namespace Mskj.ArmyKnowledge.ManageWeb.Controllers
 
             return View();
         }
+        public ActionResult ProductAuditDetail()
+        {
+            ViewBag.Message = "产品明细审核";
+            return View();
+        }
     }
 }

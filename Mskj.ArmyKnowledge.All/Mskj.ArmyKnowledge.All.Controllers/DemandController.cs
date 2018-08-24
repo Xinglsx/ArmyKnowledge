@@ -31,7 +31,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
                 string.IsNullOrEmpty(demand.Content) || string.IsNullOrEmpty(demand.Title) ||
                 string.IsNullOrEmpty(demand.Homeimage))
             {
-                return new ReturnResult<Demand>(-2, "参数传入错误");
+                return new ReturnResult<Demand>(-4, "参数传入错误！");
             }
             return _DemandService.AddDemand(demand.ToModel());
         }
@@ -54,7 +54,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         {
             if (demand == null || string.IsNullOrEmpty(demand.Id))
             {
-                return new ReturnResult<bool>(-2, "参数传入错误");
+                return new ReturnResult<bool>(-4, "参数传入错误！");
             }
             return _DemandService.DeleteDemand(demand.Id);
         }
@@ -63,18 +63,26 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("AuditDemand")]
         [HttpPost]
-        public object AuditDemand(Demand demand)
+        public object AuditDemand(PostId demand)
         {
-            return _DemandService.AuditDemand(demand);
+            if(demand == null || string.IsNullOrEmpty(demand.Id))
+            {
+                return new ReturnResult<bool>(-4, "参数传入错误！");
+            }
+            return _DemandService.AuditDemand(demand.Id);
         }
         /// <summary>
         /// 提交审核需求信息
         /// </summary>
         [Route("SubmitDemand")]
         [HttpPost]
-        public object SubmitDemand(Demand demand)
+        public object SubmitDemand(PostId demand)
         {
-            return _DemandService.SubmitDemand(demand);
+            if (demand == null || string.IsNullOrEmpty(demand.Id))
+            {
+                return new ReturnResult<bool>(-4, "参数传入错误！");
+            }
+            return _DemandService.SubmitDemand(demand.Id);
         }
         /// <summary>
         /// 保存并提交需求信息
@@ -122,10 +130,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <returns></returns>
         [Route("GetDemands")]
         [HttpGet]
-        public object GetDemands(string category = "全部",int state = 0, int pageIndex = 1, 
-            int pageSize = 10, int sortType = 0)
+        public object GetDemands(string filter = "",string category = "全部",int state = 0, 
+            int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            return _DemandService.GetDemands(category, state, pageIndex, pageSize, sortType);
+            return _DemandService.GetDemands(filter,category, state, pageIndex, pageSize, sortType);
         }
         #endregion
     }

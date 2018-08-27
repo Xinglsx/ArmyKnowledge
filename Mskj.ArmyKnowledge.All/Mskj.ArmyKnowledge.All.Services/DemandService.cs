@@ -9,8 +9,9 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
+using System.Configuration;
+using System.IO;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -235,6 +236,56 @@ namespace Mskj.ArmyKnowledge.All.Services
             sorts.Add(new SortInfo<Demand>(p => new { p.publishtime },SortOrder.Descending));
             return new ReturnResult<IPagedData<Demand>>(1,
                     GetPage(pageIndex, pageSize, sorts, expression));
+        }
+        #endregion
+
+        #region 图片上传
+        /// <summary>
+        /// 图片上传
+        /// </summary>
+        public ReturnResult<string> UploadFile()
+        {
+            HttpContext context = HttpContext.Current;
+            string imagePath = ConfigurationManager.AppSettings["ImagePath"];
+            string localhost = ConfigurationManager.AppSettings["Localhost"];
+            string fileUrls = string.Empty;
+            if (!imagePath.EndsWith("\\"))
+            {
+                imagePath += "\\";
+            }
+            if (!localhost.EndsWith("/"))
+            {
+                localhost += "/";
+            }
+            imagePath += "demands\\";
+            localhost += "demands/";
+            if (!Directory.Exists(imagePath))
+            {
+                Directory.CreateDirectory(imagePath);
+            }
+            if (context.Request.Files.Count > 0)
+            {
+                try
+                {
+                    for (int i = 0; i < context.Request.Files.Count; i++)
+                    {
+                        string fileTempName = Guid.NewGuid().ToString() + ".jpg";
+                        string fileName = imagePath + fileTempName;
+                        context.Request.Files[i].SaveAs(fileName);
+                        if (i != 0)
+                        {
+                            fileUrls += ",";
+                        }
+                        fileUrls += localhost +  fileTempName;
+                    }
+                }
+                catch (Exception exp)
+                {
+                    return new ReturnResult<string>(-1, exp.Message);
+                }
+
+            }
+            return new ReturnResult<string>(1, fileUrls, "上传成功");
         }
         #endregion
     }

@@ -9,6 +9,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
 {
     public interface IProductService : IBaseService<Product>,IServiceContract
     {
+        #region 产品信息操作
         /// <summary>
         /// 新增产品信息
         /// </summary>
@@ -65,5 +66,13 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <returns></returns>
         ReturnResult<IPagedData<Product>> GetProducts(string filter = "", string category = "全部",
             int state = -1, int pageIndex = 1, int pageSize = 10, int sortType = 0);
+        #endregion
+
+        #region 图片上传
+        /// <summary>
+        /// 图片上传
+        /// </summary>
+        ReturnResult<string> UploadFile();
+        #endregion
     }
 }

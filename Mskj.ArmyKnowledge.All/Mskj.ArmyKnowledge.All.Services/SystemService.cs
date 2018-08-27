@@ -105,6 +105,10 @@ namespace Mskj.ArmyKnowledge.All.Services
         }
         #endregion
 
+        #region 图片上传
+
+        #endregion
+
         #region 阿里云发送消息
         /// <summary>
         /// 发送信息到指定的手机号码

@@ -141,5 +141,12 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         ReturnResult<IPagedData<QuestionModel>> GetCollectionQuestions(string userid,
             int pageIndex = 1, int pageSize = 10, string filter = "");
         #endregion
+
+        #region 图片上传
+        /// <summary>
+        /// 图片上传
+        /// </summary>
+        ReturnResult<string> UploadFile();
+        #endregion
     }
 }

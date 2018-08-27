@@ -50,17 +50,31 @@ namespace Mskj.ArmyKnowledge.All.Controllers
 
         #region 图片上传
         /// <summary>
-        /// 文件上传
+        /// 产品图片上传
         /// </summary>
-        [Route("UploadFile")]
-        [HttpGet]
-        public object UploadFile()
+        [Route("UploadProductImages")]
+        [HttpPost]
+        public object UploadProductImages()
         {
-            HttpContext context = HttpContext.Current;
-            string fileName = @"D:\abc.jpg";
-            //保存文件，此处跟普通MVC一样
-            context.Request.Files[0].SaveAs(fileName);
-            return new ReturnResult<string>(1, "文件地址", "上传成功");
+            return _ProductService.UploadFile();
+        }
+        /// <summary>
+        /// 需求图片上传
+        /// </summary>
+        [Route("UploadDemandImages")]
+        [HttpPost]
+        public object UploadDemandImages()
+        {
+            return _ProductService.UploadFile();
+        }
+        /// <summary>
+        /// 提问图片上传
+        /// </summary>
+        [Route("UploadQuestionImages")]
+        [HttpPost]
+        public object UploadQuestionImages()
+        {
+            return _ProductService.UploadFile();
         }
         #endregion
 

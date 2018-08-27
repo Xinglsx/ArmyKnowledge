@@ -15,6 +15,11 @@ namespace Mskj.ArmyKnowledge.All.EntityConfigs
             this.Property(p => p.nickname).HasMaxLength(32);
             this.Property(p => p.profession).HasMaxLength(64);
             this.Property(p => p.organization).HasMaxLength(64);
+            this.Property(p => p.sex).HasMaxLength(4);
+            this.Property(p => p.area).HasMaxLength(128);
+            this.Property(p => p.position).HasMaxLength(32);
+            this.Property(p => p.goodpoint).HasMaxLength(128);
+            this.Property(p => p.registrationid).HasMaxLength(128);
             this.Property(p => p.creditcode).HasMaxLength(32);
             this.Property(p => p.phonenumber).HasMaxLength(11);
             this.Property(p => p.avatar).HasMaxLength(256);

@@ -9,6 +9,8 @@ using QuickShare.LiteFramework.Common;
 using System.Linq.Expressions;
 using System.Data.SqlClient;
 using QuickShare.LiteFramework.Common.Extenstions;
+using Jiguang.JPush;
+using Jiguang.JPush.Model;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -18,18 +20,22 @@ namespace Mskj.ArmyKnowledge.All.Services
         private readonly IRepository<Msg> _MsgRepository;
         private readonly IRepository<MsgDetail> _MsgDetailRepository;
         private readonly IRepository<Notice> _NoticeRepository;
+        private readonly IRepository<Users> _UserRepository;
+        private static JPushClient client = new JPushClient("2e6a365d5d05e1097e38339c", "af70172e784fd7209373746d");
 
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
         /// </summary>
         /// <param name="goodsRepository"></param>
         public MsgService(IRepository<Msg> msgRepository,
-            IRepository<MsgDetail> msgDetailRepository, IRepository<Notice> noticeRepository) :
+            IRepository<MsgDetail> msgDetailRepository, IRepository<Notice> noticeRepository,
+            IRepository<Users> userRepository) :
             base(msgRepository)
         {
             this._MsgRepository = msgRepository;
             this._MsgDetailRepository = msgDetailRepository;
             this._NoticeRepository = noticeRepository;
+            this._UserRepository = userRepository;
         }
         #endregion
 
@@ -93,6 +99,30 @@ namespace Mskj.ArmyKnowledge.All.Services
                 {
                     msg.updatetime = DateTime.Now;
                     Update(msg);
+                }
+                string acccptUserid = msg.userid1 == msgDetail.senduserid ? msg.userid2 :
+                    msg.userid1;
+                string registrationid = _UserRepository.Find().Where(p => p.id == acccptUserid)
+                    .Select(q => q.registrationid).FirstOrDefault();
+                if (string.IsNullOrEmpty(registrationid))
+                {
+                    //消息保存成功，发起推送
+                    PushPayload pushPayload = new PushPayload()
+                    {
+                        Platform = new List<string> { "android" },
+                        Audience = new Audience
+                        {
+                            RegistrationId = new List<string>{
+                                registrationid,
+                            },
+                        },
+                        Message = new Message
+                        {
+                            Title = msgDetail.sendnickname + "发给您一条私信！",
+                            Content = msgDetail.content,
+                        },
+                    };
+                    var response = client.SendPush(pushPayload);
                 }
                 return new ReturnResult<MsgDetail>(1, msgDetail);
             }
@@ -158,16 +188,17 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
         }
         /// <summary>
-        /// 获取消息明细列表
+        /// 获取消息明细信息
         /// </summary>
         /// <param name="filter">查询关键字</param>
         /// <param name="pageIndex">页数</param>
         /// <param name="pageSize">每页条数</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<MsgDetail>> GetMsgDetail(string filter = "",
+        public ReturnResult<IPagedData<MsgDetail>> GetMsgDetail(string msgId, string filter = "",
             int pageIndex = 1, int pageSize = 30)
         {
-            var res = _MsgDetailRepository.Find().Where(p => filter == "" || (filter != "" && p.content.Contains(filter)))
+            var res = _MsgDetailRepository.Find().Where(p => p.msgid == msgId && 
+                (filter == "" || (filter != "" && p.content.Contains(filter))))
                 .OrderByDescending(q => q.sendtime).ToPage(pageIndex, pageSize);
             return new ReturnResult<IPagedData<MsgDetail>>(1, res);
         }

@@ -11,6 +11,11 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string nickname { get; set; }
         public string profession { get; set; }
         public string organization { get; set; }
+        public string sex { get; set; }
+        public string area { get; set; }
+        public string position { get; set; }
+        public string goodpoint { get; set; }
+        public string registrationid { get; set; }
         public string creditcode { get; set; }
         public string phonenumber { get; set; }
         public string avatar { get; set; }

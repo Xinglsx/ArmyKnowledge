@@ -19,6 +19,8 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         public string Author { get; set; }
         [JsonProperty("authornickname")]
         public string AuthorNickname { get; set; }
+        [JsonProperty("avatar")]
+        public string Avatar { get; set; }
         [JsonProperty("publishtime")]
         public DateTime Publishtime { get; set; }
         [JsonProperty("introduction")]
@@ -44,7 +46,7 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         [JsonProperty("answers")]
         public List<Answer> Answers { get; set; }
         [JsonProperty("iscollection")]
-        public bool IsCollect { get; set; }
+        public bool? IsCollect { get; set; }
     }
    
 }

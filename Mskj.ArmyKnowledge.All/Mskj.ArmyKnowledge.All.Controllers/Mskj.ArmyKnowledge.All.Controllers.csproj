@@ -65,6 +65,10 @@
       <Project>{df073786-5147-43a2-9938-0c387e398195}</Project>
       <Name>Mskj.ArmyKnowledge.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\Mskj.ArmyKnowledge\Mskj.ArmyKnowledge.Jiguang\Mskj.ArmyKnowledge.Jiguang.csproj">
+      <Project>{174acc0d-cfca-4472-97ba-500d81aa6576}</Project>
+      <Name>Mskj.ArmyKnowledge.Jiguang</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework\QuickShare.LiteFramework.csproj">
       <Project>{56f059b9-0aa7-4f5b-aa7f-69512cdb70b5}</Project>
       <Name>QuickShare.LiteFramework</Name>

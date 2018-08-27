@@ -61,6 +61,12 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="phoneNumber">手机号</param>
         /// <returns></returns>
         ReturnResult<Users> GetUserByPhoneNumber(string phoneNumber);
+        /// <summary>
+        /// 通过用户ID获取用户信息
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns></returns>
+        ReturnResult<Users> GetUserById(string id);
         #endregion
 
         #region 用户认证信息

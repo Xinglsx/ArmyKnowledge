@@ -80,7 +80,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
 
         #region 全文检索
         /// <summary>
-        /// 获取版本信息
+        /// 获取检索结果
         /// </summary>
         [Route("GetFilterInfos")]
         [HttpGet]
@@ -219,9 +219,9 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <returns></returns>
         [Route("GetMsgDetail")]
         [HttpGet]
-        public object GetMsgDetail(string filter = "",int pageIndex = 1, int pageSize = 30)
+        public object GetMsgDetail(string msgId, string filter = "",int pageIndex = 1, int pageSize = 30)
         {
-            return _MsgService.GetMsgDetail(filter,pageIndex,pageSize);
+            return _MsgService.GetMsgDetail(msgId,filter,pageIndex,pageSize);
         }
         /// <summary>
         /// 获取用户的消息列表

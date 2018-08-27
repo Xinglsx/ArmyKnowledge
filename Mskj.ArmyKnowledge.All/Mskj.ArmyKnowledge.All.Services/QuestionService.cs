@@ -24,17 +24,19 @@ namespace Mskj.ArmyKnowledge.All.Services
         private readonly IRepository<Question> _QuestionRepository;
         private readonly IRepository<Answer> _AnswerDetailRepository;
         private readonly IRepository<Record> _RecordRepository;
+        private readonly IRepository<Users> _UserRepository;
 
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
         /// </summary>
         public QuestionService(IRepository<Question> questionRepository,
-            IRepository<Answer> answerDetailRepository,
+            IRepository<Answer> answerDetailRepository, IRepository<Users> userRepository,
             IRepository<Record> recordRepository) :
             base(questionRepository)
         {
             this._QuestionRepository = questionRepository;
             this._AnswerDetailRepository = answerDetailRepository;
+            this._UserRepository = userRepository;
             this._RecordRepository = recordRepository;
         }
 
@@ -214,32 +216,47 @@ namespace Mskj.ArmyKnowledge.All.Services
         private ReturnResult<IPagedData<QuestionModel>> GetBaseQuestionModels(int pageIndex,
             int pageSize, int sortType, Expression<Func<QuestionModel, bool>> expression)
         {
-            List<SortInfo<QuestionModel>> sorts = new List<SortInfo<QuestionModel>>();
-            SortInfo<QuestionModel> sort;
+            var res = (from question in _QuestionRepository.Find()
+                       join user in _UserRepository.Find() on question.author equals user.id
+                       join record in _RecordRepository.Find() on question.id equals record.questionid
+                       select new QuestionModel {
+                           Author = user.id,
+                           AuthorNickname = user.nickname,
+                           Avatar = user.avatar,
+                           CommentCount = question.commentcount,
+                           Content = question.content,
+                           HeatCount = question.heatcount,
+                           HomeImage = question.homeimage,
+                           Id = question.id,
+                           Images = question.images,
+                           Introduction = question.introduction,
+                           IsCollect = record.iscollect,
+                           IsRecommend = question.isrecommend,
+                           PraiseCount = question.praisecount,
+                           Publishtime = question.publishtime,
+                           QuestionState = question.questionstate,
+                           ReadCount = question.readcount,
+                           Title = question.title,
+                       });
             switch (sortType)
             {
                 case 0:
-                    sort = new SortInfo<QuestionModel>(p => new { p.Publishtime },
-                        SortOrder.Descending);
+                    res = res.OrderByDescending(p => p.Publishtime);
                     break;
                 case 1:
-                    sort = new SortInfo<QuestionModel>(p => new { p.HeatCount },
-                        SortOrder.Descending);
+                    res = res.OrderByDescending(p => p.HeatCount).OrderByDescending(p => p.Publishtime);
                     break;
                 case 2:
-                    sort = new SortInfo<QuestionModel>(p => new { p.CommentCount },
-                        SortOrder.Descending);
+                    res = res.OrderByDescending(p => p.CommentCount).OrderByDescending(p => p.Publishtime);
                     break;
                 case 3:
                 default:
-                    sort = new SortInfo<QuestionModel>(p => new { p.Publishtime },
-                        SortOrder.Descending);
+                    res = res.OrderByDescending(p => p.Publishtime);
                     break;
             }
-            sorts.Add(sort);
-            sorts.Add(new SortInfo<QuestionModel>(p => new { p.Publishtime }, SortOrder.Descending));
-            return new ReturnResult<IPagedData<QuestionModel>>(1,
-                    GetPage(pageIndex, pageSize, sorts, expression));
+            var result = res.ToPage(pageIndex, pageSize);
+
+            return new ReturnResult<IPagedData<QuestionModel>>(1, result);
         }
         /// <summary>
         /// 分页获取问题的回答

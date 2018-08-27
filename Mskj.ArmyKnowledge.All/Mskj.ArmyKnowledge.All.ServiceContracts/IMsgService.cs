@@ -40,7 +40,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageIndex">页数</param>
         /// <param name="pageSize">每页条数</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<MsgDetail>> GetMsgDetail(string filter = "",
+        ReturnResult<IPagedData<MsgDetail>> GetMsgDetail(string msgId, string filter = "",
             int pageIndex = 1, int pageSize = 30);
         /// <summary>
         /// 获取用户的消息列表

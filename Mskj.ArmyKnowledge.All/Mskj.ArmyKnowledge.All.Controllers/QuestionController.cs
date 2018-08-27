@@ -32,8 +32,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         public object AddQuestion(PostQuestion question)
         {
             if(question == null || string.IsNullOrEmpty(question.Author) || 
-                string.IsNullOrEmpty(question.Content) || string.IsNullOrEmpty(question.Title) || 
-                string.IsNullOrEmpty(question.HomeImage))
+                string.IsNullOrEmpty(question.Content) || string.IsNullOrEmpty(question.Title))
             {
                 return new ReturnResult<QuestionModel>(-4, "传入参数错误!");
             }

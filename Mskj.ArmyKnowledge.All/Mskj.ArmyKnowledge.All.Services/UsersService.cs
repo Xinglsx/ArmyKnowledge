@@ -279,7 +279,20 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             return new ReturnResult<Users>(1, temp);
         }
-
+        /// <summary>
+        /// 通过用户ID获取用户信息
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns></returns>
+        public ReturnResult<Users> GetUserById(string id)
+        {
+            var temp = GetOne(p => p.id == id);
+            if (temp == null || string.IsNullOrEmpty(temp.id))
+            {
+                return new ReturnResult<Users>(-2, "用户ID不存在！");
+            }
+            return new ReturnResult<Users>(1, temp);
+        }
         #endregion
 
         #region 用户认证信息

@@ -108,6 +108,17 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             return _UsersService.ChangePasswordByPhoneNumber(newPwd.PhoneNumber,
                 newPwd.NewPwd, newPwd.VerificationCode);
         }
+        /// <summary>
+        /// 通过用户ID获取用户信息
+        /// </summary>
+        /// <param name="id">ID</param>
+        /// <returns></returns>
+        [Route("GetUserById")]
+        [HttpGet]
+        public object GetUserById(string id)
+        {
+            return _UsersService.GetUserById(id);
+        }
         #endregion
 
         #region 用户认证信息处理

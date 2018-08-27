@@ -28,8 +28,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         public object AddDemand(PostDemand demand)
         {
             if (demand == null || string.IsNullOrEmpty(demand.Author) ||
-                string.IsNullOrEmpty(demand.Content) || string.IsNullOrEmpty(demand.Title) ||
-                string.IsNullOrEmpty(demand.Homeimage))
+                string.IsNullOrEmpty(demand.Content))
             {
                 return new ReturnResult<Demand>(-4, "参数传入错误！");
             }

@@ -29,12 +29,17 @@ begin
 	   loginname            varchar(20)                    null,		--登录名
 	   pwd					varchar(64)                    null,		--密码（加密后）
 	   nickname             varchar(32)                    null,		--昵称
-	   profession           varchar(64)                    null,		--专业
-	   organization         varchar(64)                    null,		--组织
+	   profession           varchar(64)                    null,		--专业（行业）
+	   organization         varchar(64)                    null,		--组织（学校、工作单位、企业等）
+	   sex					varchar(4)					   null,		--性别
+	   area					varchar(128)				   null,		--所在地区
+	   position				varchar(32)					   null,		--职位
+	   goodpoint			varchar(128)				   null,		--擅长
+	   registrationid		varchar(64)					   null,		--极光ID
 	   creditcode           varchar(32)                    null,		--信用代码
 	   phonenumber          varchar(11)                    null,		--电话号码
 	   avatar               varchar(256)                   null,		--头像地址
-	   signatures           varchar(128)                   null,		--个性签名
+	   signatures           varchar(128)                   null,		--签名（简介）
 	   usertype             int                            null,		--用户类别 
 																		--0 注册用户
 																		--1 个人认证用户
@@ -54,6 +59,7 @@ begin
 	   fanscount            int                            null,		--关注数
 	   userstate            int                            null,		--用户状态 0 启用 1停用
 	   registertime			datetime					   null,		--注册时间
+
 	   constraint PK_USERS primary key clustered (id)
 	);
 end

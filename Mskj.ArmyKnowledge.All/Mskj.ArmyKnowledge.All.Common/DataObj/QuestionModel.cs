@@ -1,6 +1,7 @@
 ﻿using Mskj.ArmyKnowledge.All.Domains;
 using Newtonsoft.Json;
 using QuickShare.LiteFramework.Base;
+using QuickShare.LiteFramework.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +45,7 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         [JsonProperty("questionstate")]
         public int QuestionState { get; set; }
         [JsonProperty("answers")]
-        public List<Answer> Answers { get; set; }
+        public IPagedData<AnswerModel> Answers { get; set; }
         [JsonProperty("iscollection")]
         public bool? IsCollect { get; set; }
     }

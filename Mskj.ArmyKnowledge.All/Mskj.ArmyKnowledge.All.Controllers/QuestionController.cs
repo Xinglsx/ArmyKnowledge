@@ -149,9 +149,9 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("GetOneQuestion")]
         [HttpGet]
-        public object GetOneQuestion(string questionid)
+        public object GetOneQuestion(string questionid,int pageIndex = 1, int pageSize = 10)
         {
-            return _QuestionService.GetOneQuestion(questionid);
+            return _QuestionService.GetOneQuestion(questionid, pageIndex, pageSize);
         }
         /// <summary>
         /// 增加阅读数

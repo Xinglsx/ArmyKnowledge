@@ -292,12 +292,26 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Answer>> GetAnswers(
-            string questionId,int pageIndex = 1,int pageSize = 10)
+        public ReturnResult<IPagedData<AnswerModel>> GetAnswers( string questionId,
+            int pageIndex = 1,int pageSize = 10)
         {
-            IQueryable<Answer> query = _AnswerDetailRepository.Find().OrderByDescending(p => p.publishtime);
-            var res = query.ToPage(pageIndex, pageSize);
-            return new ReturnResult<IPagedData<Answer>>(1, res);
+            var res = (from answer in _AnswerDetailRepository.Find()
+                       join user in _UserRepository.Find() on answer.userid equals user.id
+                       where answer.questionid == questionId
+                       select new AnswerModel
+                       {
+                           Userid = user.id,
+                           Nickname = user.nickname,
+                           Avatar = user.avatar,
+                           Content = answer.content,
+                           Id = answer.id,
+                           Images = answer.images,
+                           Publishtime = answer.publishtime,
+                           Isadopt = answer.isadopt,
+                           Praisecount = answer.praisecount,
+                           Questionid = answer.questionid,
+                       }).OrderByDescending(p => p.Publishtime).ToPage(pageIndex,pageSize);
+            return new ReturnResult<IPagedData<AnswerModel>>(1, res);
         }
         /// <summary>
         /// 分页获取对应用户回答的问题
@@ -319,13 +333,16 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 获取一个问题
         /// </summary>
-        public ReturnResult<QuestionModel> GetOneQuestion(string questionId)
+        public ReturnResult<QuestionModel> GetOneQuestion(string questionId,
+            int pageIndex= 1, int pageSize = 10)
         {
-            QuestionModel question = this.GetOne(p => p.Id == questionId);
-            if(question != null)
+            QuestionModel question = GetOne(p => p.Id == questionId);
+            if(question != null && !string.IsNullOrEmpty(question.Id))
             {
-                question.Answers = _AnswerDetailRepository.Find().OrderByDescending(p => p.publishtime).
-                    Take(10).ToList();
+                question.Avatar = _UserRepository.Find().Where(p => p.id == question.Author)
+                .Select(q => q.avatar).FirstOrDefault();
+                var answers = GetAnswers(questionId, pageIndex, pageSize);
+                question.Answers =  answers.data;
                 return new ReturnResult<QuestionModel>(1, question);
             }
             else

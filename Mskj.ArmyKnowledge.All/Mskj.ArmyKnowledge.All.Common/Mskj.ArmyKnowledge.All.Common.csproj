@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataObj\AnswerModel.cs" />
     <Compile Include="DataObj\FtrModel.cs" />
     <Compile Include="DataObj\QuestionModel.cs" />
     <Compile Include="DataObj\UserFansModel.cs" />

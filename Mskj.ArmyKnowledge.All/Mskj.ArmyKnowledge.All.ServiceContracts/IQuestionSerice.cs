@@ -60,7 +60,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<Answer>> GetAnswers(
+        ReturnResult<IPagedData<AnswerModel>> GetAnswers(
             string questionId, int pageIndex = 1, int pageSize = 10);
         /// <summary>
         /// 分页获取对应用户回答的问题
@@ -73,7 +73,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <summary>
         /// 获取一个问题
         /// </summary>
-        ReturnResult<QuestionModel> GetOneQuestion(string questionId);
+        ReturnResult<QuestionModel> GetOneQuestion(string questionId, int pageIndex = 1, int pageSize = 10);
         /// <summary>
         /// 增加阅读数
         /// </summary>

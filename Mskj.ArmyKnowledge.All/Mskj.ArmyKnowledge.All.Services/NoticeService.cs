@@ -9,6 +9,8 @@ using QuickShare.LiteFramework.Common;
 using System.Linq.Expressions;
 using System.Data.SqlClient;
 using QuickShare.LiteFramework.Common.Extenstions;
+using Jiguang.JPush.Model;
+using Jiguang.JPush;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -16,6 +18,7 @@ namespace Mskj.ArmyKnowledge.All.Services
     {
         #region 构造函数
         private readonly IRepository<Notice> _NoticeRepository;
+        private static JPushClient client = new JPushClient("2e6a365d5d05e1097e38339c", "af70172e784fd7209373746d");
 
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
@@ -48,6 +51,18 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             if (saveResult)
             {
+                //消息保存成功，发起推送
+                PushPayload pushPayload = new PushPayload()
+                {
+                    Platform = new List<string> { "android" },
+                    Audience = "all",
+                    Message = new Message
+                    {
+                        Title = notice.title,
+                        Content = notice.content,
+                    },
+                };
+                var response = client.SendPush(pushPayload);
                 return new ReturnResult<Notice>(1, notice);
             }
             else

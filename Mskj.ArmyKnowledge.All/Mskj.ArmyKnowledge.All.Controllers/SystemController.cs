@@ -84,7 +84,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("GetFilterInfos")]
         [HttpGet]
-        public object GetFilterInfos(string filter,int pageIndex = 1,int pageSize = 10)
+        public object GetFilterInfos(string filter,int pageIndex = 1,int pageSize = 2)
         {
             if(string.IsNullOrEmpty(filter))
             {

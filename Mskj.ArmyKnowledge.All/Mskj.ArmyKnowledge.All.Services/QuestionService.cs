@@ -156,6 +156,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// 获取问题列表
         /// </summary>
         /// <param name="pageIndex">页数</param>
+        /// <param name="state">状态 -1 全部 </param>
         /// <param name="pageSize">每页条数</param>
         /// <param name="sortType">排序规则 0-首页 1-热榜 2-推荐 3-最新</param>
         /// <param name="filter">查询关键字</param>
@@ -163,20 +164,61 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<IPagedData<QuestionModel>> GetQuestions(string filter = "",
             int state = 2,int pageIndex = 1,int pageSize = 10, int sortType = 0)
         {
-            Expression<Func<QuestionModel, bool>> expression;
+            var res = (from question in _QuestionRepository.Find()
+                       join record in _RecordRepository.Find() on question.id equals record.questionid into temp 
+                       from tempRecord in temp.DefaultIfEmpty()
+                       join user in _UserRepository.Find() on question.author equals user.id
+                       select new QuestionModel
+                       {
+                           Author = user.id,
+                           AuthorNickname = user.nickname,
+                           Avatar = user.avatar,
+                           CommentCount = question.commentcount,
+                           Content = question.content,
+                           HeatCount = question.heatcount,
+                           HomeImage = question.homeimage,
+                           Id = question.id,
+                           Images = question.images,
+                           Introduction = question.introduction,
+                           IsCollect = tempRecord.iscollect,
+                           IsRecommend = question.isrecommend,
+                           PraiseCount = question.praisecount,
+                           Publishtime = question.publishtime,
+                           QuestionState = question.questionstate,
+                           ReadCount = question.readcount,
+                           Title = question.title,
+                       });
             if (string.IsNullOrEmpty(filter))
             {
-                expression = x => x.QuestionState == state;
+                res = res.Where(x => state == -1 || (state != -1 && x.QuestionState == state));
             }
             else
             {
-                expression = x => x.QuestionState == state && (
+                res = res.Where(x => (state == -1 || (state != -1 && x.QuestionState == state)) && (
                     x.Title.Contains(filter) || x.AuthorNickname.Contains(filter) ||
                     x.Introduction.Contains(filter) || x.Content.Contains(filter)
-                    );
+                    ));
 
             }
-            return GetBaseQuestionModels(pageIndex, pageSize, sortType, expression);
+            switch (sortType)
+            {
+                case 0:
+                    res = res.OrderByDescending(p => p.Publishtime);
+                    break;
+                case 1:
+                    res = res.OrderByDescending(p => p.HeatCount).OrderByDescending(p => p.Publishtime);
+                    break;
+                case 2:
+                    res = res.OrderByDescending(p => p.CommentCount).OrderByDescending(p => p.Publishtime);
+                    break;
+                case 3:
+                default:
+                    res = res.OrderByDescending(p => p.Publishtime);
+                    break;
+            }
+            var result = res.ToPage(pageIndex, pageSize);
+
+            return new ReturnResult<IPagedData<QuestionModel>>(1, result);
         }
         /// <summary>
         /// 分页获取用户对应的问题列表
@@ -216,47 +258,32 @@ namespace Mskj.ArmyKnowledge.All.Services
         private ReturnResult<IPagedData<QuestionModel>> GetBaseQuestionModels(int pageIndex,
             int pageSize, int sortType, Expression<Func<QuestionModel, bool>> expression)
         {
-            var res = (from question in _QuestionRepository.Find()
-                       join user in _UserRepository.Find() on question.author equals user.id
-                       join record in _RecordRepository.Find() on question.id equals record.questionid
-                       select new QuestionModel {
-                           Author = user.id,
-                           AuthorNickname = user.nickname,
-                           Avatar = user.avatar,
-                           CommentCount = question.commentcount,
-                           Content = question.content,
-                           HeatCount = question.heatcount,
-                           HomeImage = question.homeimage,
-                           Id = question.id,
-                           Images = question.images,
-                           Introduction = question.introduction,
-                           IsCollect = record.iscollect,
-                           IsRecommend = question.isrecommend,
-                           PraiseCount = question.praisecount,
-                           Publishtime = question.publishtime,
-                           QuestionState = question.questionstate,
-                           ReadCount = question.readcount,
-                           Title = question.title,
-                       });
+            List<SortInfo<QuestionModel>> sorts = new List<SortInfo<QuestionModel>>();
+            SortInfo<QuestionModel> sort;
             switch (sortType)
             {
                 case 0:
-                    res = res.OrderByDescending(p => p.Publishtime);
+                    sort = new SortInfo<QuestionModel>(p => new { p.Publishtime },
+                        SortOrder.Descending);
                     break;
                 case 1:
-                    res = res.OrderByDescending(p => p.HeatCount).OrderByDescending(p => p.Publishtime);
+                    sort = new SortInfo<QuestionModel>(p => new { p.HeatCount },
+                        SortOrder.Descending);
                     break;
                 case 2:
-                    res = res.OrderByDescending(p => p.CommentCount).OrderByDescending(p => p.Publishtime);
+                    sort = new SortInfo<QuestionModel>(p => new { p.CommentCount },
+                        SortOrder.Descending);
                     break;
                 case 3:
                 default:
-                    res = res.OrderByDescending(p => p.Publishtime);
+                    sort = new SortInfo<QuestionModel>(p => new { p.Publishtime },
+                        SortOrder.Descending);
                     break;
             }
-            var result = res.ToPage(pageIndex, pageSize);
-
-            return new ReturnResult<IPagedData<QuestionModel>>(1, result);
+            sorts.Add(sort);
+            sorts.Add(new SortInfo<QuestionModel>(p => new { p.Publishtime }, SortOrder.Descending));
+            return new ReturnResult<IPagedData<QuestionModel>>(1,
+                    GetPage(pageIndex, pageSize, sorts, expression));
         }
         /// <summary>
         /// 分页获取问题的回答

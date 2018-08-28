@@ -26,7 +26,6 @@ namespace Mskj.ArmyKnowledge.All.EntityConfigs
             this.Property(p => p.category).HasMaxLength(64);
             this.Property(p => p.contacts).HasMaxLength(32);
             this.Property(p => p.contactphone).HasMaxLength(11);
-            this.Property(p => p.prodetail).HasMaxLength(2000);
         }
     }
 }

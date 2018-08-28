@@ -102,9 +102,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                 }
                 string acccptUserid = msg.userid1 == msgDetail.senduserid ? msg.userid2 :
                     msg.userid1;
-                string registrationid = _UserRepository.Find().Where(p => p.id == acccptUserid)
-                    .Select(q => q.registrationid).FirstOrDefault();
-                if (string.IsNullOrEmpty(registrationid))
+                if (string.IsNullOrEmpty(acccptUserid))
                 {
                     //消息保存成功，发起推送
                     PushPayload pushPayload = new PushPayload()
@@ -112,8 +110,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                         Platform = new List<string> { "android" },
                         Audience = new Audience
                         {
-                            RegistrationId = new List<string>{
-                                registrationid,
+                            Alias = new List<string>{
+                                acccptUserid,
                             },
                         },
                         Message = new Message

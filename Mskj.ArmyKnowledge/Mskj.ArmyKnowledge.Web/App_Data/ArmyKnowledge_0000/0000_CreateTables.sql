@@ -76,7 +76,7 @@ begin
 	   userType				int							   null,		--用户类别 说明见用户表
 	   realname             varchar(32)                    null,		--真实姓名
 	   idcardno             varchar(18)                    null,		--身份证号
-	   idcardfrontimage     varchar(512)                   null,		--身份证下面图
+	   idcardfrontimage     varchar(512)                   null,		--身份证正面图
 	   idcardbackimage      varchar(512)                   null,		--身份证背面图
 	   organization         varchar(64)                    null,		--组织名称
 	   creditcode           varchar(32)                    null,		--社会信用代码
@@ -278,7 +278,7 @@ begin
 	   compositescore       decimal                        null,		--综合得分
 	   materialcode         varchar(32)                    null,		--物资编码
 	   productiondate       varchar(10)                    null,		--生产日期
-	   prodetail			varchar(2000)				   null,		--产品明细信息
+	   prodetail			text						   null,		--产品明细信息
 	   category             varchar(64)                    null,		--产品分类
 	   contacts             varchar(32)                    null,		--联系人
 	   contactphone         varchar(11)                    null,		--联系电话

@@ -398,6 +398,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 Users user = GetOne(p => p.id == cert.userid);
                 user.iscertification = 2;
+                user.compositescores += 100;//认证通过+100分
                 res = UpdateUser(user);
             }
             return res;
@@ -423,7 +424,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                 if (res.code > 0)
                 {
                     Users user = GetOne(p => p.id == cert.userid);
-                    user.iscertification = 2;
+                    user.iscertification = 1;
+                    user.compositescores += 10;//提交认证+10分
                     res = UpdateUser(user);
                 }
                 return res;
@@ -441,9 +443,11 @@ namespace Mskj.ArmyKnowledge.All.Services
             if (res.code > 1)
             {
                 Users user = GetOne(p => p.id == cert.userid);
-                user.iscertification = 2;
-                if(UpdateUser(user).code < 0)
+                user.iscertification = 1;
+                user.compositescores += 10;//提交认证+10分
+                if (UpdateUser(user).code < 0)
                 {
+                    logger.LogInfo(string.Format("认证申请成功，基础信息更新失败！,用户ID：{0}", cert.userid));
                     return new ReturnResult<Cert>(-2, "认证申请成功，基础信息更新失败！");
                 }
             }
@@ -563,10 +567,10 @@ namespace Mskj.ArmyKnowledge.All.Services
             //更新用户基本信息中的粉丝数
             var user1 = GetOne(p => p.id == userid);
             user1.fanscount += count;
-            this.UpdateUser(user1);
             var user2 = GetOne(p => p.id == followuserid);
-            user2.followcount += count; ;
-            this.UpdateUser(user2);
+            user2.followcount += count; 
+            user2.compositescores += count * 3;
+            _UsersRepository.Update(new List<Users> { user1, user2 });
         }
         /// <summary>
         /// 增加粉丝信息
@@ -786,6 +790,10 @@ namespace Mskj.ArmyKnowledge.All.Services
             var existFans = _FansRepository.Find().Where(p => 
                 (p.userid1 == userid1 && p.userid2 == userid2) || 
                 (p.userid1 == userid2 && p.userid2 == userid1)).FirstOrDefault();
+            if(existFans == null || string.IsNullOrEmpty(existFans.id))
+            {
+                return new ReturnResult<Fans>(-2, "两位用户均没有关注过对方！");
+            }
             return new ReturnResult<Fans>(1, existFans);
         }
         /// <summary>

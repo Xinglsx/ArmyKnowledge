@@ -64,6 +64,12 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             if(res)
             {
+                var user = _UserRepository.Find().Where(p => p.id == question.Author).FirstOrDefault();
+                if(user != null)
+                {
+                    user.compositescores += 1;//提个问题+1分
+                    _UserRepository.Update(user);
+                }
                 return new ReturnResult<QuestionModel>(1, question);
             }
             else
@@ -127,7 +133,17 @@ namespace Mskj.ArmyKnowledge.All.Services
                 return new ReturnResult<bool>(-2, "提问状态不是[提交审核状态]！");
             }
             question.QuestionState = 2;
-            return this.UpdateQuestion(question);
+            var res = UpdateQuestion(question);
+            if(res.code > 1)
+            {
+                var user = _UserRepository.Find().Where(p => p.id == question.Author).FirstOrDefault();
+                if (user != null)
+                {
+                    user.compositescores += 4;//审核通过问题+4分
+                    _UserRepository.Update(user);
+                }
+            }
+            return res;
         }
         /// <summary>
         /// 删除问题
@@ -468,6 +484,12 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 //评论增加成功时，更新主表。
                 UpdateCommentCount(answer.questionid);
+                var user = _UserRepository.Find().Where(p => p.id == answer.userid).FirstOrDefault();
+                if (user != null)
+                {
+                    user.compositescores += 2;//回答一个问题+2分
+                    _UserRepository.Update(user);
+                }
                 return new ReturnResult<bool>(1, res);
             }
             else

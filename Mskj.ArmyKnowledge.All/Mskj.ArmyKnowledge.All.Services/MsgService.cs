@@ -122,6 +122,13 @@ namespace Mskj.ArmyKnowledge.All.Services
                     };
                     var response = client.SendPush(pushPayload);
                 }
+                //每发一条私信，增加1分。
+                var users = _UserRepository.Find().Where(p => p.id == msg.userid1 || p.id == msg.userid2).ToList();
+                if (users != null && users.Count() > 0)
+                {
+                    users.ForEach(p => p.compositescores++);
+                    _UserRepository.Update(users);
+                }
                 return new ReturnResult<MsgDetail>(1, msgDetail);
             }
             else

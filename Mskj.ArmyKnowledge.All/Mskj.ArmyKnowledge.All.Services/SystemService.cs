@@ -10,6 +10,7 @@ using Aliyun.Acs.Core.Exceptions;
 using QuickShare.LiteFramework.Foundation;
 using QuickShare.LiteFramework;
 using Mskj.ArmyKnowledge.All.Common.DataObj;
+using System.Web;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -106,7 +107,62 @@ namespace Mskj.ArmyKnowledge.All.Services
         #endregion
 
         #region 图片上传
+        /// <summary>
+        /// 图片上传
+        /// </summary>
+        public ReturnResult<string> UploadFile()
+        {
+            HttpContext context = HttpContext.Current;
+            string imagePath = ConfigurationManager.AppSettings["ImagePath"];
+            string localhost = ConfigurationManager.AppSettings["Localhost"];
+            string fileUrls = string.Empty;
+            if (!imagePath.EndsWith("\\"))
+            {
+                imagePath += "\\";
+            }
+            if (!localhost.EndsWith("/"))
+            {
+                localhost += "/";
+            }
+            var dir = context.Request.Params["dir"];
+            if(!string.IsNullOrEmpty(dir))
+            {
+                imagePath += dir+"\\";
+                localhost += dir +"/";
+            }
+            else
+            {
+                imagePath += "default\\";
+                localhost += "default/";
+            }
+            if (!Directory.Exists(imagePath))
+            {
+                Directory.CreateDirectory(imagePath);
+            }
+            if (context.Request.Files.Count > 0)
+            {
+                try
+                {
+                    for (int i = 0; i < context.Request.Files.Count; i++)
+                    {
+                        string fileTempName = Guid.NewGuid().ToString() + ".jpg";
+                        string fileName = imagePath + fileTempName;
+                        context.Request.Files[i].SaveAs(fileName);
+                        if (i != 0)
+                        {
+                            fileUrls += ",";
+                        }
+                        fileUrls += localhost + fileTempName;
+                    }
+                }
+                catch (Exception exp)
+                {
+                    return new ReturnResult<string>(-1, exp.Message);
+                }
 
+            }
+            return new ReturnResult<string>(1, fileUrls, "上传成功");
+        }
         #endregion
 
         #region 阿里云发送消息

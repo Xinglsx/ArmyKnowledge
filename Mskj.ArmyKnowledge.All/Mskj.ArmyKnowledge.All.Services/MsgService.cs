@@ -196,7 +196,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             int pageIndex = 1, int pageSize = 30)
         {
             var res = _MsgDetailRepository.Find().Where(p => p.msgid == msgId && 
-                (filter == "" || (filter != "" && p.content.Contains(filter))))
+                (filter == null || filter == "" || (filter != null && filter != "" && p.content.Contains(filter))))
                 .OrderByDescending(q => q.sendtime).ToPage(pageIndex, pageSize);
             return new ReturnResult<IPagedData<MsgDetail>>(1, res);
         }

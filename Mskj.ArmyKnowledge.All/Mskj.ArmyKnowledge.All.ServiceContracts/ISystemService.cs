@@ -16,6 +16,14 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         ReturnResult<VersionInfo> GetVersionInfo();
         #endregion
 
+        #region 图片上传
+        /// <summary>
+        /// 图片上传
+        /// </summary>
+        ReturnResult<string> UploadFile();
+        #endregion
+
+
         #region 阿里云发送消息
         /// <summary>
         /// 阿里云往指定手机号发送验证码

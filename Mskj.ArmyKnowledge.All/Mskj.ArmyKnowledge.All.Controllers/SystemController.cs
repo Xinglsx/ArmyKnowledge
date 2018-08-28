@@ -52,29 +52,11 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <summary>
         /// 产品图片上传
         /// </summary>
-        [Route("UploadProductImages")]
+        [Route("UploadImages")]
         [HttpPost]
-        public object UploadProductImages()
+        public object UploadImages()
         {
-            return _ProductService.UploadFile();
-        }
-        /// <summary>
-        /// 需求图片上传
-        /// </summary>
-        [Route("UploadDemandImages")]
-        [HttpPost]
-        public object UploadDemandImages()
-        {
-            return _ProductService.UploadFile();
-        }
-        /// <summary>
-        /// 提问图片上传
-        /// </summary>
-        [Route("UploadQuestionImages")]
-        [HttpPost]
-        public object UploadQuestionImages()
-        {
-            return _ProductService.UploadFile();
+            return _SystemService.UploadFile();
         }
         #endregion
 

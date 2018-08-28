@@ -81,6 +81,7 @@ begin
 	   organization         varchar(64)                    null,		--组织名称
 	   creditcode           varchar(32)                    null,		--社会信用代码
 	   creditexpirydate     varchar(10)                    null,		--社会信用代码有效期
+	   creditimage			varchar(512)				   null,		--营业执照
 	   othercredite1        varchar(512)                   null,		--其他证件1照片
 	   otherexpirydate1     varchar(10)                    null,		--其他证件1有奖项
 	   othercredite2        varchar(512)                   null,		--其他证件2照片
@@ -275,6 +276,8 @@ begin
 	   isrecommend          bit                            null,		--是否推荐
 	   homeimage            varchar(512)                   null,		--首页图片
 	   publishtime          datetime                       null,		--发布时间
+	   readcount			int							   null,		--阅读数
+	   buycount				int							   null,		--购买数
 	   compositescore       decimal                        null,		--综合得分
 	   materialcode         varchar(32)                    null,		--物资编码
 	   productiondate       varchar(10)                    null,		--生产日期

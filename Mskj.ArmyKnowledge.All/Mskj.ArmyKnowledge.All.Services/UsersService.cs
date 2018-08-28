@@ -277,6 +277,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 return new ReturnResult<Users>(-2, "电话号码未注册！");
             }
+            temp.pwd = null;
             return new ReturnResult<Users>(1, temp);
         }
         /// <summary>
@@ -291,6 +292,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 return new ReturnResult<Users>(-2, "用户ID不存在！");
             }
+            temp.pwd = null;
             return new ReturnResult<Users>(1, temp);
         }
         #endregion
@@ -314,7 +316,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 addRes = _CertRepository.Add(cert);
                 var user = GetOne(p => p.id == cert.userid);
-                user.usertype = cert.userType;
+                user.usertype = cert.usertype;
                 addRes = Update(user);
             }
             catch (Exception exp)

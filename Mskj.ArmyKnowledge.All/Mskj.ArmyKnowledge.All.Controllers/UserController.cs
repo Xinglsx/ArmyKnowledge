@@ -36,7 +36,6 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             }
             return _UsersService.Login(user);
         }
-
         /// <summary>
         /// 新增用户
         /// </summary>
@@ -52,18 +51,58 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             }
             return _UsersService.AddUser(user.PhoneNumber, user.Pwd, user.VerificationCode);
         }
-
         /// <summary>
         /// 更新用户信息
         /// </summary>
         /// <param name="user">新的用户信息</param>
-        [Route("UpdateUser")]
-        [HttpPost]
+        //[Route("UpdateUser")]
+        //[HttpPost]
         public object UpdateUser(Users user)
         {
             return _UsersService.UpdateUser(user);
         }
-
+        /// <summary>
+        /// 更新用户信息
+        /// </summary>
+        /// <param name="user">新的用户信息</param>
+        [Route("UpdateUserByKey")]
+        [HttpPost]
+        public object UpdateUserByKey(PostUser user)
+        {
+            if (user == null || string.IsNullOrEmpty(user.Id) ||
+                string.IsNullOrEmpty(user.KeyName))
+            {
+                return new ReturnResult<Users>(-4, "传入参数错误!");
+            }
+            var userTemp = _UsersService.GetOne(p => p.id == user.Id);
+            switch(user.KeyName)
+            {
+                case "avatar":
+                    userTemp.avatar = user.KeyValue;
+                    break;
+                case "nickname":
+                    userTemp.nickname = user.KeyValue;
+                    break;
+                case "area":
+                    userTemp.area = user.KeyValue;
+                    break;
+                case "organization":
+                    userTemp.organization = user.KeyValue;
+                    break;
+                case "profession":
+                    userTemp.profession = user.KeyValue;
+                    break;
+                case "signatures":
+                    userTemp.signatures = user.KeyValue;
+                    break;
+                case "position":
+                    userTemp.position = user.KeyValue;
+                    break;
+                default:
+                    return new ReturnResult<bool>(-2, "未找到待更新的字段名称!");
+            }
+            return _UsersService.UpdateUser(userTemp);
+        }
         /// <summary>
         /// 删除用户信息（暂时不提供调用）
         /// </summary>
@@ -78,7 +117,6 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             }
             return _UsersService.DeleteUser(user.Id);
         }
-
         /// <summary>
         /// 修改用户密码
         /// </summary>

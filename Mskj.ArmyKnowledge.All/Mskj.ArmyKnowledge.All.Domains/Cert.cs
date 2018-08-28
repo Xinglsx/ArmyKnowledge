@@ -12,6 +12,7 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string idcardbackimage { get; set; }
         public string organization { get; set; }
         public string creditcode { get; set; }
+        public string creditimage { get; set; }
         public string creditexpirydate { get; set; }
         public string othercredite1 { get; set; }
         public string otherexpirydate1 { get; set; }
@@ -20,6 +21,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string othercredite3 { get; set; }
         public string otherexpirydate3 { get; set; }
         public int certstate { get; set; }
-        public int userType { get; set; }
+        public int usertype { get; set; }
     }
 }

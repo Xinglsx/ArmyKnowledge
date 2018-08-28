@@ -66,6 +66,14 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <returns></returns>
         ReturnResult<IPagedData<Product>> GetProducts(string filter = "", string category = "全部",
             int state = -1, int pageIndex = 1, int pageSize = 10, int sortType = 0);
+        /// <summary>
+        /// 增加阅读数
+        /// </summary>
+        ReturnResult<bool> UpdateReadCount(string proId);
+        /// <summary>
+        /// 增加购买数
+        /// </summary>
+        ReturnResult<bool> UpdateBuyCount(string proId);
         #endregion
     }
 }

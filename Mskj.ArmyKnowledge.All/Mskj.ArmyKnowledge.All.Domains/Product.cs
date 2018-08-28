@@ -24,5 +24,7 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string homeimage { get; set; }
         public int prostate { get; set; }
         public int proscores { get; set; }
+        public int readcount { get; set; }
+        public int buycount { get; set; }
     }
 }

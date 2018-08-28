@@ -21,6 +21,7 @@ namespace Mskj.ArmyKnowledge.All.EntityConfigs
             this.Property(p => p.idcardbackimage).HasMaxLength(512);
             this.Property(p => p.organization).HasMaxLength(64);
             this.Property(p => p.creditcode).HasMaxLength(32);
+            this.Property(p => p.creditimage).HasMaxLength(512);
             this.Property(p => p.creditexpirydate).HasMaxLength(10);
             this.Property(p => p.othercredite1).HasMaxLength(512);
             this.Property(p => p.otherexpirydate1).HasMaxLength(10);

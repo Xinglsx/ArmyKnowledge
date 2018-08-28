@@ -353,9 +353,6 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 增加阅读数
         /// </summary>
-        /// <param name="questionId"></param>
-        /// <param name="userid"></param>
-        /// <returns></returns>
         public ReturnResult<bool> UpdateReadCount(string questionId)
         {
             QuestionModel question = this.GetOne(p => p.Id == questionId);
@@ -377,9 +374,6 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 增加点击数
         /// </summary>
-        /// <param name="questionId"></param>
-        /// <param name="userid"></param>
-        /// <returns></returns>
         public ReturnResult<bool> UpdatePraiseCount(string questionId)
         {
             QuestionModel question = this.GetOne(p => p.Id == questionId);
@@ -401,9 +395,6 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 增加评论数
         /// </summary>
-        /// <param name="questionId"></param>
-        /// <param name="userid"></param>
-        /// <returns></returns>
         public ReturnResult<bool> UpdateCommentCount(string questionId)
         {
             QuestionModel question = this.GetOne(p => p.Id == questionId);
@@ -421,8 +412,6 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 更新热度
         /// </summary>
-        /// <param name="questionId">问题ID</param>
-        /// <returns></returns>
         public void UpdateHeatCount(string questionId)
         {
             var question = GetOne(p => p.Id == questionId);
@@ -435,8 +424,6 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 更新热度
         /// </summary>
-        /// <param name="question">问题对象</param>
-        /// <returns></returns>
         public void UpdateHeatCount(QuestionModel question)
         {
             question.HeatCount = 1000 + question.ReadCount;
@@ -465,8 +452,6 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 增加评论
         /// </summary>
-        /// <param name="answer"></param>
-        /// <returns></returns>
         public ReturnResult<bool> AddAnswer(Answer answer)
         {
             answer.id = Guid.NewGuid().ToString();

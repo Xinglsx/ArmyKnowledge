@@ -51,5 +51,18 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
         [JsonProperty("newpwd")]
         public string NewPwd { get; set; }
         #endregion
+
+        #region 修改个人信息时使用
+        /// <summary>
+        /// 关键字
+        /// </summary>
+        [JsonProperty("keyname")]
+        public string KeyName { get; set; }
+        /// <summary>
+        /// 值
+        /// </summary>
+        [JsonProperty("keyvalue")]
+        public string KeyValue { get; set; }
+        #endregion
     }
 }

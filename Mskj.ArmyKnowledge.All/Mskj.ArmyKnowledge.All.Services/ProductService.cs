@@ -258,6 +258,83 @@ namespace Mskj.ArmyKnowledge.All.Services
             return new ReturnResult<IPagedData<Product>>(1,
                     GetPage(pageIndex, pageSize, sorts, expression));
         }
+        /// <summary>
+        /// 增加阅读数
+        /// </summary>
+        /// <param name="questionId"></param>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public ReturnResult<bool> UpdateReadCount(string proId)
+        {
+            Product product = this.GetOne(p => p.id == proId);
+            if (product == null || string.IsNullOrEmpty(product.id))
+            {
+                return new ReturnResult<bool>(-2, "产品ID不存在！");
+            }
+            else
+            {
+                product.readcount++;
+                var res = UpdateProduct(product);
+                if (res.code > 0)
+                {
+                    UpdateHeatCount(product);
+                }
+                return res;
+            }
+        }
+        /// <summary>
+        /// 增加购买数
+        /// </summary>
+        /// <param name="questionId"></param>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public ReturnResult<bool> UpdateBuyCount(string proId)
+        {
+            Product product = this.GetOne(p => p.id == proId);
+            if (product == null || string.IsNullOrEmpty(product.id))
+            {
+                return new ReturnResult<bool>(-2, "产品ID不存在！");
+            }
+            else
+            {
+                product.buycount++;
+                var res = UpdateProduct(product);
+                if (res.code > 0)
+                {
+                    UpdateHeatCount(product);
+                }
+                return res;
+            }
+        }
+        /// <summary>
+        /// 更新热度
+        /// </summary>
+        /// <param name="question">问题对象</param>
+        /// <returns></returns>
+        public void UpdateHeatCount(Product product)
+        {
+            product.compositescore = 1000 + product.readcount;
+            product.compositescore += product.buycount * 100;
+            //距离现在的时间越长，减分也越大。
+            int hours = (DateTime.Now - product.publishtime).Hours;
+            //当天的，每过一个小时减5
+            if (hours <= 24)
+            {
+                product.compositescore -= hours * 5;
+            }
+            //2~5天的，每过一个小时减10
+            else if (hours <= 120 && hours > 24)
+            {
+                product.compositescore -= 120 + (hours - 24) * 10;
+            }
+            //5天以上的，每过一个小时减100
+            else
+            {
+                product.compositescore -= 1080 + (hours - 120) * 100;
+            }
+
+            this.Update(product);
+        }
         #endregion
     }
 }

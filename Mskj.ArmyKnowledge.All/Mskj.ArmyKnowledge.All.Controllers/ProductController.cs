@@ -147,6 +147,32 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         {
             return _ProductService.GetProducts(filter,category, state, pageIndex, pageSize, sortType);
         }
+        /// <summary>
+        /// 增加阅读数
+        /// </summary>
+        [Route("UpdateReadCount")]
+        [HttpPost]
+        public object UpdateReadCount(PostId pro)
+        {
+            if (pro == null || string.IsNullOrEmpty(pro.Id))
+            {
+                return new ReturnResult<bool>(-4, "参数传入错误！");
+            }
+            return _ProductService.UpdateReadCount(pro.Id);
+        }
+        /// <summary>
+        /// 增加阅读数
+        /// </summary>
+        [Route("UpdateBuyCount")]
+        [HttpPost]
+        public object UpdateBuyCount(PostId pro)
+        {
+            if (pro == null || string.IsNullOrEmpty(pro.Id))
+            {
+                return new ReturnResult<bool>(-4, "参数传入错误！");
+            }
+            return _ProductService.UpdateBuyCount(pro.Id);
+        }
         #endregion
     }
 }

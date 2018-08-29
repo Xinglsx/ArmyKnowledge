@@ -14,6 +14,5 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string questionid { get; set; }
         public DateTime? lasttime { get; set; }
         public bool iscollect { get; set; }
-        public DateTime? updatetime { get; set; }
     }
 }

@@ -41,7 +41,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// 获取版本信息
         /// </summary>
         [Route("GetVersionInfo")]
-        [HttpPost]
+        [HttpGet]
         public object GetVersionInfo()
         {
             return _SystemService.GetVersionInfo();

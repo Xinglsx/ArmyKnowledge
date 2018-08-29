@@ -68,6 +68,13 @@ begin
 	   constraint PK_USERS primary key clustered (id)
 	);
 end
+if not exists (select 1 from users where id ='00000000-0000-0000-0000-000000000001')
+begin
+	insert into users(id,loginname,pwd,nickname,isadmin,registertime,updatetime,usertype,
+	iscertification,answercount,adoptedcount,compositescores,followcount,fanscount,userstate) 
+	select '00000000-0000-0000-0000-000000000001','admin','123456','超级管理员',1,GETDATE(),GETDATE(),9,
+	1,0,0,0,0,0,0
+end
 
 /*==============================================================*/
 /* Table: certification            用户认证信息                 */

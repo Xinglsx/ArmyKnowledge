@@ -537,7 +537,6 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 record.id = Guid.NewGuid().ToString();
                 record.lasttime = DateTime.Now;
-                record.updatetime = DateTime.Now;
                 try
                 {
                     res = _RecordRepository.Add(record);
@@ -552,7 +551,6 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 existRecord.lasttime = DateTime.Now;
                 existRecord.iscollect = record.iscollect;
-                record.updatetime = DateTime.Now;
                 try
                 {
                     res = _RecordRepository.Update(existRecord);

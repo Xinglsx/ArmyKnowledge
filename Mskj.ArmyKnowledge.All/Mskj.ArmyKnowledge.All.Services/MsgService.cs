@@ -11,6 +11,8 @@ using System.Data.SqlClient;
 using QuickShare.LiteFramework.Common.Extenstions;
 using Jiguang.JPush;
 using Jiguang.JPush.Model;
+using QuickShare.LiteFramework;
+using QuickShare.LiteFramework.Foundation;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -22,6 +24,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         private readonly IRepository<Notice> _NoticeRepository;
         private readonly IRepository<Users> _UserRepository;
         private static JPushClient client = new JPushClient("2e6a365d5d05e1097e38339c", "af70172e784fd7209373746d");
+        private readonly ILogger logger;
 
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
@@ -36,6 +39,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             this._MsgDetailRepository = msgDetailRepository;
             this._NoticeRepository = noticeRepository;
             this._UserRepository = userRepository;
+
+            logger = AppInstance.Current.Resolve<ILogger>();
         }
         #endregion
 
@@ -100,10 +105,12 @@ namespace Mskj.ArmyKnowledge.All.Services
                     msg.updatetime = DateTime.Now;
                     Update(msg);
                 }
-                string acccptUserid = msg.userid1 == msgDetail.senduserid ? msg.userid2 :
+                string acceptUserid = msg.userid1 == msgDetail.senduserid ? msg.userid2 :
                     msg.userid1;
-                if (string.IsNullOrEmpty(acccptUserid))
+                if (!string.IsNullOrEmpty(acceptUserid))
                 {
+                    string phone = _UserRepository.Find().Where(p => p.id == acceptUserid)
+                        .Select(q => q.phonenumber).FirstOrDefault();
                     //消息保存成功，发起推送
                     PushPayload pushPayload = new PushPayload()
                     {
@@ -111,16 +118,34 @@ namespace Mskj.ArmyKnowledge.All.Services
                         Audience = new Audience
                         {
                             Alias = new List<string>{
-                                acccptUserid,
+                                phone,
                             },
+                        },
+                        Notification = new Notification
+                        {
+                            Android = new Android
+                            {
+                                Alert = msgDetail.content,
+                                Title = msgDetail.sendnickname + "发给您一条私信！"
+                            }
                         },
                         Message = new Message
                         {
-                            Title = msgDetail.sendnickname + "发给您一条私信！",
+                            Title = "私信",
                             Content = msgDetail.content,
                         },
+                        
                     };
                     var response = client.SendPush(pushPayload);
+                    if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                    {
+                        //失败需要记录日志
+                        logger.LogInfo(string.Format("极光推送消息失败！消息会话ID：{0}。错误详情:{1}",
+                            msg.id, response.Content));
+                    }
+
+                    //response.Content "{\"error\":{\"code\":1003,\"message\":\"The alias has invalid character\"}}"
+                    //"{\"sendno\":\"0\",\"msg_id\":\"1073574972\"}"
                 }
                 //每发一条私信，增加1分。
                 var users = _UserRepository.Find().Where(p => p.id == msg.userid1 || p.id == msg.userid2).ToList();

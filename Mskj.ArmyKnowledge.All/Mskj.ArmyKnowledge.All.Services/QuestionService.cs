@@ -27,7 +27,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         private readonly IRepository<Answer> _AnswerDetailRepository;
         private readonly IRepository<Record> _RecordRepository;
         private readonly IRepository<Users> _UserRepository;
-        ILogger logger;
+        private readonly ILogger logger;
 
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
@@ -454,7 +454,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             question.HeatCount += question.PraiseCount * 5;
             question.HeatCount += question.CommentCount * 10;
             //距离现在的时间越长，减分也越大。
-            int hours = (DateTime.Now - question.Publishtime).Hours;
+            int hours = (DateTime.Now - question.Publishtime.Value).Hours;
             //当天的，每过一个小时减5
             if (hours <= 24)
             {
@@ -537,6 +537,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 record.id = Guid.NewGuid().ToString();
                 record.lasttime = DateTime.Now;
+                record.updatetime = DateTime.Now;
                 try
                 {
                     res = _RecordRepository.Add(record);
@@ -551,6 +552,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 existRecord.lasttime = DateTime.Now;
                 existRecord.iscollect = record.iscollect;
+                record.updatetime = DateTime.Now;
                 try
                 {
                     res = _RecordRepository.Update(existRecord);

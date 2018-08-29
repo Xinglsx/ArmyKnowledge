@@ -29,6 +29,7 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public int followcount { get; set; }
         public int fanscount { get; set; }
         public int userstate { get; set; }
-        public DateTime registertime { get; set; }
+        public DateTime? registertime { get; set; }
+        public DateTime? updatetime { get; set; }
     }
 }

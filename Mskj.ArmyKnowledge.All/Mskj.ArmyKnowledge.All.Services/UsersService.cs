@@ -145,7 +145,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             bool updateResult = false;
             try
             {
-                user.isadmin = false;//接口不可将些字段更新为true,只能后台update
+                //user.isadmin = false;已不再对接口公布些字段//接口不可将些字段更新为true,只能后台update
+                user.updatetime = DateTime.Now;
                 updateResult = this.Update(user);
             }
             catch (Exception exp)
@@ -316,6 +317,7 @@ namespace Mskj.ArmyKnowledge.All.Services
 
             cert.id = Guid.NewGuid().ToString();
             cert.certstate = 4;
+            cert.updatetime = DateTime.Now;
             bool addRes = false;
             try
             {
@@ -328,10 +330,9 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             if(addRes)
             {
-
                 var user = GetOne(p => p.id == cert.userid);
                 user.iscertification = 4;
-                addRes = Update(user);
+                UpdateUser(user);
                 return new ReturnResult<Cert>(1, cert);
             }
             else
@@ -345,6 +346,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<bool> UpdateCert(Cert cert)
         {
             bool res = false;
+            cert.updatetime = DateTime.Now;
             try
             {
                 res = _CertRepository.Update(cert);
@@ -380,6 +382,12 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             if (res)
             {
+                var user = (from users in _UsersRepository.Find()
+                            join cert in _CertRepository.Find() on users.id equals cert.userid
+                            where cert.id == certid
+                            select users).FirstOrDefault();
+                user.iscertification = 0;
+                UpdateUser(user);
                 return new ReturnResult<bool>(1, true);
             }
             else
@@ -409,14 +417,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                 user.usertype = cert.usertype;
                 user.iscertification = 3;
                 user.compositescores += 100;//认证通过+100分
-                try
-                {
-                    bool updateUser = Update(user);
-                }
-                catch (Exception exp)
-                {
-                    logger.LogError("审核用户认证信息时更新用户表出错！", exp);
-                }
+                UpdateUser(user);
             }
             return res;
         }
@@ -441,14 +442,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                 Users user = GetOne(p => p.id == cert.userid);
                 user.iscertification = 2;
                 user.compositescores -= 10;//认证不通过-10分
-                try
-                {
-                    bool updateUser = Update(user);
-                }
-                catch (Exception exp)
-                {
-                    logger.LogError("拒绝用户认证信息时更新用户表出错！", exp);
-                }
+                UpdateUser(user);
             }
             return res;
         }
@@ -496,6 +490,7 @@ namespace Mskj.ArmyKnowledge.All.Services
 
             cert.id = Guid.NewGuid().ToString();
             cert.certstate = 1;
+            cert.updatetime = DateTime.Now;
             bool addRes = false;
             try
             {
@@ -512,7 +507,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                 Users user = GetOne(p => p.id == cert.userid);
                 user.iscertification = 1;
                 user.compositescores += 10;//提交认证+10分
-                Update(user);
+                UpdateUser(user);
                 return new ReturnResult<Cert>(1, cert);
             }
             else

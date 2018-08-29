@@ -63,6 +63,7 @@ begin
 	   fanscount            int                            null,		--关注数
 	   userstate            int                            null,		--用户状态 0 启用 1停用
 	   registertime			datetime					   null,		--注册时间
+	   updatetime			datetime					   null,		--更新时间
 
 	   constraint PK_USERS primary key clustered (id)
 	);
@@ -97,6 +98,7 @@ begin
 																		--2 未通过认证
 																		--3 已通过认证
 																		--4 已新建认证
+	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_CERTIFICATION primary key clustered (id)
 	);
 end
@@ -126,6 +128,7 @@ begin
 																		--0 新建
 																		--1 提交审核
 																		--2 审核通过
+	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_QUESTION primary key clustered (id)
 	);
 end
@@ -146,6 +149,7 @@ begin
 	   images               varchar(4000)                  null,		--图片集合，以逗号隔开
 	   isadopt              bit                            null,		--是否采纳
 	   praisecount          int                            null,		--点赞数量
+	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_ANSWER primary key clustered (id)
 	);
 end
@@ -174,6 +178,7 @@ begin
 	   category             varchar(16)                    null,		--分类
 	   demandstate          int                            null,		--需求状态
 	   demandscores         int                            null,		--需求总得分，排名用
+	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_DEMAND primary key clustered (id)
 	);
 end
@@ -207,7 +212,8 @@ begin
 	   id					varchar(36)                    not null,	--关系主键ID
 	   userid               varchar(36)                    null,		--用户ID
 	   followerusdrid       varchar(36)                    null,		--跟随用户ID
-	   followerstate                int                    null,		--跟随状态
+	   followerstate        int							   null,		--跟随状态
+	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_FOLLOWER primary key clustered (id)
 	);
 end
@@ -263,6 +269,7 @@ begin
 	   																	--0 新建
 																		--1 提交审核
 																		--2 审核通过
+	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_NOTICE primary key clustered (id)
 	);
 end
@@ -297,7 +304,8 @@ begin
 																		--0-新建 
 																		--1-提交审核 
 																		--2-审核通过
-	   proscores			int							   null			--综合得分
+	   proscores			int							   null,			--综合得分
+	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_PRODUCT primary key clustered (id)
 	);
 end

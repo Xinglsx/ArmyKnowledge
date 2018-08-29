@@ -13,7 +13,7 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string title { get; set; }
         public string author { get; set; }
         public string authornickname { get; set; }
-        public DateTime publishtime { get; set; }
+        public DateTime? publishtime { get; set; }
         public string introduction { get; set; }
         public string content { get; set; }
         public string images { get; set; }
@@ -24,5 +24,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public int commentcount { get; set; }
         public int heatcount { get; set; }
         public int questionstate { get; set; }
+        public DateTime? updatetime { get; set; }
     }
 }

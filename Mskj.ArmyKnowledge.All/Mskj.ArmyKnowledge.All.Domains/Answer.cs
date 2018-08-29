@@ -13,10 +13,11 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string questionid { get; set; }
         public string userid { get; set; }
         public string nickname { get; set; }
-        public DateTime publishtime { get; set; }
+        public DateTime? publishtime { get; set; }
         public string content { get; set; }
         public string images { get; set; }
         public bool isadopt { get; set; }
         public int praisecount { get; set; }
+        public DateTime? updatetime { get; set; }
     }
 }

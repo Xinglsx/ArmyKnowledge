@@ -12,6 +12,8 @@ using System.Linq.Expressions;
 using System.Web;
 using System.Configuration;
 using System.IO;
+using QuickShare.LiteFramework.Foundation;
+using QuickShare.LiteFramework;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -21,6 +23,8 @@ namespace Mskj.ArmyKnowledge.All.Services
         #region 构造函数
         //private readonly IRepository<Demand> _DemandRepository;
         private readonly IRepository<Dictionary> _DicRepository;
+        private readonly ILogger logger;
+
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
         /// </summary>
@@ -29,6 +33,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             IRepository<Dictionary> dicRepository) : base(demandRepository)
         {
             _DicRepository = dicRepository;
+            logger = AppInstance.Current.Resolve<ILogger>();
         }
         #endregion
 
@@ -41,13 +46,15 @@ namespace Mskj.ArmyKnowledge.All.Services
             bool saveResult = false;
             demand.id = Guid.NewGuid().ToString();
             demand.publishtime = DateTime.Now;
+            demand.updatetime = DateTime.Now;
             try
             {
                 saveResult = Add(demand);
             }
             catch (Exception exp)
             {
-                return new ReturnResult<Demand>(-1, exp.Message);
+                logger.LogError("新增需求信息出错！", exp);
+                return new ReturnResult<Demand>(-1, "系统异常，请稍后重试。");
             }
             if (saveResult)
             {
@@ -55,7 +62,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             else
             {
-                return new ReturnResult<Demand>(-2, "用户信息保存失败！");
+                return new ReturnResult<Demand>(-2, "需求信息保存失败！");
             }
         }
         /// <summary>
@@ -64,13 +71,15 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<bool> UpdateDemand(Demand demand)
         {
             bool updateResult = false;
+            demand.updatetime = DateTime.Now;
             try
             {
                 updateResult = this.Update(demand);
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, false, exp.Message);
+                logger.LogError("更新需求信息出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (updateResult)
             {
@@ -78,7 +87,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             else
             {
-                return new ReturnResult<bool>(-2, updateResult, "用户信息更新失败！");
+                return new ReturnResult<bool>(-2, updateResult, "需求信息更新失败！");
             }
         }
         /// <summary>
@@ -94,7 +103,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                logger.LogError("删除需求信息出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (deleteResult)
             {
@@ -102,7 +112,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             else
             {
-                return new ReturnResult<bool>(-2, deleteResult, "用户信息删除失败！");
+                return new ReturnResult<bool>(-2, deleteResult, "需求信息删除失败！");
             }
         }
         /// <summary>
@@ -120,6 +130,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                 return new ReturnResult<bool>(-2, "需求信息状态不是[提交审核状态]！");
             }
             demand.demandstate = 2;
+            demand.updatetime = DateTime.Now;
             return UpdateDemand(demand);
         }
         /// <summary>
@@ -137,6 +148,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                 return new ReturnResult<bool>(-2, "需求信息状态不是[新建状态]！");
             }
             demand.demandstate = 1;
+            demand.updatetime = DateTime.Now;
             return UpdateDemand(demand);
         }
         /// <summary>
@@ -144,8 +156,28 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         public ReturnResult<Demand> SaveAndSubmitDemand(Demand demand)
         {
+            bool saveResult = false;
+            demand.id = Guid.NewGuid().ToString();
+            demand.publishtime = DateTime.Now;
+            demand.updatetime = DateTime.Now;
             demand.demandstate = 1;
-            return this.AddDemand(demand);
+            try
+            {
+                saveResult = Add(demand);
+            }
+            catch (Exception exp)
+            {
+                logger.LogError("保存并提交需求信息出错！", exp);
+                return new ReturnResult<Demand>(-1, "系统异常，请稍后重试。");
+            }
+            if (saveResult)
+            {
+                return new ReturnResult<Demand>(1, demand);
+            }
+            else
+            {
+                return new ReturnResult<Demand>(-2, "需求信息保存失败！");
+            }
         }
         /// <summary>
         /// 获取已有需求分类
@@ -162,7 +194,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             return new ReturnResult<List<string>>(1, professions);
         }
         /// <summary>
-        /// 分页获取对应用户的需求列表
+        /// 分页获取对应需求的需求列表
         /// </summary>
         /// <param name="category">分类</param>
         /// <param name="state">状态</param>

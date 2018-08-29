@@ -19,7 +19,7 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         [JsonProperty("nickname")]
         public string Nickname { get; set; }
         [JsonProperty("publishtime")]
-        public DateTime Publishtime { get; set; }
+        public DateTime? Publishtime { get; set; }
         [JsonProperty("content")]
         public string Content { get; set; }
         [JsonProperty("images")]
@@ -30,5 +30,7 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         public int Praisecount { get; set; }
         [JsonProperty("avatar")]
         public string Avatar { get; set; }
+        [JsonProperty("updatetime")]
+        public DateTime? UpdateTime { get; set; }
     }
 }

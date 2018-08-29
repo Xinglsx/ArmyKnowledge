@@ -11,6 +11,8 @@ using System.Data.SqlClient;
 using QuickShare.LiteFramework.Common.Extenstions;
 using Jiguang.JPush.Model;
 using Jiguang.JPush;
+using QuickShare.LiteFramework.Foundation;
+using QuickShare.LiteFramework;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -19,6 +21,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         #region 构造函数
         private readonly IRepository<Notice> _NoticeRepository;
         private static JPushClient client = new JPushClient("2e6a365d5d05e1097e38339c", "af70172e784fd7209373746d");
+        private readonly ILogger logger;
 
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
@@ -28,6 +31,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             base(noticeRepository)
         {
             this._NoticeRepository = noticeRepository;
+            logger = AppInstance.Current.Resolve<ILogger>();
         }
         #endregion
 
@@ -40,6 +44,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             notice.id = Guid.NewGuid().ToString();
             notice.noticestate = 0;//新增状态
             notice.publishtime = DateTime.Now;
+            notice.updatetime = DateTime.Now;
             bool saveResult = false;
             try
             {
@@ -47,7 +52,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<Notice>(-1, exp.Message);
+                logger.LogError("新增通知出错！", exp);
+                return new ReturnResult<Notice>(-1, "系统异常，请稍后重试。");
             }
             if (saveResult)
             {
@@ -77,13 +83,15 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<bool> UpdateNotice(Notice notice)
         {
             bool updateResult = false;
+            notice.updatetime = DateTime.Now;
             try
             {
                 updateResult = _NoticeRepository.Update(notice);
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, false, exp.Message);
+                logger.LogError("更新通知信息出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (updateResult)
             {
@@ -107,7 +115,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                logger.LogError("删除通知信息出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (deleteResult)
             {
@@ -124,6 +133,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<bool> AuditNotice(Notice notice)
         {
             notice.noticestate = 1;//新增状态
+            notice.updatetime = DateTime.Now;
             return this.UpdateNotice(notice);
         }
         /// <summary>

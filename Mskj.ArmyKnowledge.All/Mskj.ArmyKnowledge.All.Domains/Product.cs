@@ -12,7 +12,7 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string userid { get; set; }
         public bool isrecommend { get; set; }
         public string nickname { get; set; }
-        public DateTime publishtime { get; set; }
+        public DateTime? publishtime { get; set; }
         public decimal compositescore { get; set; }
         public string materialcode { get; set; }
         public string productiondate { get; set; }
@@ -26,5 +26,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public int proscores { get; set; }
         public int readcount { get; set; }
         public int buycount { get; set; }
+        public DateTime? updatetime { get; set; }
     }
 }

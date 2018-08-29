@@ -23,7 +23,7 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         [JsonProperty("avatar")]
         public string Avatar { get; set; }
         [JsonProperty("publishtime")]
-        public DateTime Publishtime { get; set; }
+        public DateTime? Publishtime { get; set; }
         [JsonProperty("introduction")]
         public string Introduction { get; set; }
         [JsonProperty("content")]
@@ -48,6 +48,8 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         public IPagedData<AnswerModel> Answers { get; set; }
         [JsonProperty("iscollection")]
         public bool? IsCollect { get; set; }
+        [JsonProperty("updatetime")]
+        public DateTime? UpdateTime { get; set; }
     }
    
 }

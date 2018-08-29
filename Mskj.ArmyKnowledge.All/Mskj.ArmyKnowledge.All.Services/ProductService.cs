@@ -2,9 +2,11 @@
 using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.All.ServiceContracts;
 using Mskj.ArmyKnowledge.Common.DataObject;
+using QuickShare.LiteFramework;
 using QuickShare.LiteFramework.Base;
 using QuickShare.LiteFramework.Common;
 using QuickShare.LiteFramework.Common.Extenstions;
+using QuickShare.LiteFramework.Foundation;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -23,6 +25,8 @@ namespace Mskj.ArmyKnowledge.All.Services
 
         #region 构造函数
         private readonly IRepository<Dictionary> _DicRepository;
+        private readonly ILogger logger;
+
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
         /// </summary>
@@ -31,6 +35,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             IRepository<Dictionary> dicRepository) : base(productRepository)
         {
             _DicRepository = dicRepository;
+            logger = AppInstance.Current.Resolve<ILogger>();
         }
         #endregion
 
@@ -43,13 +48,15 @@ namespace Mskj.ArmyKnowledge.All.Services
             bool saveResult = false;
             product.id = Guid.NewGuid().ToString();
             product.publishtime = DateTime.Now;
+            product.updatetime = DateTime.Now;
             try
             {
                 saveResult = Add(product);
             }
             catch (Exception exp)
             {
-                return new ReturnResult<Product>(-1, exp.Message);
+                logger.LogError("新增产品信息出错！", exp);
+                return new ReturnResult<Product>(-1, "系统异常，请稍后重试。");
             }
             if (saveResult)
             {
@@ -66,13 +73,15 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<bool> UpdateProduct(Product product)
         {
             bool updateResult = false;
+            product.updatetime = DateTime.Now;
             try
             {
                 updateResult = this.Update(product);
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, false, exp.Message);
+                logger.LogError("更新产品信息出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (updateResult)
             {
@@ -96,7 +105,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                logger.LogError("删除产品信息出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (deleteResult)
             {
@@ -316,7 +326,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             product.compositescore = 1000 + product.readcount;
             product.compositescore += product.buycount * 100;
             //距离现在的时间越长，减分也越大。
-            int hours = (DateTime.Now - product.publishtime).Hours;
+            int hours = (DateTime.Now - product.publishtime.Value).Hours;
             //当天的，每过一个小时减5
             if (hours <= 24)
             {
@@ -332,6 +342,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 product.compositescore -= 1080 + (hours - 120) * 100;
             }
+            product.updatetime = DateTime.Now;
 
             this.Update(product);
         }

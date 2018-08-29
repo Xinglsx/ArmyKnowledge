@@ -27,6 +27,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         /// <summary>
         /// 更新时间
         /// </summary>
-        public DateTime updatetime{get;set;}
+        public DateTime? updatetime{get;set;}
     }
 }

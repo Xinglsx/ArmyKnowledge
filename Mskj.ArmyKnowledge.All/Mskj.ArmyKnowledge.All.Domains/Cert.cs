@@ -1,4 +1,5 @@
 ﻿using QuickShare.LiteFramework.Base;
+using System;
 
 namespace Mskj.ArmyKnowledge.All.Domains
 {
@@ -22,5 +23,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string otherexpirydate3 { get; set; }
         public int certstate { get; set; }
         public int usertype { get; set; }
+        public DateTime? updatetime { get; set; }
     }
 }

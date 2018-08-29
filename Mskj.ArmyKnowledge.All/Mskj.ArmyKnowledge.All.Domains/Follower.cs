@@ -1,4 +1,5 @@
 ﻿using QuickShare.LiteFramework.Base;
+using System;
 
 namespace Mskj.ArmyKnowledge.All.Domains
 {
@@ -8,5 +9,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string userid { get; set; }
         public string followeruserid { get; set; }
         public int followerstate { get; set; }
+        public DateTime? updatetime { get; set; }
     }
 }

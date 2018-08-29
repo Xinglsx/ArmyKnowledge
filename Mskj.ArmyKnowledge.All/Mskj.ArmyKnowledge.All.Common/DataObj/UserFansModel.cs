@@ -32,6 +32,6 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         [JsonProperty("fanscount")]
         public int FansCount { get; set; }
         [JsonProperty("fansupdatetime")]
-        public DateTime FansUpdateTime { get; set; }
+        public DateTime? FansUpdateTime { get; set; }
     }
 }

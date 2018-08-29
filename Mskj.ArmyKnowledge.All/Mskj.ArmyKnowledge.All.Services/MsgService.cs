@@ -13,6 +13,7 @@ using Jiguang.JPush;
 using Jiguang.JPush.Model;
 using QuickShare.LiteFramework;
 using QuickShare.LiteFramework.Foundation;
+using Mskj.ArmyKnowledge.All.Common.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -68,7 +69,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<Msg>(-1, exp.Message);
+                logger.LogError("新增消息会话出错！", exp);
+                return new ReturnResult<Msg>(-1, "系统异常，请稍后重试。");
             }
             if (saveResult)
             {
@@ -102,8 +104,17 @@ namespace Mskj.ArmyKnowledge.All.Services
                 var msg = GetOne(p => p.id == msgDetail.msgid);
                 if(msg != null && !string.IsNullOrEmpty(msg.id))
                 {
+                    msg.lastcontent = msgDetail.content;
                     msg.updatetime = DateTime.Now;
-                    Update(msg);
+                    try
+                    {
+                        Update(msg);
+
+                    }
+                    catch (Exception exp)
+                    {
+                        logger.LogError("新增产品信息出错！", exp);
+                    }
                 }
                 string acceptUserid = msg.userid1 == msgDetail.senduserid ? msg.userid2 :
                     msg.userid1;
@@ -171,8 +182,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             bool deleteRes = false;
             try
             {
-                var msgDetails = _MsgDetailRepository.Find().Where(
-                p => p.msgid == msgId);
+                var msgDetails = _MsgDetailRepository.Find().Where(p => p.msgid == msgId);
                 if (msgDetails != null && msgDetails.Count() > 0)
                 {
                     _MsgDetailRepository.Delete(msgDetails);
@@ -181,7 +191,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                logger.LogError("删除消息会话出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (deleteRes)
             {
@@ -206,7 +217,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                logger.LogError("删除消息明细列表！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (deleteRes)
             {
@@ -239,12 +251,33 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageIndex">页数</param>
         /// <param name="pageSize">每页条数</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Msg>> GetUserMsgs(string userid,int pageIndex = 1,int pageSize = 30)
+        public ReturnResult<IPagedData<MsgModel>> GetUserMsgs(string userid,int pageIndex = 1,int pageSize = 30)
         {
-            Expression<Func<Msg, bool>> expression = x => x.userid1 == userid || x.userid2 == userid;
-            SortInfo<Msg> sort = new SortInfo<Msg>(p => new { p.updatetime }, SortOrder.Descending);
-            var res = GetPage(pageIndex, pageSize, sort, expression);
-            return new ReturnResult<IPagedData<Msg>>(1, res);
+            var res = (from msg in _MsgRepository.Find()
+                       join user1 in _UserRepository.Find() on msg.userid1 equals user1.id into temp1
+                       from tempUser1 in temp1.DefaultIfEmpty()
+                       join user2 in _UserRepository.Find() on msg.userid2 equals user2.id into temp2
+                       from tempUser2 in temp2.DefaultIfEmpty()
+                       where msg.userid1 == userid || msg.userid2 == userid
+                       orderby msg.updatetime descending
+                       select new MsgModel
+                       {
+                           Id = msg.id,
+                           Userid1 = msg.userid1,
+                           Nickname1 = tempUser1.nickname,
+                           Avatar1 = tempUser1.avatar,
+                           Userid2 = msg.userid2,
+                           Nickname2 = tempUser2.nickname,
+                           Avatar2 = tempUser2.avatar,
+                           LastContent = msg.lastcontent,
+                           Updatetime = msg.updatetime,
+                       }
+                       ).ToPage(pageIndex, pageSize);
+            if(res == null)
+            {
+
+            }
+            return new ReturnResult<IPagedData<MsgModel>>(1, res);
         }
         #endregion
         

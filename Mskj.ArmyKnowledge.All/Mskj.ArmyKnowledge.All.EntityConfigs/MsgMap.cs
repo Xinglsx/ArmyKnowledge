@@ -18,6 +18,7 @@ namespace Mskj.ArmyKnowledge.All.EntityConfigs
             this.Property(p => p.nickname1).HasMaxLength(32);
             this.Property(p => p.userid2).HasMaxLength(36);
             this.Property(p => p.nickname2).HasMaxLength(32);
+            this.Property(p => p.lastcontent).HasMaxLength(512);
         }
     }
 }

@@ -227,6 +227,11 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object AddNotice(Notice notice)
         {
+            if (notice == null || string.IsNullOrEmpty(notice.title) ||
+                string.IsNullOrEmpty(notice.content))
+            {
+                return new ReturnResult<bool>(-4, "传入参数错误!");
+            }
             return _NoticeService.AddNotice(notice);
         }
         /// <summary>
@@ -254,9 +259,13 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("AuditNotice")]
         [HttpPost]
-        public object AuditNotice(Notice notice)
+        public object AuditNotice(PostId notice)
         {
-            return _NoticeService.AuditNotice(notice);
+            if (notice == null || string.IsNullOrEmpty(notice.Id))
+            {
+                return new ReturnResult<bool>(-4, "传入参数错误!");
+            }
+            return _NoticeService.AuditNotice(notice.Id);
         }
         /// <summary>
         /// 获取通知列表

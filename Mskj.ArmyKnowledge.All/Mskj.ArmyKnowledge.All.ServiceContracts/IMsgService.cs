@@ -1,4 +1,5 @@
-﻿using Mskj.ArmyKnowledge.All.Domains;
+﻿using Mskj.ArmyKnowledge.All.Common.DataObj;
+using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using QuickShare.LiteFramework.Base;
 using QuickShare.LiteFramework.Common;
@@ -48,7 +49,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="userid">用户ID</param>
         /// <param name="pageIndex">页数</param>
         /// <param name="pageSize">每页条数</param>
-        ReturnResult<IPagedData<Msg>> GetUserMsgs(string userid, int pageIndex = 1, int pageSize = 30);
+        ReturnResult<IPagedData<MsgModel>> GetUserMsgs(string userid, int pageIndex = 1, int pageSize = 30);
         #endregion
     }
 }

@@ -10,6 +10,7 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string nickname1 { get; set; }
         public string userid2 { get; set; }
         public string nickname2 { get; set; }
+        public string lastcontent { get; set; }
         public DateTime updatetime { get; set; }
     }
 }

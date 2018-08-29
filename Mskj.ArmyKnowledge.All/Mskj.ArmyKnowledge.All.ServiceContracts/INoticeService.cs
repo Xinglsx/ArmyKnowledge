@@ -26,7 +26,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <summary>
         /// 发布（审核）通知
         /// </summary>
-        ReturnResult<bool> AuditNotice(Notice notice);
+        ReturnResult<bool> AuditNotice(string noticeId);
         /// <summary>
         /// 获取通知列表
         /// </summary>

@@ -57,18 +57,6 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             if (saveResult)
             {
-                //消息保存成功，发起推送
-                PushPayload pushPayload = new PushPayload()
-                {
-                    Platform = new List<string> { "android" },
-                    Audience = "all",
-                    Message = new Message
-                    {
-                        Title = notice.title,
-                        Content = notice.content,
-                    },
-                };
-                var response = client.SendPush(pushPayload);
                 return new ReturnResult<Notice>(1, notice);
             }
             else
@@ -130,11 +118,51 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 发布（审核）通知
         /// </summary>
-        public ReturnResult<bool> AuditNotice(Notice notice)
+        public ReturnResult<bool> AuditNotice(string noticeId)
         {
+            var notice = _NoticeRepository.Find().Where(p => p.id == noticeId).FirstOrDefault();
+            if(notice == null || string.IsNullOrEmpty(notice.id))
+            {
+                return new ReturnResult<bool>(-2, "找不到对应的通知！");
+            }
+            else if(notice.noticestate != 0)
+            {
+                return new ReturnResult<bool>(-2, "通知当前状态不可审核！");
+            }
             notice.noticestate = 1;//新增状态
             notice.updatetime = DateTime.Now;
-            return this.UpdateNotice(notice);
+
+            var res = this.UpdateNotice(notice);
+            if (res.code > 0)
+            {
+                //消息保存成功，发起推送
+                PushPayload pushPayload = new PushPayload()
+                {
+                    Platform = new List<string> { "android" },
+                    Audience = "all",
+                    Notification = new Notification
+                    {
+                        Android = new Android
+                        {
+                            Alert = notice.content,
+                            Title = notice.title,
+                        },
+                    },
+                    Message = new Message
+                    {
+                        Title = notice.title,
+                        Content = notice.content,
+                    },
+                };
+                var response = client.SendPush(pushPayload);
+                if (response.StatusCode != System.Net.HttpStatusCode.OK)
+                {
+                    //失败需要记录日志
+                    logger.LogInfo(string.Format("极光推送消息失败！通知ID：{0}。错误详情:{1}",
+                        notice.id, response.Content));
+                }
+            }
+            return res;
         }
         /// <summary>
         /// 获取通知列表

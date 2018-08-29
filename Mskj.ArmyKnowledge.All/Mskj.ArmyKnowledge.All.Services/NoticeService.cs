@@ -174,11 +174,9 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<IPagedData<Notice>> GetNotices(string filter = "",
             int pageIndex = 1, int pageSize = 30)
         {
-            Expression<Func<Notice, bool>> expression = x =>
-                filter == "" || (filter != "" && x.content.Contains(filter));
-            SortInfo<Notice> sort = new SortInfo<Notice>(p => p.publishtime, SortOrder.Descending);
-            var res = _NoticeRepository.Find().Where(p => filter == "" || (filter != "" && 
-                (p.content.Contains(filter) || p.title.Contains(filter))))
+            var res = _NoticeRepository.Find().Where(p => ( filter == null ||  filter == "" 
+            || (filter != null && filter != "" &&  (p.content.Contains(filter) || p.title.Contains(filter)))) 
+            && p.noticestate == 1)
                 .OrderByDescending(q => q.publishtime).ToPage(pageIndex, pageSize);
             return new ReturnResult<IPagedData<Notice>>(1, res);
         }

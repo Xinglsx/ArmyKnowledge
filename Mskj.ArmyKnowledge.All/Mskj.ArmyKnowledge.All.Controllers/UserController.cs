@@ -44,7 +44,12 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object AddUser(PostUser user)
         {
-            if(user == null || string.IsNullOrEmpty(user.VerificationCode) || 
+            if(user == null)
+            {
+                return new ReturnResult<Users>(-4, "传入参数错误!");
+
+            }
+            if (user == null || string.IsNullOrEmpty(user.VerificationCode) || 
                 string.IsNullOrEmpty(user.Pwd) || string.IsNullOrEmpty(user.PhoneNumber))
             {
                 return new ReturnResult<Users>(-4, "传入参数错误!");
@@ -167,8 +172,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object AddCert(Cert cert)
         {
-            if (cert == null || string.IsNullOrEmpty(cert.userid) 
-                || string.IsNullOrEmpty(cert.idcardno))
+            if (cert == null || string.IsNullOrEmpty(cert.userid))
             {
                 return new ReturnResult<Cert>(-4, "传入参数错误!");
             }
@@ -210,6 +214,19 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             return _UsersService.AuditCert(cert.Id);
         }
         /// <summary>
+        /// 拒绝用户认证信息
+        /// </summary>
+        [Route("RefuseCert")]
+        [HttpPost]
+        public ReturnResult<bool> RefuseCert(PostId cert)
+        {
+            if (cert == null || string.IsNullOrEmpty(cert.Id))
+            {
+                return new ReturnResult<bool>(-4, "传入参数错误!");
+            }
+            return _UsersService.RefuseCert(cert.Id);
+        }
+        /// <summary>
         /// 提交审核用户认证信息
         /// </summary>
         [Route("SubmitCert")]
@@ -229,6 +246,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object SaveAndSubmitCert(Cert cert)
         {
+            if (cert == null || string.IsNullOrEmpty(cert.userid))
+            {
+                return new ReturnResult<Cert>(-4, "传入参数错误!");
+            }
             return _UsersService.SaveAndSubmitCert(cert);
         }
         /// <summary>

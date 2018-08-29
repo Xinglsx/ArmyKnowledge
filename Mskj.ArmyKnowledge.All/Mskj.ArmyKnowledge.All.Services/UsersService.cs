@@ -109,7 +109,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<Users>(-1, exp.Message);
+                logger.LogError("新增用户信息出错！", exp);
+                return new ReturnResult<Users>(-1, "系统异常，请稍后重试。");
             }
             if (saveResult)
             {
@@ -149,7 +150,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, false, exp.Message);
+                logger.LogError("更新用户信息出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (updateResult)
             {
@@ -173,7 +175,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                logger.LogError("删除用户信息出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (deleteResult)
             {
@@ -214,7 +217,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                 }
                 catch (Exception exp)
                 {
-                    return new ReturnResult<bool>(-1, false, exp.Message);
+                    logger.LogError("修改用户密码时信息出错！", exp);
+                    return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
                 }
                 if (updateResult)
                 {
@@ -304,32 +308,35 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<Cert> AddCert(Cert cert)
         {
             //先要判断是否已经存在认证信息
-            var existUser = GetOne(p => p.id == cert.userid);
+            var existUser = _CertRepository.Find().Where(p => p.userid == cert.userid).FirstOrDefault();
             if(existUser != null && !string.IsNullOrEmpty(existUser.id))
             {
                 return new ReturnResult<Cert>(-2, "已存在认证信息，无法新增!");
             }
 
             cert.id = Guid.NewGuid().ToString();
+            cert.certstate = 4;
             bool addRes = false;
             try
             {
                 addRes = _CertRepository.Add(cert);
-                var user = GetOne(p => p.id == cert.userid);
-                user.usertype = cert.usertype;
-                addRes = Update(user);
             }
             catch (Exception exp)
             {
-                return new ReturnResult<Cert>(-1, exp.Message);
+                logger.LogError("新增用户认证信息出错！", exp);
+                return new ReturnResult<Cert>(-1, "系统异常，请稍后重试。");
             }
             if(addRes)
             {
+
+                var user = GetOne(p => p.id == cert.userid);
+                user.iscertification = 4;
+                addRes = Update(user);
                 return new ReturnResult<Cert>(1, cert);
             }
             else
             {
-                return new ReturnResult<Cert>(-2, "新增认证信息失败!");
+                return new ReturnResult<Cert>(-2, "新增认证信息失败,请稍后重试");
             }
         }
         /// <summary>
@@ -344,7 +351,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                logger.LogError("更新用户认证信息出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (res)
             {
@@ -352,7 +360,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             else
             {
-                return new ReturnResult<bool>(-2, "更新认证信息失败!");
+                return new ReturnResult<bool>(-2, "更新认证信息失败,请稍后重试");
             }
         }
         /// <summary>
@@ -367,7 +375,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                logger.LogError("删除用户认证信息出错!", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (res)
             {
@@ -375,7 +384,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             else
             {
-                return new ReturnResult<bool>(-2, "更新认证信息失败!");
+                return new ReturnResult<bool>(-2, "更新认证信息失败,请稍后重试");
             }
         }
         /// <summary>
@@ -392,14 +401,54 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 return new ReturnResult<bool>(-2, "认证信息状态不是[提交审核状态]！");
             }
+            cert.certstate = 3;
+            var res = UpdateCert(cert);
+            if(res.code > 0)
+            {
+                Users user = GetOne(p => p.id == cert.userid);
+                user.usertype = cert.usertype;
+                user.iscertification = 3;
+                user.compositescores += 100;//认证通过+100分
+                try
+                {
+                    bool updateUser = Update(user);
+                }
+                catch (Exception exp)
+                {
+                    logger.LogError("审核用户认证信息时更新用户表出错！", exp);
+                }
+            }
+            return res;
+        }
+        /// <summary>
+        /// 拒绝用户认证信息
+        /// </summary>
+        public ReturnResult<bool> RefuseCert(string id)
+        {
+            Cert cert = _CertRepository.Find().Where(p => p.id == id).FirstOrDefault();
+            if (cert == null || string.IsNullOrEmpty(cert.id))
+            {
+                return new ReturnResult<bool>(-2, "未找到认证信息！");
+            }
+            else if (cert.certstate != 1)
+            {
+                return new ReturnResult<bool>(-2, "认证信息状态不是[提交审核状态]！");
+            }
             cert.certstate = 2;
             var res = UpdateCert(cert);
-            if(res.code > 1)
+            if (res.code > 0)
             {
                 Users user = GetOne(p => p.id == cert.userid);
                 user.iscertification = 2;
-                user.compositescores += 100;//认证通过+100分
-                res = UpdateUser(user);
+                user.compositescores -= 10;//认证不通过-10分
+                try
+                {
+                    bool updateUser = Update(user);
+                }
+                catch (Exception exp)
+                {
+                    logger.LogError("拒绝用户认证信息时更新用户表出错！", exp);
+                }
             }
             return res;
         }
@@ -413,9 +462,9 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 return new ReturnResult<bool>(-2, "未找到认证信息！");
             }
-            else if (cert.certstate != 0)
+            else if (cert.certstate != 4 && cert.certstate != 2)
             {
-                return new ReturnResult<bool>(-2, "认证信息状态不是[新建状态]！");
+                return new ReturnResult<bool>(-2, "认证信息状态不是[新建状态]或[审核不通过状态]！");
             }
             else
             {
@@ -438,20 +487,38 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <returns></returns>
         public ReturnResult<Cert> SaveAndSubmitCert(Cert cert)
         {
+            //先要判断是否已经存在认证信息
+            var existUser = _CertRepository.Find().Where(p => p.userid == cert.userid).FirstOrDefault();
+            if (existUser != null && !string.IsNullOrEmpty(existUser.id))
+            {
+                return new ReturnResult<Cert>(-2, "已存在认证信息，无法新增!");
+            }
+
+            cert.id = Guid.NewGuid().ToString();
             cert.certstate = 1;
-            var res = AddCert(cert);
-            if (res.code > 1)
+            bool addRes = false;
+            try
+            {
+                addRes = _CertRepository.Add(cert);
+            }
+            catch (Exception exp)
+            {
+                logger.LogError(string.Format("保存并提交用户认证信息时更新用户信息出错！,用户ID：{0}"
+                    , cert.userid), exp);
+                return new ReturnResult<Cert>(-1, "系统异常，请稍后重试。");
+            }
+            if (addRes)
             {
                 Users user = GetOne(p => p.id == cert.userid);
                 user.iscertification = 1;
                 user.compositescores += 10;//提交认证+10分
-                if (UpdateUser(user).code < 0)
-                {
-                    logger.LogInfo(string.Format("认证申请成功，基础信息更新失败！,用户ID：{0}", cert.userid));
-                    return new ReturnResult<Cert>(-2, "认证申请成功，基础信息更新失败！");
-                }
+                Update(user);
+                return new ReturnResult<Cert>(1, cert);
             }
-            return res;
+            else
+            {
+                return new ReturnResult<Cert>(-2, "新增认证信息失败,请稍后重试");
+            }
         }
         /// <summary>
         /// 通过用户ID获取用户认证信息
@@ -570,7 +637,15 @@ namespace Mskj.ArmyKnowledge.All.Services
             var user2 = GetOne(p => p.id == followuserid);
             user2.followcount += count; 
             user2.compositescores += count * 3;
-            _UsersRepository.Update(new List<Users> { user1, user2 });
+            try
+            {
+                _UsersRepository.Update(new List<Users> { user1, user2 });
+
+            }
+            catch (Exception exp)
+            {
+                logger.LogError("更新粉丝数量出错！", exp);
+            }
         }
         /// <summary>
         /// 增加粉丝信息
@@ -597,7 +672,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                     }
                     catch (Exception exp)
                     {
-                        return new ReturnResult<Fans>(-1, exp.Message);
+                        logger.LogError("增加粉丝信息时更新出错！", exp);
+                        return new ReturnResult<Fans>(-1, "系统异常，请稍后重试。");
                     }
                     if (res)
                     {
@@ -631,7 +707,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                     }
                     catch (Exception exp)
                     {
-                        return new ReturnResult<Fans>(-1, exp.Message);
+                        logger.LogError("增加粉丝信息时更新出错2！", exp);
+                        return new ReturnResult<Fans>(-1, "系统异常，请稍后重试。");
                     }
                     if (res)
                     {
@@ -652,7 +729,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<Fans>(-1, exp.Message);
+                logger.LogError("增加粉丝信息时新增出错！", exp);
+                return new ReturnResult<Fans>(-1, "系统异常，请稍后重试。");
             }
             if (res)
             {
@@ -685,7 +763,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                     }
                     catch (Exception exp)
                     {
-                        return new ReturnResult<Fans>(-1, exp.Message);
+                        logger.LogError("删除粉丝信息时删除出错！", exp);
+                        return new ReturnResult<Fans>(-1, "系统异常，请稍后重试。");
                     }
                     if (res)
                     {
@@ -707,7 +786,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                     }
                     catch (Exception exp)
                     {
-                        return new ReturnResult<Fans>(-1, exp.Message);
+                        logger.LogError("删除粉丝信息时更新出错！", exp);
+                        return new ReturnResult<Fans>(-1, "系统异常，请稍后重试。");
                     }
                     if (res)
                     {
@@ -738,7 +818,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                     }
                     catch (Exception exp)
                     {
-                        return new ReturnResult<Fans>(-1, exp.Message);
+                        logger.LogError("删除粉丝信息时删除出错2！", exp);
+                        return new ReturnResult<Fans>(-1, "系统异常，请稍后重试。");
                     }
                     if (res)
                     {
@@ -760,7 +841,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                     }
                     catch (Exception exp)
                     {
-                        return new ReturnResult<Fans>(-1, exp.Message);
+                        logger.LogError("删除粉丝信息时更新出错2！", exp);
+                        return new ReturnResult<Fans>(-1, "系统异常，请稍后重试。");
                     }
                     if (res)
                     {

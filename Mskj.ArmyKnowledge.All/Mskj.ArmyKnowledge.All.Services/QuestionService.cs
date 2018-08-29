@@ -15,6 +15,8 @@ using Mskj.ArmyKnowledge.All.Common.DataObj;
 using System.Web;
 using System.Configuration;
 using System.IO;
+using QuickShare.LiteFramework.Foundation;
+using QuickShare.LiteFramework;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -25,6 +27,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         private readonly IRepository<Answer> _AnswerDetailRepository;
         private readonly IRepository<Record> _RecordRepository;
         private readonly IRepository<Users> _UserRepository;
+        ILogger logger;
 
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
@@ -38,6 +41,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             this._AnswerDetailRepository = answerDetailRepository;
             this._UserRepository = userRepository;
             this._RecordRepository = recordRepository;
+
+            logger = AppInstance.Current.Resolve<ILogger>();
         }
 
         #endregion
@@ -60,7 +65,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<QuestionModel>(-1, exp.Message);
+                logger.LogError("新增问题出错！", exp);
+                return new ReturnResult<QuestionModel>(-1, "系统异常，请稍后重试。");
             }
             if(res)
             {
@@ -89,7 +95,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, false, exp.Message);
+                logger.LogError("更新问题出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (res)
             {
@@ -134,7 +141,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             question.QuestionState = 2;
             var res = UpdateQuestion(question);
-            if(res.code > 1)
+            if(res.code > 0)
             {
                 var user = _UserRepository.Find().Where(p => p.id == question.Author).FirstOrDefault();
                 if (user != null)
@@ -157,7 +164,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                logger.LogError("删除问题出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (deleteResult)
             {
@@ -478,7 +486,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             catch (Exception exp)
             {
-                return new ReturnResult<bool>(-1, exp.Message);
+                logger.LogError("AddAnswer增加评论出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (res)
             {
@@ -488,7 +497,14 @@ namespace Mskj.ArmyKnowledge.All.Services
                 if (user != null)
                 {
                     user.compositescores += 2;//回答一个问题+2分
-                    _UserRepository.Update(user);
+                    try
+                    {
+                        _UserRepository.Update(user);
+                    }
+                    catch (Exception exp)
+                    {
+                        logger.LogError("AddAnswer增加评论时更新用户综合得分出错！", exp);
+                    }
                 }
                 return new ReturnResult<bool>(1, res);
             }
@@ -527,7 +543,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                 }
                 catch (Exception exp)
                 {
-                    return new ReturnResult<bool>(-1, exp.Message);
+                    logger.LogError("AddRecord增加最近浏览出错！", exp);
+                    return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
                 }
             }
             else
@@ -540,7 +557,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                 }
                 catch (Exception exp)
                 {
-                    return new ReturnResult<bool>(-1, exp.Message);
+                    logger.LogError("AddRecord更新最近浏览出错！", exp);
+                    return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
                 }
             }
             if (res)

@@ -47,11 +47,15 @@ begin
 																		--3 科研院所
 																		--4 普通企业用户
 																		--5 军企企业用户
+																		--6 高校
 																		--9 平台管理员
 	   iscertification      int                            null,		--是否认证 
-																		--0 未认证
+																		--0 未认证（没有认证信息）
 																		--1 已申请认证
-	   isadmin              bit                            null,		--2 已通过认证
+																		--2 未通过认证
+																		--3 已通过认证
+																		--4 已新建认证
+	   isadmin              bit                            null,		--是否管理员
 	   answercount          int                            null,		--回答数
 	   adoptedcount         int                            null,		--获赞数
 	   compositescores      int                            null,		--综合得分
@@ -88,7 +92,11 @@ begin
 	   otherexpirydate2     varchar(10)                    null,		--其他证件2有奖项
 	   othercredite3        varchar(512)                   null,		--其他证件3照片
 	   otherexpirydate3     varchar(10)                    null,		--其他证件4有奖项
-	   certstate            int                            null,		--认证信息状态 0-启用 1-停用
+	   certstate            int                            null,		--认证信息状态																		--0 未认证（没有认证信息）
+																		--1 已申请认证
+																		--2 未通过认证
+																		--3 已通过认证
+																		--4 已新建认证
 	   constraint PK_CERTIFICATION primary key clustered (id)
 	);
 end

@@ -87,6 +87,10 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// </summary>
         ReturnResult<bool> AuditCert(string id);
         /// <summary>
+        /// 拒绝用户认证信息
+        /// </summary>
+        ReturnResult<bool> RefuseCert(string id);
+        /// <summary>
         /// 提交审核用户认证信息
         /// </summary>
         ReturnResult<bool> SubmitCert(string id);

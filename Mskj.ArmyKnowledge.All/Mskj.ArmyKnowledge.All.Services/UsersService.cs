@@ -409,7 +409,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 return new ReturnResult<bool>(-2, "认证信息状态不是[提交审核状态]！");
             }
-            cert.certstate = 3;
+            cert.certstate = 2;
             var res = UpdateCert(cert);
             if(res.code > 0)
             {
@@ -435,7 +435,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 return new ReturnResult<bool>(-2, "认证信息状态不是[提交审核状态]！");
             }
-            cert.certstate = 2;
+            cert.certstate = 3;
             var res = UpdateCert(cert);
             if (res.code > 0)
             {

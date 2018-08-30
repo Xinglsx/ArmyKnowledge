@@ -52,8 +52,8 @@ begin
 	   iscertification      int                            null,		--是否认证 
 																		--0 未认证（没有认证信息）
 																		--1 已申请认证
-																		--2 未通过认证
-																		--3 已通过认证
+																		--2 已通过认证
+																		--3 未通过认证
 																		--4 已新建认证
 	   isadmin              bit                            null,		--是否管理员
 	   answercount          int                            null,		--回答数
@@ -102,8 +102,8 @@ begin
 	   otherexpirydate3     varchar(10)                    null,		--其他证件4有奖项
 	   certstate            int                            null,		--认证信息状态																		--0 未认证（没有认证信息）
 																		--1 已申请认证
-																		--2 未通过认证
-																		--3 已通过认证
+																		--2 已通过认证
+																		--3 未通过认证
 																		--4 已新建认证
 	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_CERTIFICATION primary key clustered (id)
@@ -135,6 +135,7 @@ begin
 																		--0 新建
 																		--1 提交审核
 																		--2 审核通过
+																		--3 审核不通过
 	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_QUESTION primary key clustered (id)
 	);
@@ -277,6 +278,7 @@ begin
 	   																	--0 新建
 																		--1 提交审核
 																		--2 审核通过
+																		--3 审核不通过
 	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_NOTICE primary key clustered (id)
 	);
@@ -309,10 +311,11 @@ begin
 	   contacts             varchar(32)                    null,		--联系人
 	   contactphone         varchar(11)                    null,		--联系电话
 	   prostate             int                            null,		--产品状态 
-																		--0-新建 
-																		--1-提交审核 
-																		--2-审核通过
-	   proscores			int							   null,			--综合得分
+																		--0 新建 
+																		--1 提交审核 
+																		--2 审核通过
+																		--3 审核不通过
+	   proscores			int							   null,		--综合得分
 	   updatetime			datetime					   null,		--更新时间
 	   constraint PK_PRODUCT primary key clustered (id)
 	);

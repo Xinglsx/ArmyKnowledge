@@ -58,17 +58,30 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             return _ProductService.DeleteProduct(product.Id);
         }
         /// <summary>
-        /// 审核产品信息
+        /// 审核不产品信息
         /// </summary>
         [Route("AuditProduct")]
         [HttpPost]
-        public object AuditProduct(PostId pro)
+        public object AuditPassProduct(PostId pro)
         {
             if (pro == null || string.IsNullOrEmpty(pro.Id))
             {
                 return new ReturnResult<bool>(-4, "参数传入错误！");
             }
             return _ProductService.AuditProduct(pro.Id);
+        }
+        /// <summary>
+        /// 审核不通过产品信息
+        /// </summary>
+        [Route("AuditFailProduct")]
+        [HttpPost]
+        public object AuditFailProduct(PostId pro)
+        {
+            if (pro == null || string.IsNullOrEmpty(pro.Id))
+            {
+                return new ReturnResult<bool>(-4, "参数传入错误！");
+            }
+            return _ProductService.AuditFailProduct(pro.Id);
         }
         /// <summary>
         /// 提交审核产品信息

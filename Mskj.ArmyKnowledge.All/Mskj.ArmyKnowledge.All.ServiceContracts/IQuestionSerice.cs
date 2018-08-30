@@ -29,6 +29,10 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// </summary>
         ReturnResult<bool> AuditQuestion(string id);
         /// <summary>
+        /// 审核不通过问题
+        /// </summary>
+        ReturnResult<bool> AuditFailQuestion(string id);
+        /// <summary>
         /// 删除问题
         /// </summary>
         ReturnResult<bool> DeleteQuestion(string id);

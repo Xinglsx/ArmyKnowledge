@@ -23,9 +23,13 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="id">需求ID</param>
         ReturnResult<bool> DeleteDemand(string id);
         /// <summary>
-        /// 审核需求信息
+        /// 审核通过需求信息
         /// </summary>
         ReturnResult<bool> AuditDemand(string id);
+        /// <summary>
+        /// 审核不通过需求信息
+        /// </summary>
+        ReturnResult<bool> AuditFailDemand(string id);
         /// <summary>
         /// 提交审核需求信息
         /// </summary>

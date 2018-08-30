@@ -118,7 +118,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
         }
         /// <summary>
-        /// 审核产品信息
+        /// 审核通过产品信息
         /// </summary>
         public ReturnResult<bool> AuditProduct(string id)
         {
@@ -135,9 +135,9 @@ namespace Mskj.ArmyKnowledge.All.Services
             return UpdateProduct(product);
         }
         /// <summary>
-        /// 提交审核产品信息
+        /// 审核不通过产品信息
         /// </summary>
-        public ReturnResult<bool> SubmitProduct(string id)
+        public ReturnResult<bool> AuditFailProduct(string id)
         {
             var product = GetOne(p => p.id == id);
             if (product == null || string.IsNullOrEmpty(product.id))
@@ -147,6 +147,23 @@ namespace Mskj.ArmyKnowledge.All.Services
             else if (product.prostate != 1)
             {
                 return new ReturnResult<bool>(-2, "产品信息状态不是[提交审核状态]！");
+            }
+            product.prostate = 3;
+            return UpdateProduct(product);
+        }
+        /// <summary>
+        /// 提交审核产品信息
+        /// </summary>
+        public ReturnResult<bool> SubmitProduct(string id)
+        {
+            var product = GetOne(p => p.id == id);
+            if (product == null || string.IsNullOrEmpty(product.id))
+            {
+                return new ReturnResult<bool>(-2, "未找到对应产品信息！");
+            }
+            else if (product.prostate != 0 && product.prostate != 3)
+            {
+                return new ReturnResult<bool>(-2, "产品信息状态不是[新建状态]或[审核不通过状态]！");
             }
             product.prostate = 1;
             return UpdateProduct(product);
@@ -207,7 +224,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="state">状态</param>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式</param>
+        /// <param name="sortType">排序方式 0-时间排序 1-综合得分排序 2-价格</param>
         /// <returns></returns>
         public ReturnResult<IPagedData<Product>> GetProducts(string filter = "", string category = "全部",
             int state = 2, int pageIndex = 1, int pageSize = 10, int sortType = 0)
@@ -235,36 +252,31 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式 0-综合排序 1-最新发布 2-价格</param>
+        /// <param name="sortType">排序方式 0-时间排序 1-综合得分排序 2-价格</param>
         /// <param name="expression">查询表达示</param>
         /// <returns></returns>
         private ReturnResult<IPagedData<Product>> GetBaseProducts(int pageIndex,
             int pageSize, int sortType, Expression<Func<Product, bool>> expression)
         {
             List<SortInfo<Product>> sorts = new List<SortInfo<Product>>();
-            SortInfo<Product> sort;
+            SortInfo<Product> sort = new SortInfo<Product>(p => new { p.publishtime },
+                        SortOrder.Descending);
             switch (sortType)
             {
-                case 0:
-                    sort = new SortInfo<Product>(p => new { p.proscores },
-                        SortOrder.Descending);
-                    break;
                 case 1:
-                    sort = new SortInfo<Product>(p => new { p.publishtime },
-                        SortOrder.Descending);
+                    sorts.Add(new SortInfo<Product>(p => new { p.proscores },
+                        SortOrder.Descending));
+                    sorts.Add(sort);
                     break;
                 case 2:
-                    sort = new SortInfo<Product>(p => p.price,
-                        SortOrder.Ascending);
+                    sorts.Add(new SortInfo<Product>(p => p.price,
+                        SortOrder.Ascending));
+                    sorts.Add(sort);
                     break;
-                default:
-                    sort = new SortInfo<Product>(p => p.price,
-                        SortOrder.Descending);
+                case 0:
+                    sorts.Add(sort);
                     break;
             }
-            sorts.Add(sort);
-            //所有排序之后，再按时间降序
-            sorts.Add(new SortInfo<Product>(p => new { p.publishtime }, SortOrder.Descending));
             return new ReturnResult<IPagedData<Product>>(1,
                     GetPage(pageIndex, pageSize, sorts, expression));
         }

@@ -91,7 +91,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             bool res = false;
             try
             {
-                res = this.Update(question);
+                res = Update(question);
             }
             catch (Exception exp)
             {
@@ -118,9 +118,9 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 return new ReturnResult<bool>(-2, "未找到对应提问！");
             }
-            if (question.QuestionState != 0)
+            if (question.QuestionState != 0 && question.QuestionState != 3)
             {
-                return new ReturnResult<bool>(-2, "提问状态不是[新建状态]！");
+                return new ReturnResult<bool>(-2, "提问状态不是[新建状态]或[审核不通过状态]！");
             }
             question.QuestionState = 1;
             return this.UpdateQuestion(question);
@@ -135,7 +135,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 return new ReturnResult<bool>(-2, "未找到对应提问！");
             }
-            if (question.QuestionState != 0)
+            if (question.QuestionState != 1)
             {
                 return new ReturnResult<bool>(-2, "提问状态不是[提交审核状态]！");
             }
@@ -150,6 +150,24 @@ namespace Mskj.ArmyKnowledge.All.Services
                     _UserRepository.Update(user);
                 }
             }
+            return res;
+        }
+        /// <summary>
+        /// 审核不通过问题
+        /// </summary>
+        public ReturnResult<bool> AuditFailQuestion(string id)
+        {
+            QuestionModel question = GetOne(p => p.Id == id);
+            if (question == null || string.IsNullOrEmpty(question.Id))
+            {
+                return new ReturnResult<bool>(-2, "未找到对应提问！");
+            }
+            if (question.QuestionState != 1)
+            {
+                return new ReturnResult<bool>(-2, "提问状态不是[提交审核状态]！");
+            }
+            question.QuestionState = 3;
+            var res = UpdateQuestion(question);
             return res;
         }
         /// <summary>
@@ -226,16 +244,13 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             switch (sortType)
             {
-                case 0:
-                    res = res.OrderByDescending(p => p.Publishtime);
-                    break;
                 case 1:
                     res = res.OrderByDescending(p => p.HeatCount).OrderByDescending(p => p.Publishtime);
                     break;
                 case 2:
                     res = res.OrderByDescending(p => p.CommentCount).OrderByDescending(p => p.Publishtime);
                     break;
-                case 3:
+                case 0:
                 default:
                     res = res.OrderByDescending(p => p.Publishtime);
                     break;
@@ -276,36 +291,32 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式 0-综合排序 1-最新发布</param>
+        /// <param name="sortType">排序方式：0-时间倒序 1-热值倒序 2-评论倒序 </param>
         /// <param name="expression">查询表达示</param>
         /// <returns></returns>
         private ReturnResult<IPagedData<QuestionModel>> GetBaseQuestionModels(int pageIndex,
             int pageSize, int sortType, Expression<Func<QuestionModel, bool>> expression)
         {
             List<SortInfo<QuestionModel>> sorts = new List<SortInfo<QuestionModel>>();
-            SortInfo<QuestionModel> sort;
+            SortInfo<QuestionModel> sortTime = new SortInfo<QuestionModel>(p => new { p.Publishtime },
+                        SortOrder.Descending);
             switch (sortType)
             {
-                case 0:
-                    sort = new SortInfo<QuestionModel>(p => new { p.Publishtime },
-                        SortOrder.Descending);
-                    break;
                 case 1:
-                    sort = new SortInfo<QuestionModel>(p => new { p.HeatCount },
-                        SortOrder.Descending);
+                    sorts.Add(new SortInfo<QuestionModel>(p => new { p.HeatCount },
+                        SortOrder.Descending));
+                    sorts.Add(sortTime);
                     break;
                 case 2:
-                    sort = new SortInfo<QuestionModel>(p => new { p.CommentCount },
-                        SortOrder.Descending);
+                    sorts.Add(new SortInfo<QuestionModel>(p => new { p.CommentCount },
+                        SortOrder.Descending));
+                    sorts.Add(sortTime);
                     break;
-                case 3:
+                case 0:
                 default:
-                    sort = new SortInfo<QuestionModel>(p => new { p.Publishtime },
-                        SortOrder.Descending);
+                    sorts.Add(sortTime);
                     break;
             }
-            sorts.Add(sort);
-            sorts.Add(new SortInfo<QuestionModel>(p => new { p.Publishtime }, SortOrder.Descending));
             return new ReturnResult<IPagedData<QuestionModel>>(1,
                     GetPage(pageIndex, pageSize, sorts, expression));
         }

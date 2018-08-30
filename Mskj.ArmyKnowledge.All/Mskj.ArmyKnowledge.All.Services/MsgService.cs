@@ -36,10 +36,10 @@ namespace Mskj.ArmyKnowledge.All.Services
             IRepository<Users> userRepository) :
             base(msgRepository)
         {
-            this._MsgRepository = msgRepository;
-            this._MsgDetailRepository = msgDetailRepository;
-            this._NoticeRepository = noticeRepository;
-            this._UserRepository = userRepository;
+            _MsgRepository = msgRepository;
+            _MsgDetailRepository = msgDetailRepository;
+            _NoticeRepository = noticeRepository;
+            _UserRepository = userRepository;
 
             logger = AppInstance.Current.Resolve<ILogger>();
         }

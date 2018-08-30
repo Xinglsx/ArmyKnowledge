@@ -74,7 +74,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             demand.updatetime = DateTime.Now;
             try
             {
-                updateResult = this.Update(demand);
+                updateResult = Update(demand);
             }
             catch (Exception exp)
             {
@@ -134,6 +134,23 @@ namespace Mskj.ArmyKnowledge.All.Services
             return UpdateDemand(demand);
         }
         /// <summary>
+        /// 审核不通过需求信息
+        /// </summary>
+        public ReturnResult<bool> AuditFailDemand(string id)
+        {
+            var demand = GetOne(p => p.id == id);
+            if (demand == null || string.IsNullOrEmpty(demand.id))
+            {
+                return new ReturnResult<bool>(-2, "未找到对应需求信息！");
+            }
+            else if (demand.demandstate != 1)
+            {
+                return new ReturnResult<bool>(-2, "需求信息状态不是[提交审核状态]！");
+            }
+            demand.demandstate = 3;
+            return UpdateDemand(demand);
+        }
+        /// <summary>
         /// 提交审核需求信息
         /// </summary>
         public ReturnResult<bool> SubmitDemand(string id)
@@ -143,9 +160,9 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 return new ReturnResult<bool>(-2, "未找到对应需求信息！");
             }
-            else if (demand.demandstate != 1)
+            else if (demand.demandstate != 1 && demand.demandstate != 3)
             {
-                return new ReturnResult<bool>(-2, "需求信息状态不是[新建状态]！");
+                return new ReturnResult<bool>(-2, "需求信息状态不是[新建状态]或[审核不通过状态]！");
             }
             demand.demandstate = 1;
             demand.updatetime = DateTime.Now;
@@ -243,31 +260,29 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式 0-综合排序 1-最新发布</param>
+        /// <param name="sortType">排序方式 0-时间倒序 1-综合得分倒序</param>
         /// <param name="expression">查询表达示</param>
         /// <returns></returns>
         private ReturnResult<IPagedData<Demand>> GetBaseDemands(int pageIndex,
             int pageSize, int sortType, Expression<Func<Demand, bool>> expression)
         {
             List<SortInfo<Demand>> sorts = new List<SortInfo<Demand>>();
-            SortInfo<Demand> sort;
+            SortInfo<Demand> sortTime = new SortInfo<Demand>(p => new { p.publishtime },
+                        SortOrder.Descending);
             switch (sortType)
             {
                 case 0:
-                    sort = new SortInfo<Demand>(p => new { p.demandscores },
-                        SortOrder.Descending);
+                    sorts.Add(sortTime);
                     break;
                 case 1:
                 default:
-                    sort = new SortInfo<Demand>(p => new { p.publishtime },
-                        SortOrder.Descending);
+                    sorts.Add(new SortInfo<Demand>(p => new { p.demandscores },
+                        SortOrder.Descending));
+                    sorts.Add(sortTime);
                     break;
             }
-            sorts.Add(sort);
-            //所有排序之后，再按时间降序
-            sorts.Add(new SortInfo<Demand>(p => new { p.publishtime },SortOrder.Descending));
-            return new ReturnResult<IPagedData<Demand>>(1,
-                    GetPage(pageIndex, pageSize, sorts, expression));
+            return new ReturnResult<IPagedData<Demand>>(1,GetPage(pageIndex, 
+                pageSize, sorts, expression));
         }
         #endregion
         

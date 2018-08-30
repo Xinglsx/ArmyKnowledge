@@ -65,13 +65,26 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// </summary>
         [Route("AuditQuestion")]
         [HttpPost]
-        public object AuditQuestion(PostId question)
+        public object AuditPassQuestion(PostId question)
         {
             if (question == null || string.IsNullOrEmpty(question.Id))
             {
                 return new ReturnResult<QuestionModel>(-4, "传入参数错误!");
             }
             return _QuestionService.AuditQuestion(question.Id);
+        }
+        /// <summary>
+        /// 审核不通过问题
+        /// </summary>
+        [Route("AuditFailQuestion")]
+        [HttpPost]
+        public object AuditFailQuestion(PostId question)
+        {
+            if (question == null || string.IsNullOrEmpty(question.Id))
+            {
+                return new ReturnResult<QuestionModel>(-4, "传入参数错误!");
+            }
+            return _QuestionService.AuditFailQuestion(question.Id);
         }
         /// <summary>
         /// 删除问题

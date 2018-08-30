@@ -58,17 +58,30 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             return _DemandService.DeleteDemand(demand.Id);
         }
         /// <summary>
-        /// 审核需求信息
+        /// 审核通过需求信息
         /// </summary>
         [Route("AuditDemand")]
         [HttpPost]
-        public object AuditDemand(PostId demand)
+        public object AuditPassDemand(PostId demand)
         {
             if(demand == null || string.IsNullOrEmpty(demand.Id))
             {
                 return new ReturnResult<bool>(-4, "参数传入错误！");
             }
             return _DemandService.AuditDemand(demand.Id);
+        }
+        /// <summary>
+        /// 审核不通过需求信息
+        /// </summary>
+        [Route("AuditFailDemand")]
+        [HttpPost]
+        public object AuditFailDemand(PostId demand)
+        {
+            if (demand == null || string.IsNullOrEmpty(demand.Id))
+            {
+                return new ReturnResult<bool>(-4, "参数传入错误！");
+            }
+            return _DemandService.AuditFailDemand(demand.Id);
         }
         /// <summary>
         /// 提交审核需求信息

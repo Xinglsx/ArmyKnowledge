@@ -24,9 +24,13 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="id">产品ID</param>
         ReturnResult<bool> DeleteProduct(string id);
         /// <summary>
-        /// 审核产品信息
+        /// 审核通过产品信息
         /// </summary>
         ReturnResult<bool> AuditProduct(string id);
+        /// <summary>
+        /// 审核不通过产品信息
+        /// </summary>
+        ReturnResult<bool> AuditFailProduct(string id);
         /// <summary>
         /// 提交审核产品信息
         /// </summary>

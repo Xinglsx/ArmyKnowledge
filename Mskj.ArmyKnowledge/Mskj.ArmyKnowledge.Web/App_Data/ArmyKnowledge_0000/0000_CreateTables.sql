@@ -58,6 +58,7 @@ begin
 	   isadmin              bit                            null,		--是否管理员
 	   answercount          int                            null,		--回答数
 	   adoptedcount         int                            null,		--获赞数
+	   collectcount         int                            null,		--收藏数
 	   compositescores      int                            null,		--综合得分
 	   followcount          int                            null,		--粉丝数
 	   fanscount            int                            null,		--关注数
@@ -295,7 +296,7 @@ begin
 	   userid               varchar(36)                    null,		--发布用户ID
 	   nickname             varchar(32)                    null,		--发布用户昵称
 	   proname              varchar(64)                    null,		--产品名称
-	   price                varchar(32)                    null,		--价格
+	   price				decimal(12,2)				   null,		--价格
 	   introduction         varchar(2000)                  null,		--简介
 	   images               varchar(4000)                  null,		--图片集合，以逗号隔开
 	   isrecommend          bit                            null,		--是否推荐

@@ -7,7 +7,7 @@ namespace Mskj.ArmyKnowledge.All.Domains
     {
         public string id { get; set; }
         public string proname { get; set; }
-        public string price { get; set; }
+        public decimal price { get; set; }
         public string introduction { get; set; }
         public string userid { get; set; }
         public bool isrecommend { get; set; }

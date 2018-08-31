@@ -302,6 +302,34 @@ namespace Mskj.ArmyKnowledge.All.Services
             temp.pwd = null;
             return new ReturnResult<Users>(1, temp);
         }
+        /// <summary>
+        /// 更新用户收藏数
+        /// </summary>
+        /// <param name="userId">用户ID</param>
+        /// <param name="count">增减数量</param>
+        public bool UpdateCollectCount(string userId,int count = 1)
+        {
+            var user = GetOne(p => p.id == userId);
+            if(user == null || string.IsNullOrEmpty(user.id))
+            {
+                return false;
+            }
+            user.collectcount += count;
+            user.compositescores += 2 * count;
+            bool updateResult = false;
+            try
+            {
+                //user.isadmin = false;已不再对接口公布些字段//接口不可将些字段更新为true,只能后台update
+                user.updatetime = DateTime.Now;
+                updateResult = this.Update(user);
+            }
+            catch (Exception exp)
+            {
+                logger.LogError("更新用户信息出错！", exp);
+                return false;
+            }
+            return updateResult;
+        }
         #endregion
 
         #region 用户认证信息
@@ -567,7 +595,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 exp1 = x => x.usertype == userType;
             }
-            if(!"全部".Equals(profession))
+            if(!"全部".Equals(profession) && !string.IsNullOrEmpty(profession))
             {
                 exp2 = x => x.profession == profession;
             }

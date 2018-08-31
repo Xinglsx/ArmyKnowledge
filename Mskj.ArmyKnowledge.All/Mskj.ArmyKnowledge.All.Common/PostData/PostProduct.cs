@@ -22,7 +22,7 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
         /// 产品价格
         /// </summary>
         [JsonProperty("price")]
-        public string Price { get; set; }
+        public decimal Price { get; set; }
         /// <summary>
         /// 物资编码
         /// </summary>

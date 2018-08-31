@@ -14,10 +14,12 @@ namespace Mskj.ArmyKnowledge.All.Controllers
     {
         #region 构造函数
         private readonly IQuestionService _QuestionService;
+        private readonly IUsersService _IUsersService;
 
-        public QuestionController(IQuestionService questionService)
+        public QuestionController(IQuestionService questionService,IUsersService usersService)
         {
             _QuestionService = questionService;
+            _IUsersService = usersService;
         }
         #endregion
 
@@ -59,6 +61,24 @@ namespace Mskj.ArmyKnowledge.All.Controllers
                 return new ReturnResult<QuestionModel>(-4, "传入参数错误!");
             }
             return _QuestionService.SubmitQuestion(question.Id);
+        }
+        /// <summary>
+        /// 新增问题
+        /// </summary>
+        /// <param name="question"></param>
+        /// <returns></returns>
+        [Route("SaveAndSubmitQuestion")]
+        [HttpPost]
+        public object SaveAndSubmitQuestion(PostQuestion question)
+        {
+            if (question == null || string.IsNullOrEmpty(question.Author) ||
+                string.IsNullOrEmpty(question.Content) || string.IsNullOrEmpty(question.Title))
+            {
+                return new ReturnResult<QuestionModel>(-4, "传入参数错误!");
+            }
+            var temp = question.ToModel();
+            temp.QuestionState = 1;
+            return _QuestionService.AddQuestion(temp);
         }
         /// <summary>
         /// 审核通过问题
@@ -179,7 +199,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             return _QuestionService.UpdateReadCount(question.Id);
         }
         /// <summary>
-        /// 增加点击数
+        /// 增加点赞数
         /// </summary>
         /// <param name="questionId"></param>
         /// <param name="userid"></param>
@@ -235,13 +255,71 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <returns></returns>
         [Route("AddRecord")]
         [HttpPost]
-        public object AddRecord(Record record)
+        public object AddRecord(PostRecord record)
         {
-            if (record == null || string.IsNullOrEmpty(record.questionid))
+            if (record == null || string.IsNullOrEmpty(record.QuestionId)
+                || string.IsNullOrEmpty(record.UserId))
             {
-                return new ReturnResult<bool>(-2, "参数传入错误");
+                return new ReturnResult<bool>(-2, "参数传入错误!");
             }
-            return _QuestionService.AddRecord(record);
+            Record saveTemp = _QuestionService.GetRecord(record.QuestionId, record.UserId);
+            bool isNew = false;
+            if (saveTemp == null)
+            {
+                saveTemp = record.ToModel();
+                isNew = true;
+            }
+            switch (record.Type)
+            {
+                default:
+                case 0:
+                    break;
+                case 1://点赞
+                    saveTemp.ispraise = true;
+                    break;
+                case 2://收藏
+                    saveTemp.iscollect = true;
+                    break;
+                case -1://取消点赞
+                    saveTemp.ispraise = false;
+                    break;
+                case -2://取消收藏
+                    saveTemp.iscollect = false;
+                    break;
+            }
+            ReturnResult<bool> res = new ReturnResult<bool>();
+            if (isNew)
+            {
+                res = _QuestionService.AddRecord(saveTemp);
+            }
+            else
+            {
+                res = _QuestionService.UpdateRecord(saveTemp);
+            }
+            if (res.code > 0)
+            {
+                switch (record.Type)
+                {
+                    default:
+                    case 0:
+                        break;
+                    case 1://点赞
+                        _QuestionService.UpdatePraiseCount(record.QuestionId, 1);
+                        _IUsersService.UpdateCollectCount(record.UserId, 1);
+                        break;
+                    case 2://收藏
+                        _QuestionService.UpdateCollectCount(record.QuestionId, 1);
+                        break;
+                    case -1://取消点赞
+                        _QuestionService.UpdatePraiseCount(record.QuestionId, -1);
+                        break;
+                    case -2://取消收藏
+                        _QuestionService.UpdateCollectCount(record.QuestionId, -1);
+                        _IUsersService.UpdateCollectCount(record.UserId, -1);
+                        break;
+                }
+            }
+            return res;
         }
         /// <summary>
         /// 查看最近浏览的问题列表
@@ -257,19 +335,6 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             int pageIndex = 1, int pageSize = 10, string filter = "")
         {
             return _QuestionService.GetRecordQuestions(userid, pageIndex, pageSize, filter);
-        }
-        /// <summary>
-        /// 增加收藏
-        /// </summary>
-        [Route("AddCollect")]
-        [HttpPost]
-        public object AddCollect(Record record)
-        {
-            if (record == null || string.IsNullOrEmpty(record.questionid))
-            {
-                return new ReturnResult<bool>(-2, "参数传入错误");
-            }
-            return _QuestionService.AddCollect(record);
         }
         /// <summary>
         /// 查看我收藏的问题列表

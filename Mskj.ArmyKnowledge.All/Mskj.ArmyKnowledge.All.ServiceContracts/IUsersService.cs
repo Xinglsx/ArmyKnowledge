@@ -67,6 +67,12 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="id">ID</param>
         /// <returns></returns>
         ReturnResult<Users> GetUserById(string id);
+        /// <summary>
+        /// 更新用户收藏数
+        /// </summary>
+        /// <param name="userId">用户ID</param>
+        /// <param name="count">增减数量</param>
+        bool UpdateCollectCount(string userId, int count = 1);
         #endregion
 
         #region 用户认证信息

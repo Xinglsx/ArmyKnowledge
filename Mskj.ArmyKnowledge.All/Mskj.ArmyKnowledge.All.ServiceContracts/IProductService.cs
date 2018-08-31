@@ -57,7 +57,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<Product>> GetUserProducts(string userid,
+        ReturnResult<IPagedData<ProductModel>> GetUserProducts(string userid,
             int pageIndex = 1, int pageSize = 10, int sortType = 0);
         /// <summary>
         /// 分页获取产品列表

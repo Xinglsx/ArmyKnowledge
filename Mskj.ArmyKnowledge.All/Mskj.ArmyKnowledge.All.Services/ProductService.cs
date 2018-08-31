@@ -217,11 +217,55 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Product>> GetUserProducts(string userid,
+        public ReturnResult<IPagedData<ProductModel>> GetUserProducts(string userid,
             int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            Expression<Func<Product, bool>> expression = x => x.userid == userid;
-            return GetBaseProducts(pageIndex, pageSize, sortType, expression);
+            var res = (from pro in _ProRepository.Find()
+                       join user in _UserRepository.Find() on pro.userid equals user.id
+                       where pro.userid == userid
+                       select new ProductModel
+                       {
+                           Avatar = user.avatar,
+                           BuyCount = pro.buycount,
+                           Category = pro.category,
+                           CompositeScore = pro.compositescore,
+                           ContactPhone = pro.contactphone,
+                           Contacts = pro.contacts,
+                           HomeImage = pro.homeimage,
+                           Id = pro.id,
+                           Images = pro.images,
+                           Introduction = pro.introduction,
+                           IsRecommend = pro.isrecommend,
+                           MaterialCode = pro.materialcode,
+                           Nickname = user.nickname,
+                           Price = pro.price == 0 ? "价格面试" : ("￥" + pro.price.ToString()),
+                           ProDetail = pro.prodetail,
+                           ProductionDdate = pro.productiondate,
+                           ProName = pro.proname,
+                           ProScores = pro.proscores,
+                           ProState = pro.prostate,
+                           PublishTime = pro.publishtime,
+                           ReadCount = pro.readcount,
+                           UpdateTime = pro.updatetime,
+                           UserId = user.id,
+                       });
+            switch (sortType)
+            {
+                case 1:
+                    res = res.OrderByDescending(p => p.ProScores).ThenByDescending(q => q.PublishTime);
+                    break;
+                case 2:
+                    res = res.OrderByDescending(p => p.Price).ThenByDescending(q => q.PublishTime);
+                    break;
+                case 3:
+                    res = res.OrderBy(p => p.Price).ThenByDescending(q => q.PublishTime);
+                    break;
+                case 0:
+                default:
+                    res = res.OrderByDescending(q => q.PublishTime);
+                    break;
+            }
+            return new ReturnResult<IPagedData<ProductModel>>(1, res.ToPage(pageIndex, pageSize));
         }
         /// <summary>
         /// 分页获取产品列表
@@ -252,7 +296,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                            IsRecommend = pro.isrecommend,
                            MaterialCode = pro.materialcode,
                            Nickname = user.nickname,
-                           Price = pro.price,
+                           Price = pro.price == 0 ? "价格面试":("￥"+ pro.price.ToString()),
                            ProDetail = pro.prodetail,
                            ProductionDdate = pro.productiondate,
                            ProName = pro.proname,
@@ -293,45 +337,6 @@ namespace Mskj.ArmyKnowledge.All.Services
                     break;
             }
             return new ReturnResult<IPagedData<ProductModel>>(1,res.ToPage(pageIndex,pageSize));
-        }
-        /// <summary>
-        /// 分页获取产品列表(封装排序方式)
-        /// </summary>
-        /// <param name="pageIndex">页码</param>
-        /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式 0-时间排序 1-综合得分降序 2-价格降序 3-价格升序</param>
-        /// <param name="expression">查询表达示</param>
-        /// <returns></returns>
-        private ReturnResult<IPagedData<Product>> GetBaseProducts(int pageIndex,
-            int pageSize, int sortType, Expression<Func<Product, bool>> expression)
-        {
-            List<SortInfo<Product>> sorts = new List<SortInfo<Product>>();
-            SortInfo<Product> sort = new SortInfo<Product>(p => new { p.publishtime },
-                        SortOrder.Descending);
-            switch (sortType)
-            {
-                case 1:
-                    sorts.Add(new SortInfo<Product>(p => new { p.proscores },
-                        SortOrder.Descending));
-                    sorts.Add(sort);
-                    break;
-                case 2:
-                    sorts.Add(new SortInfo<Product>(p => p.price,
-                        SortOrder.Descending));
-                    sorts.Add(sort);
-                    break;
-                case 3:
-                    sorts.Add(new SortInfo<Product>(p => p.price,
-                        SortOrder.Ascending));
-                    sorts.Add(sort);
-                    break;
-                case 0:
-                default:
-                    sorts.Add(sort);
-                    break;
-            }
-            return new ReturnResult<IPagedData<Product>>(1,
-                    GetPage(pageIndex, pageSize, sorts, expression));
         }
         /// <summary>
         /// 增加阅读数

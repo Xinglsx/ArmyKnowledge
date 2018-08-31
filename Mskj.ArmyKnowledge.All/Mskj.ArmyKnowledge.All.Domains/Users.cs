@@ -31,5 +31,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public int userstate { get; set; }
         public DateTime? registertime { get; set; }
         public DateTime? updatetime { get; set; }
+        public int collectcount { get; set; }
     }
 }

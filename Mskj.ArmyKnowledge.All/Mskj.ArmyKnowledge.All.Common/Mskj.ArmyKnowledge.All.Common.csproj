@@ -60,6 +60,7 @@
     <Compile Include="PostData\PostId.cs" />
     <Compile Include="PostData\PostProduct.cs" />
     <Compile Include="PostData\PostQuestion.cs" />
+    <Compile Include="PostData\PostRecord.cs" />
     <Compile Include="PostData\PostUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

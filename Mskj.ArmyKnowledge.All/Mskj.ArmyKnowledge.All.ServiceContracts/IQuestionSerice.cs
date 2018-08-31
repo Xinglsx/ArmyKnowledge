@@ -73,7 +73,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<Question>> GetUserAnswers(string userid,int pageIndex = 1, int pageSize = 10);
+        ReturnResult<IPagedData<QuestionModel>> GetUserAnswers(string userid,int pageIndex = 1, int pageSize = 10);
         /// <summary>
         /// 获取一个问题
         /// </summary>
@@ -86,19 +86,26 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <returns></returns>
         ReturnResult<bool> UpdateReadCount(string questionId);
         /// <summary>
-        /// 增加点击数
+        /// 增加点赞数
         /// </summary>
         /// <param name="questionId"></param>
         /// <param name="userid"></param>
         /// <returns></returns>
-        ReturnResult<bool> UpdatePraiseCount(string questionId);
+        ReturnResult<bool> UpdatePraiseCount(string questionId, int count = 1);
         /// <summary>
         /// 增加评论数
         /// </summary>
         /// <param name="questionId"></param>
         /// <param name="userid"></param>
         /// <returns></returns>
-        ReturnResult<bool> UpdateCommentCount(string questionId);
+        ReturnResult<bool> UpdateCommentCount(string questionId, int count = 1);
+        /// <summary>
+        /// 增加收藏数
+        /// </summary>
+        /// <param name="questionId"></param>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        ReturnResult<bool> UpdateCollectCount(string userId, int count = 1);
         /// <summary>
         /// 更新热度
         /// </summary>
@@ -116,10 +123,20 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
 
         #region 最近浏览
         /// <summary>
+        /// 获取最近浏览
+        /// </summary>
+        /// <returns></returns>
+        Record GetRecord(string questionId, string userId);
+        /// <summary>
         /// 增加或更新最近浏览
         /// </summary>
         /// <returns></returns>
         ReturnResult<bool> AddRecord(Record record);
+        /// <summary>
+        /// 更新最近浏览
+        /// </summary>
+        /// <returns></returns>
+        ReturnResult<bool> UpdateRecord(Record record);
         /// <summary>
         /// 查看最近浏览的问题列表
         /// </summary>
@@ -130,10 +147,6 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <returns></returns>
         ReturnResult<IPagedData<QuestionModel>> GetRecordQuestions(string userid,
             int pageIndex = 1, int pageSize = 10, string filter = "");
-        /// <summary>
-        /// 增加最近浏览
-        /// </summary>
-        ReturnResult<bool> AddCollect(Record record);
         /// <summary>
         /// 查看我收藏的问题列表
         /// </summary>

@@ -257,6 +257,12 @@ namespace Mskj.ArmyKnowledge.All.Services
                     break;
             }
             var result = res.ToPage(pageIndex, pageSize);
+            //为null时接口不会传出。。。
+            for(int i = 0; i < result.Data.Count(); i++)
+            {
+                if (result.Data[i].IsCollect == null) { result.Data[i].IsCollect = false; }
+                if (result.Data[i].IsPraise == null) { result.Data[i].IsPraise = false; }
+            }
 
             return new ReturnResult<IPagedData<QuestionModel>>(1, result);
         }
@@ -356,15 +362,75 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Question>> GetUserAnswers(string userid,
+        public ReturnResult<IPagedData<QuestionModel>> GetUserAnswers(string userid,
             int pageIndex = 1, int pageSize = 10)
         {
-            var res = (from answer in _AnswerDetailRepository.Find()
-                       join question in _QuestionRepository.Find() on answer.questionid equals question.id
-                       where answer.userid == userid
-                       orderby answer.publishtime descending
-                       select question).ToPage(pageIndex, pageSize);
-            return new ReturnResult<IPagedData<Question>>(1, res);
+            //var resTemp = (from question in
+            //               (from answer in _AnswerDetailRepository.Find()
+            //                join questionTemp in _QuestionRepository.Find() on answer.questionid equals questionTemp.id
+            //                where answer.userid == userid
+            //                select questionTemp).DistinctBy(q => q.id)
+            //               join user in _UserRepository.Find() on question.author equals user.id into temp1
+            //               from tempUser in temp1.DefaultIfEmpty()
+            //               join record in _RecordRepository.Find() on new { question.id, userid }
+            //               equals new { id = record.questionid, record.userid } into temp
+            //               from tempRecord in temp.DefaultIfEmpty()
+            //               select new QuestionModel
+            //               {
+            //                   Author = tempUser.id,
+            //                   AuthorNickname = tempUser.nickname,
+            //                   Avatar = tempUser.avatar,
+            //                   CommentCount = question.commentcount,
+            //                   Content = question.content,
+            //                   HeatCount = question.heatcount,
+            //                   HomeImage = question.homeimage,
+            //                   Id = question.id,
+            //                   Images = question.images,
+            //                   Introduction = question.introduction,
+            //                   IsCollect = tempRecord.iscollect,
+            //                   IsPraise = tempRecord.ispraise,
+            //                   IsRecommend = question.isrecommend,
+            //                   PraiseCount = question.praisecount,
+            //                   Publishtime = question.publishtime,
+            //                   QuestionState = question.questionstate,
+            //                   ReadCount = question.readcount,
+            //                   Title = question.title,
+            //               }).OrderByDescending(q => q.Publishtime);
+            var questionIds = _AnswerDetailRepository.Find().Where(p => p.userid == userid).Select(q => q.questionid).Distinct().ToList();
+            if (questionIds == null || questionIds.Count() <= 0)
+            {
+
+            }
+            var resTemp = (from question in _QuestionRepository.Find()
+                           join user in _UserRepository.Find() on question.author equals user.id into temp1
+                           from tempUser in temp1.DefaultIfEmpty()
+                           join record in _RecordRepository.Find() on new { question.id, userid }
+                           equals new { id = record.questionid, record.userid } into temp
+                           from tempRecord in temp.DefaultIfEmpty()
+                           where questionIds.Contains(question.id)
+                           select new QuestionModel
+                           {
+                               Author = tempUser.id,
+                               AuthorNickname = tempUser.nickname,
+                               Avatar = tempUser.avatar,
+                               CommentCount = question.commentcount,
+                               Content = question.content,
+                               HeatCount = question.heatcount,
+                               HomeImage = question.homeimage,
+                               Id = question.id,
+                               Images = question.images,
+                               Introduction = question.introduction,
+                               IsCollect = tempRecord.iscollect,
+                               IsPraise = tempRecord.ispraise,
+                               IsRecommend = question.isrecommend,
+                               PraiseCount = question.praisecount,
+                               Publishtime = question.publishtime,
+                               QuestionState = question.questionstate,
+                               ReadCount = question.readcount,
+                               Title = question.title,
+                           }).OrderByDescending(q => q.Publishtime);
+            var res = resTemp.ToPage(pageIndex,pageSize);
+            return new ReturnResult<IPagedData<QuestionModel>>(1, res);
         }
         /// <summary>
         /// 获取一个问题
@@ -410,7 +476,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 增加点击数
         /// </summary>
-        public ReturnResult<bool> UpdatePraiseCount(string questionId)
+        public ReturnResult<bool> UpdatePraiseCount(string questionId,int count = 1)
         {
             QuestionModel question = this.GetOne(p => p.Id == questionId);
             if (question == null || string.IsNullOrEmpty(question.Id))
@@ -431,7 +497,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 增加评论数
         /// </summary>
-        public ReturnResult<bool> UpdateCommentCount(string questionId)
+        public ReturnResult<bool> UpdateCommentCount(string questionId, int count = 1)
         {
             QuestionModel question = this.GetOne(p => p.Id == questionId);
             if (question == null || string.IsNullOrEmpty(question.Id))
@@ -443,6 +509,40 @@ namespace Mskj.ArmyKnowledge.All.Services
                 question.CommentCount++;
                 var res = UpdateQuestion(question);
                 return res;
+            }
+        }
+        /// <summary>
+        /// 增加收藏数
+        /// </summary>
+        public ReturnResult<bool> UpdateCollectCount(string userId, int count = 1)
+        {
+            Users user = _UserRepository.Find().Where(p => p.id == userId).FirstOrDefault();
+            if (user == null || string.IsNullOrEmpty(user.id))
+            {
+                return new ReturnResult<bool>(-2, "问题ID不存在！");
+            }
+            else
+            {
+                user.collectcount += count;
+                bool res = false;
+                try
+                {
+                    res = _UserRepository.Update(user);
+
+                }
+                catch (Exception exp)
+                {
+                    logger.LogError("用户信息出错！", exp);
+                    return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
+                }
+                if (res)
+                {
+                    return new ReturnResult<bool>(1, res);
+                }
+                else
+                {
+                    return new ReturnResult<bool>(-2, res, "用户信息更新失败！");
+                }
             }
         }
         /// <summary>
@@ -529,49 +629,59 @@ namespace Mskj.ArmyKnowledge.All.Services
 
         #region 最近浏览
         /// <summary>
-        /// 增加或更新最近浏览
+        /// 获取指定的最近浏览
+        /// </summary>
+        /// <param name="questionId"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Record GetRecord(string questionId,string userId)
+        {
+            var existRecord = _RecordRepository.Find().Where(p => p.questionid == questionId
+                && p.userid == userId).FirstOrDefault();
+            return existRecord;
+        }
+        /// <summary>
+        /// 增加
         /// </summary>
         /// <returns></returns>
         public ReturnResult<bool> AddRecord(Record record)
         {
-            if(string.IsNullOrEmpty(record.questionid))
-            {
-                return new ReturnResult<bool>(-2, "未找到待保存的问题ID！");
-            }
-            if (string.IsNullOrEmpty(record.userid))
-            {
-                return new ReturnResult<bool>(-2, "未找到待保存的用户ID！");
-            }
-            var existRecord = _RecordRepository.Find().Where(p => p.questionid == record.questionid
-                && p.userid == record.userid).FirstOrDefault();
             bool res = false;
-            if(existRecord == null || string.IsNullOrEmpty(existRecord.id))
+            record.id = Guid.NewGuid().ToString();
+            record.lasttime = DateTime.Now;
+            try
             {
-                record.id = Guid.NewGuid().ToString();
-                record.lasttime = DateTime.Now;
-                try
-                {
-                    res = _RecordRepository.Add(record);
-                }
-                catch (Exception exp)
-                {
-                    logger.LogError("AddRecord增加最近浏览出错！", exp);
-                    return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
-                }
+                res = _RecordRepository.Add(record);
+            }
+            catch (Exception exp)
+            {
+                logger.LogError("AddRecord增加最近浏览出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
+            }
+            if (res)
+            {
+                return new ReturnResult<bool>(1, res);
             }
             else
             {
-                existRecord.lasttime = DateTime.Now;
-                existRecord.iscollect = record.iscollect;
-                try
-                {
-                    res = _RecordRepository.Update(existRecord);
-                }
-                catch (Exception exp)
-                {
-                    logger.LogError("AddRecord更新最近浏览出错！", exp);
-                    return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
-                }
+                return new ReturnResult<bool>(-2, "新增最近浏览失败！");
+            }
+        }
+        /// <summary>
+        /// 更新最近浏览
+        /// </summary>
+        /// <returns></returns>
+        public ReturnResult<bool> UpdateRecord(Record record)
+        {
+            bool res = false;
+            try
+            {
+                res = _RecordRepository.Update(record);
+            }
+            catch (Exception exp)
+            {
+                logger.LogError("AddRecord更新最近浏览出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
             }
             if (res)
             {
@@ -594,20 +704,39 @@ namespace Mskj.ArmyKnowledge.All.Services
             int pageIndex = 1, int pageSize = 10, string filter= "")
         {
             var res = (from question in _QuestionRepository.Find()
-                       join record in _RecordRepository.Find() on question.id equals record.questionid
-                       where record.userid == userid
-                       orderby record.lasttime descending
-                       select question).ToPage(pageIndex,pageSize).
-                       MapTo<Question,QuestionModel>();
+                       join user in _UserRepository.Find() on question.author equals user.id
+                       join record in _RecordRepository.Find() on new { question.id, userid }
+                       equals new { id = record.questionid, record.userid } into temp
+                       from tempRecord in temp.DefaultIfEmpty()
+                       select new QuestionModel
+                       {
+                           Author = user.id,
+                           AuthorNickname = user.nickname,
+                           Avatar = user.avatar,
+                           CommentCount = question.commentcount,
+                           Content = question.content,
+                           HeatCount = question.heatcount,
+                           HomeImage = question.homeimage,
+                           Id = question.id,
+                           Images = question.images,
+                           Introduction = question.introduction,
+                           IsCollect = tempRecord.iscollect,
+                           IsPraise = tempRecord.ispraise,
+                           IsRecommend = question.isrecommend,
+                           PraiseCount = question.praisecount,
+                           Publishtime = question.publishtime,
+                           QuestionState = question.questionstate,
+                           ReadCount = question.readcount,
+                           Title = question.title,
+                           RecordLastTime = tempRecord.lasttime,
+                       }).OrderByDescending(q => q.RecordLastTime).ToPage(pageIndex,pageSize);
+            //var res = (from question in _QuestionRepository.Find()
+            //           join record in _RecordRepository.Find() on question.id equals record.questionid
+            //           where record.userid == userid
+            //           orderby record.lasttime descending
+            //           select question).ToPage(pageIndex,pageSize).
+            //           MapTo<Question,QuestionModel>();
             return new ReturnResult<IPagedData<QuestionModel>>(1, res);
-        }
-        /// <summary>
-        /// 增加最近浏览
-        /// </summary>
-        public ReturnResult<bool> AddCollect(Record record)
-        {
-            record.iscollect = true;
-            return this.AddRecord(record);
         }
         /// <summary>
         /// 查看我收藏的问题列表
@@ -621,16 +750,57 @@ namespace Mskj.ArmyKnowledge.All.Services
             int pageIndex = 1, int pageSize = 10, string filter = "")
         {
             var res = (from question in _QuestionRepository.Find()
-                       join record in _RecordRepository.Find() on question.id equals record.questionid
-                       where record.userid == userid && record.iscollect &&
+                       join user in _UserRepository.Find() on question.author equals user.id
+                       join record in _RecordRepository.Find() on new { question.id, userid }
+                       equals new { id = record.questionid, record.userid } into temp
+                       from tempRecord in temp.DefaultIfEmpty()
+                       where tempRecord.iscollect &&
                        (filter == "" || 
                        (question.title.Contains(filter) || question.content.Contains(filter) ||
                        question.introduction.Contains(filter) || question.author.Contains(filter)))
-                       orderby record.lasttime descending
-                       select question).ToPage(pageIndex, pageSize).
-                       MapTo<Question, QuestionModel>();
+                       select new QuestionModel
+                       {
+                           Author = user.id,
+                           AuthorNickname = user.nickname,
+                           Avatar = user.avatar,
+                           CommentCount = question.commentcount,
+                           Content = question.content,
+                           HeatCount = question.heatcount,
+                           HomeImage = question.homeimage,
+                           Id = question.id,
+                           Images = question.images,
+                           Introduction = question.introduction,
+                           IsCollect = tempRecord.iscollect,
+                           IsPraise = tempRecord.ispraise,
+                           IsRecommend = question.isrecommend,
+                           PraiseCount = question.praisecount,
+                           Publishtime = question.publishtime,
+                           QuestionState = question.questionstate,
+                           ReadCount = question.readcount,
+                           Title = question.title,
+                           RecordLastTime = tempRecord.lasttime,
+                       }).OrderByDescending(q => q.RecordLastTime).ToPage(pageIndex, pageSize);
             return new ReturnResult<IPagedData<QuestionModel>>(1, res);
         }
         #endregion
+    }
+    /// <summary>
+    /// 产品价格比较器
+    /// </summary>
+    public class QuestionComparer : IEqualityComparer<Question>
+    {
+        public bool Equals(Question x, Question y)
+        {
+            if(x.id != y.id)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public int GetHashCode(Question obj)
+        {
+            return 0;
+        }
     }
 }

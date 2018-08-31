@@ -156,7 +156,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [Route("GetProducts")]
         [HttpGet]
         public object GetProducts(string filter = "",string category = "全部",
-            int state = 0, int pageIndex = 1, int pageSize = 10, int sortType = 0)
+            int state = 2, int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
             return _ProductService.GetProducts(filter,category, state, pageIndex, pageSize, sortType);
         }

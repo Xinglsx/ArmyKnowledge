@@ -49,8 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataObj\AnswerModel.cs" />
+    <Compile Include="DataObj\DemandModel.cs" />
     <Compile Include="DataObj\FtrModel.cs" />
     <Compile Include="DataObj\MsgModel.cs" />
+    <Compile Include="DataObj\ProductModel.cs" />
     <Compile Include="DataObj\QuestionModel.cs" />
     <Compile Include="DataObj\UserFansModel.cs" />
     <Compile Include="DataObj\VersionInfo.cs" />

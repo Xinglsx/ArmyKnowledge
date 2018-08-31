@@ -68,7 +68,9 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             else
             {
-                existUser.pwd = "";
+                //将PWD别成token
+                string token = Guid.NewGuid().ToString();
+                existUser.pwd = token;
                 return new ReturnResult<Users>(1, existUser);
             }
         }
@@ -612,8 +614,15 @@ namespace Mskj.ArmyKnowledge.All.Services
             sorts.Add(sort);
             //所有排序之后，再按时间降序
             sorts.Add(new SortInfo<Users>(p => new { p.registertime }, SortOrder.Descending));
-            return new ReturnResult<IPagedData<Users>>(1,
-                    GetPage(pageIndex, pageSize, sorts, expression));
+            var res = GetPage(pageIndex, pageSize, sorts, expression);
+            if(res.Data.Count() > 0)
+            {
+                for(int i = 0; i < res.Data.Count(); i++)
+                {
+                    res.Data[i].pwd = null;
+                }
+            }
+            return new ReturnResult<IPagedData<Users>>(1,res);
         }
         #endregion
 

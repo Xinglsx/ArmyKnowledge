@@ -14,6 +14,7 @@ using System.Configuration;
 using System.IO;
 using QuickShare.LiteFramework.Foundation;
 using QuickShare.LiteFramework;
+using Mskj.ArmyKnowledge.All.Common.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -23,6 +24,8 @@ namespace Mskj.ArmyKnowledge.All.Services
         #region 构造函数
         //private readonly IRepository<Demand> _DemandRepository;
         private readonly IRepository<Dictionary> _DicRepository;
+        private readonly IRepository<Demand> _DemandRepository;
+        private readonly IRepository<Users> _UserRepository;
         private readonly ILogger logger;
 
         /// <summary>
@@ -30,9 +33,12 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// </summary>
         /// <param name="goodsRepository"></param>
         public DemandService(IRepository<Demand> demandRepository,
-            IRepository<Dictionary> dicRepository) : base(demandRepository)
+            IRepository<Dictionary> dicRepository, IRepository<Users> userRepository) : base(demandRepository)
         {
             _DicRepository = dicRepository;
+            _UserRepository = userRepository;
+            _DemandRepository = demandRepository;
+
             logger = AppInstance.Current.Resolve<ILogger>();
         }
         #endregion
@@ -232,28 +238,58 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="state">状态</param>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式</param>
+        /// <param name="sortType">排序方式 0-时间倒序 1-得分倒序</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Demand>> GetDemands(string filter = "", string category = "全部",
+        public ReturnResult<IPagedData<DemandModel>> GetDemands(string filter = "", string category = "全部",
             int state = 2, int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            Expression<Func<Demand, bool>> exp1 = x => true;
-            Expression<Func<Demand, bool>> exp2 = x => true;
-            Expression<Func<Demand, bool>> exp3 = x => true;
-            if (state != -1)
+            var res = (from demand in _DemandRepository.Find()
+                       join user in _UserRepository.Find() on demand.author equals user.id
+                       select new DemandModel
+                       {
+                           Id = demand.id,
+                           Author = user.id,
+                           AuthorNickname = user.nickname,
+                           Avatar = user.avatar,
+                           Category = demand.category,
+                           Content = demand.content,
+                           DemandScores = demand.demandscores,
+                           DemandState = demand.demandstate,
+                           HeatCount = demand.heatcount,
+                           HomeImage = demand.homeimage,
+                           Images = demand.images,
+                           Introduction = demand.introduction,
+                           isRecommend = demand.isrecommend,
+                           PublishTime = demand.publishtime,
+                           ReadCount = demand.readcount,
+                           Title = demand.title,
+                           UpdateTime = demand.updatetime,
+                       });
+            if(state != -1)
             {
-                exp1 = x => x.demandstate == state;
+                res = res.Where(x => x.DemandState == state);
             }
             if (!"全部".Equals(category))
             {
-                exp2 = x => x.category == category;
+                res = res.Where(x => x.Category == category);
             }
-            if(!string.IsNullOrEmpty(filter))
+            if (!string.IsNullOrEmpty(filter))
             {
-                exp3 = x => x.title.Contains(filter) || x.content.Contains(filter) ||
-                    x.category.Contains(filter);
+                res = res.Where(x => x.Title.Contains(filter) || x.Content.Contains(filter) ||
+                     x.Category.Contains(filter));
             }
-            return GetBaseDemands(pageIndex, pageSize, sortType, exp1.AndAlso(exp2).AndAlso(exp3));
+            switch (sortType)
+            {
+                default:
+                case 0:
+                    res = res.OrderByDescending(p => p.PublishTime);
+                    break;
+                case 1:
+                    res = res.OrderByDescending(q => q.DemandScores).ThenByDescending(p => p.PublishTime);
+                    break;
+            }
+
+            return new ReturnResult<IPagedData<DemandModel>>(1,res.ToPage(pageIndex,pageSize));
         }
         /// <summary>
         /// 分页获取需求列表(封装排序方式)

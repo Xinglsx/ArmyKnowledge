@@ -200,7 +200,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageIndex">页数</param>
         /// <param name="state">状态 -1 全部 </param>
         /// <param name="pageSize">每页条数</param>
-        /// <param name="sortType">排序规则 0-首页 1-热榜 2-推荐 3-最新</param>
+        /// <param name="sortType">排序方式：0-时间倒序 1-热值倒序 2-评论倒序 </param>
         /// <param name="filter">查询关键字</param>
         /// <returns></returns>
         public ReturnResult<IPagedData<QuestionModel>> GetQuestions(string filter = "",
@@ -245,10 +245,10 @@ namespace Mskj.ArmyKnowledge.All.Services
             switch (sortType)
             {
                 case 1:
-                    res = res.OrderByDescending(p => p.HeatCount).OrderByDescending(p => p.Publishtime);
+                    res = res.OrderByDescending(p => p.HeatCount).ThenByDescending(p => p.Publishtime);
                     break;
                 case 2:
-                    res = res.OrderByDescending(p => p.CommentCount).OrderByDescending(p => p.Publishtime);
+                    res = res.OrderByDescending(p => p.CommentCount).ThenByDescending(p => p.Publishtime);
                     break;
                 case 0:
                 default:

@@ -11,8 +11,8 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         /// <summary> 提问信息 </summary>
         public IPagedData<QuestionModel> QuestionInfo { get; set; }
         /// <summary> 需求信息 </summary>
-        public IPagedData<Demand> DemandInfo { get; set; }
+        public IPagedData<DemandModel> DemandInfo { get; set; }
         /// <summary> 产品信息 </summary>
-        public IPagedData<Product> ProductInfo { get; set; }
+        public IPagedData<ProductModel> ProductInfo { get; set; }
     }
 }

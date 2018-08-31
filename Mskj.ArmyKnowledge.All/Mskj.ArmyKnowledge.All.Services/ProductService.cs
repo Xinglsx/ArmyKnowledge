@@ -1,4 +1,5 @@
-﻿using Mskj.ArmyKnowledge.All.Common.PostData;
+﻿using Mskj.ArmyKnowledge.All.Common.DataObj;
+using Mskj.ArmyKnowledge.All.Common.PostData;
 using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.All.ServiceContracts;
 using Mskj.ArmyKnowledge.Common.DataObject;
@@ -25,16 +26,21 @@ namespace Mskj.ArmyKnowledge.All.Services
 
         #region 构造函数
         private readonly IRepository<Dictionary> _DicRepository;
+        private readonly IRepository<Product> _ProRepository;
+        private readonly IRepository<Users> _UserRepository;
         private readonly ILogger logger;
 
         /// <summary>
         /// 构造函数，必须要传一个实参给repository
         /// </summary>
         /// <param name="goodsRepository"></param>
-        public ProductService(IRepository<Product> productRepository,
+        public ProductService(IRepository<Product> productRepository, IRepository<Users> userRepository,
             IRepository<Dictionary> dicRepository) : base(productRepository)
         {
             _DicRepository = dicRepository;
+            _ProRepository = productRepository;
+            _UserRepository = userRepository;
+
             logger = AppInstance.Current.Resolve<ILogger>();
         }
         #endregion
@@ -224,35 +230,76 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="state">状态</param>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式 0-时间排序 1-综合得分排序 2-价格</param>
+        /// <param name="sortType">排序方式 0-时间倒序 1-得分倒序 2-价格倒序 3-价格正序</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<Product>> GetProducts(string filter = "", string category = "全部",
+        public ReturnResult<IPagedData<ProductModel>> GetProducts(string filter = "", string category = "全部",
             int state = 2, int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            Expression<Func<Product, bool>> exp1 = x => true;
-            Expression<Func<Product, bool>> exp2 = x => true;
-            Expression<Func<Product, bool>> exp3 = x => true;
+            var res = (from pro in _ProRepository.Find()
+                       join user in _UserRepository.Find() on pro.userid equals user.id
+                       select new ProductModel
+                       {
+                           Avatar = user.avatar,
+                           BuyCount = pro.buycount,
+                           Category = pro.category,
+                           CompositeScore = pro.compositescore,
+                           ContactPhone = pro.contactphone,
+                           Contacts = pro.contacts,
+                           HomeImage = pro.homeimage,
+                           Id = pro.id,
+                           Images = pro.images,
+                           Introduction = pro.introduction,
+                           IsRecommend = pro.isrecommend,
+                           MaterialCode = pro.materialcode,
+                           Nickname = user.nickname,
+                           Price = pro.price,
+                           ProDetail = pro.prodetail,
+                           ProductionDdate = pro.productiondate,
+                           ProName = pro.proname,
+                           ProScores = pro.proscores,
+                           ProState = pro.prostate,
+                           PublishTime = pro.publishtime,
+                           ReadCount = pro.readcount,
+                           UpdateTime = pro.updatetime,
+                           UserId = user.id,
+                       });
             if (state != -1)
             {
-                exp1 = x => x.prostate == state;
+                res = res.Where(x => x.ProState == state);
             }
             if (!"全部".Equals(category))
             {
-                exp2 = x => x.category == category;
+                res = res.Where(x => x.Category == category);
             }
             if (!string.IsNullOrEmpty(filter))
             {
-                exp3 = x => x.prodetail.Contains(filter) || x.proname.Contains(filter) ||
-                    x.category.Contains(filter) || x.contacts.Contains(filter);
+                res = res.Where(x => x.ProDetail.Contains(filter) || x.ProName.Contains(filter) ||
+                    x.Category.Contains(filter) || x.Contacts.Contains(filter));
             }
-            return GetBaseProducts(pageIndex, pageSize, sortType, exp1.AndAlso(exp2).AndAlso(exp3));
+            switch (sortType)
+            {
+                case 1:
+                    res = res.OrderByDescending(p => p.ProScores).ThenByDescending(q => q.PublishTime);
+                    break;
+                case 2:
+                    res = res.OrderByDescending(p => p.Price).ThenByDescending(q => q.PublishTime);
+                    break;
+                case 3:
+                    res = res.OrderBy(p => p.Price).ThenByDescending(q => q.PublishTime);
+                    break;
+                case 0:
+                default:
+                    res = res.OrderByDescending(q => q.PublishTime);
+                    break;
+            }
+            return new ReturnResult<IPagedData<ProductModel>>(1,res.ToPage(pageIndex,pageSize));
         }
         /// <summary>
         /// 分页获取产品列表(封装排序方式)
         /// </summary>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式 0-时间排序 1-综合得分排序 2-价格</param>
+        /// <param name="sortType">排序方式 0-时间排序 1-综合得分降序 2-价格降序 3-价格升序</param>
         /// <param name="expression">查询表达示</param>
         /// <returns></returns>
         private ReturnResult<IPagedData<Product>> GetBaseProducts(int pageIndex,
@@ -270,10 +317,16 @@ namespace Mskj.ArmyKnowledge.All.Services
                     break;
                 case 2:
                     sorts.Add(new SortInfo<Product>(p => p.price,
+                        SortOrder.Descending));
+                    sorts.Add(sort);
+                    break;
+                case 3:
+                    sorts.Add(new SortInfo<Product>(p => p.price,
                         SortOrder.Ascending));
                     sorts.Add(sort);
                     break;
                 case 0:
+                default:
                     sorts.Add(sort);
                     break;
             }

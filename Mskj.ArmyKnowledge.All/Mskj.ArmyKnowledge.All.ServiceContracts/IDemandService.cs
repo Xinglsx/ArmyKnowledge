@@ -1,4 +1,5 @@
-﻿using Mskj.ArmyKnowledge.All.Domains;
+﻿using Mskj.ArmyKnowledge.All.Common.DataObj;
+using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using QuickShare.LiteFramework.Base;
 using QuickShare.LiteFramework.Common;
@@ -62,7 +63,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<Demand>> GetDemands(string filter = "", string category = "全部", 
+        ReturnResult<IPagedData<DemandModel>> GetDemands(string filter = "", string category = "全部", 
             int state = -1,int pageIndex = 1, int pageSize = 10, int sortType = 0);
         #endregion
         

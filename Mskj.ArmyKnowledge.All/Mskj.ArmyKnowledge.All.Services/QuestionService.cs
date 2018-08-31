@@ -203,13 +203,14 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="sortType">排序方式：0-时间倒序 1-热值倒序 2-评论倒序 </param>
         /// <param name="filter">查询关键字</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<QuestionModel>> GetQuestions(string filter = "",
+        public ReturnResult<IPagedData<QuestionModel>> GetQuestions(string userid = "",string filter = "",
             int state = 2,int pageIndex = 1,int pageSize = 10, int sortType = 0)
         {
             var res = (from question in _QuestionRepository.Find()
-                       join record in _RecordRepository.Find() on question.id equals record.questionid into temp 
-                       from tempRecord in temp.DefaultIfEmpty()
                        join user in _UserRepository.Find() on question.author equals user.id
+                       join record in _RecordRepository.Find() on new { question.id, userid }
+                       equals new { id = record.questionid, record.userid } into temp
+                       from tempRecord in temp.DefaultIfEmpty()
                        select new QuestionModel
                        {
                            Author = user.id,
@@ -223,6 +224,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                            Images = question.images,
                            Introduction = question.introduction,
                            IsCollect = tempRecord.iscollect,
+                           IsPraise = tempRecord.ispraise,
                            IsRecommend = question.isrecommend,
                            PraiseCount = question.praisecount,
                            Publishtime = question.publishtime,
@@ -230,16 +232,15 @@ namespace Mskj.ArmyKnowledge.All.Services
                            ReadCount = question.readcount,
                            Title = question.title,
                        });
-            if (string.IsNullOrEmpty(filter))
+            if(state != -1)
             {
-                res = res.Where(x => state == -1 || (state != -1 && x.QuestionState == state));
+                res = res.Where(x => x.QuestionState == state);
             }
-            else
+            if (!string.IsNullOrEmpty(filter))
             {
-                res = res.Where(x => (state == -1 || (state != -1 && x.QuestionState == state)) && (
-                    x.Title.Contains(filter) || x.AuthorNickname.Contains(filter) ||
+                res = res.Where(x => x.Title.Contains(filter) || x.AuthorNickname.Contains(filter) ||
                     x.Introduction.Contains(filter) || x.Content.Contains(filter)
-                    ));
+                    );
 
             }
             switch (sortType)

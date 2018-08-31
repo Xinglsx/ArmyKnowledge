@@ -109,10 +109,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <returns></returns>
         [Route("GetQuestions")]
         [HttpGet]
-        public object GetQuestions(string filter = "",
+        public object GetQuestions(string userid = "", string filter = "",
             int state = 2, int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            return _QuestionService.GetQuestions(filter, state,pageIndex, pageSize, sortType);
+            return _QuestionService.GetQuestions(userid,filter, state,pageIndex, pageSize, sortType);
         }
         /// <summary>
         /// 分页获取用户对应的问题列表

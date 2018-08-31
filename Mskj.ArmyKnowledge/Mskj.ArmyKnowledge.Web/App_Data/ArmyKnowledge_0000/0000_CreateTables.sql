@@ -333,6 +333,7 @@ IF NOT EXISTS( SELECT * FROM sys.objects WHERE name='record' AND type='U')
 	   questionid           varchar(36)                    null,		--问题ID
 	   lasttime             datetime                       null,		--最后浏览时间
 	   iscollect            bit                            null,		--是否收藏
+	   ispraise             bit                            null,		--是否点赞
 	   constraint PK_RECORD primary key clustered (id)
 	);
 end

@@ -50,6 +50,8 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         public bool? IsCollect { get; set; }
         [JsonProperty("updatetime")]
         public DateTime? UpdateTime { get; set; }
+        [JsonProperty("ispraise")]
+        public bool? IsPraise { get; set; }
     }
    
 }

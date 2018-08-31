@@ -44,7 +44,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="sortType">排序规则 0-首页 1-热榜 2-推荐 3-最新</param>
         /// <param name="filter">查询关键字</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<QuestionModel>> GetQuestions(string filter = "",
+        ReturnResult<IPagedData<QuestionModel>> GetQuestions(string userid = "", string filter = "",
             int state = 2, int pageIndex = 1, int pageSize = 10, int sortType = 0);
         /// <summary>
         /// 分页获取用户对应的问题列表

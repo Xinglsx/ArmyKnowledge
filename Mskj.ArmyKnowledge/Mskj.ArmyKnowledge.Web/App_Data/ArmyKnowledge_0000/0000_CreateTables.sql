@@ -403,3 +403,24 @@ if not exists (select 1 from dictionary where id ='AE69E62E-876B-4345-B507-58767
 begin
 	insert into dictionary select 'AE69E62E-876B-4345-B507-587674BA0A1A',2,'05','新材料',1
 end
+/*插入需求类型字典*/
+if not exists (select 1 from dictionary where id ='DF839C2A-D431-49C9-90F7-53D9B8A0B61D')
+begin
+	insert into dictionary select 'DF839C2A-D431-49C9-90F7-53D9B8A0B61D',1,'01','元器件',1
+end
+if not exists (select 1 from dictionary where id ='6CCA31B7-4760-4BB7-B432-D3E32227D65E')
+begin
+	insert into dictionary select '6CCA31B7-4760-4BB7-B432-D3E32227D65E',1,'02','电力装备',1
+end
+if not exists (select 1 from dictionary where id ='FC4E1A96-2E43-4DD6-A00C-F162CD929D6A')
+begin
+	insert into dictionary select 'FC4E1A96-2E43-4DD6-A00C-F162CD929D6A',1,'03','工业基础件',1
+end
+if not exists (select 1 from dictionary where id ='B3160D0A-FC82-490F-9951-4DDB63551CE5')
+begin
+	insert into dictionary select 'B3160D0A-FC82-490F-9951-4DDB63551CE5',1,'04','应急救援保障',1
+end
+if not exists (select 1 from dictionary where id ='766D8DEC-D45A-4993-A46C-37AFA4D8BF2E')
+begin
+	insert into dictionary select '766D8DEC-D45A-4993-A46C-37AFA4D8BF2E',1,'05','新材料',1
+end

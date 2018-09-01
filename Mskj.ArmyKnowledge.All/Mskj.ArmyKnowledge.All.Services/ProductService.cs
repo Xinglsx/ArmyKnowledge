@@ -238,7 +238,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                            IsRecommend = pro.isrecommend,
                            MaterialCode = pro.materialcode,
                            Nickname = user.nickname,
-                           Price = pro.price == 0 ? "价格面试" : ("￥" + pro.price.ToString()),
+                           DecimalPrice = pro.price,
                            ProDetail = pro.prodetail,
                            ProductionDdate = pro.productiondate,
                            ProName = pro.proname,
@@ -255,10 +255,10 @@ namespace Mskj.ArmyKnowledge.All.Services
                     res = res.OrderByDescending(p => p.ProScores).ThenByDescending(q => q.PublishTime);
                     break;
                 case 2:
-                    res = res.OrderByDescending(p => p.Price).ThenByDescending(q => q.PublishTime);
+                    res = res.OrderByDescending(p => p.DecimalPrice).ThenByDescending(q => q.PublishTime);
                     break;
                 case 3:
-                    res = res.OrderBy(p => p.Price).ThenByDescending(q => q.PublishTime);
+                    res = res.OrderBy(p => p.DecimalPrice).ThenByDescending(q => q.PublishTime);
                     break;
                 case 0:
                 default:
@@ -296,7 +296,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                            IsRecommend = pro.isrecommend,
                            MaterialCode = pro.materialcode,
                            Nickname = user.nickname,
-                           Price = pro.price == 0 ? "价格面试":("￥"+ pro.price.ToString()),
+                           DecimalPrice = pro.price,
                            ProDetail = pro.prodetail,
                            ProductionDdate = pro.productiondate,
                            ProName = pro.proname,
@@ -326,10 +326,10 @@ namespace Mskj.ArmyKnowledge.All.Services
                     res = res.OrderByDescending(p => p.ProScores).ThenByDescending(q => q.PublishTime);
                     break;
                 case 2:
-                    res = res.OrderByDescending(p => p.Price).ThenByDescending(q => q.PublishTime);
+                    res = res.OrderByDescending(p => p.DecimalPrice).ThenByDescending(q => q.PublishTime);
                     break;
                 case 3:
-                    res = res.OrderBy(p => p.Price).ThenByDescending(q => q.PublishTime);
+                    res = res.OrderBy(p => p.DecimalPrice).ThenByDescending(q => q.PublishTime);
                     break;
                 case 0:
                 default:

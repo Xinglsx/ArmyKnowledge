@@ -15,7 +15,15 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         [JsonProperty("proname")]
         public string ProName { get; set; }
         [JsonProperty("price")]
-        public string Price { get; set; }
+        public string Price
+        {
+            get
+            {
+                return DecimalPrice == 0 ? "价格面议" : ("￥" + DecimalPrice.ToString());
+            }
+        }
+        [JsonProperty("decimalprice")]
+        public decimal DecimalPrice { get; set; }
         [JsonProperty("introduction")]
         public string Introduction { get; set; }
         [JsonProperty("userid")]

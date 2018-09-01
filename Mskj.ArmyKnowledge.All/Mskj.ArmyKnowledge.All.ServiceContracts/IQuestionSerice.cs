@@ -55,8 +55,8 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageSize">每页数量</param>
         /// <param name="sortType">排序方式</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<QuestionModel>> GetUserQuestion(string userid,
-            string filter = "", int pageIndex = 1, int pageSize = 10, int sortType = 3);
+        ReturnResult<IPagedData<QuestionModel>> GetUserQuestion(string userid,string filter = "", 
+            int pageIndex = 1, int pageSize = 10, int sortType = 3);
         /// <summary>
         /// 分页获取问题的回答
         /// </summary>
@@ -64,8 +64,8 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<AnswerModel>> GetAnswers(
-            string questionId, int pageIndex = 1, int pageSize = 10);
+        ReturnResult<IPagedData<AnswerModel>> GetAnswers(string filter = "",string questionId = "all", 
+            int pageIndex = 1, int pageSize = 10);
         /// <summary>
         /// 分页获取对应用户回答的问题
         /// </summary>
@@ -73,11 +73,13 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        ReturnResult<IPagedData<QuestionModel>> GetUserAnswers(string userid,int pageIndex = 1, int pageSize = 10);
+        ReturnResult<IPagedData<QuestionModel>> GetUserAnswers(string userid,
+            int pageIndex = 1, int pageSize = 10);
         /// <summary>
         /// 获取一个问题
         /// </summary>
-        ReturnResult<QuestionModel> GetOneQuestion(string questionId, int pageIndex = 1, int pageSize = 10);
+        ReturnResult<QuestionModel> GetOneQuestion(string questionId, 
+            int pageIndex = 1, int pageSize = 10);
         /// <summary>
         /// 增加阅读数
         /// </summary>
@@ -119,6 +121,10 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="answer"></param>
         /// <returns></returns>
         ReturnResult<bool> AddAnswer(Answer answer);
+        /// <summary>
+        /// 删除评论
+        /// </summary>
+        ReturnResult<bool> DeleteAnswer(string answerId);
         #endregion
 
         #region 最近浏览

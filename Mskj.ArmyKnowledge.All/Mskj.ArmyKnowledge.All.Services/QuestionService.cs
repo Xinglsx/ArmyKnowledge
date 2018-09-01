@@ -334,12 +334,11 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
         /// <returns></returns>
-        public ReturnResult<IPagedData<AnswerModel>> GetAnswers( string questionId,
-            int pageIndex = 1,int pageSize = 10)
+        public ReturnResult<IPagedData<AnswerModel>> GetAnswers( string filter = "", 
+            string questionId = "all", int pageIndex = 1,int pageSize = 10)
         {
             var res = (from answer in _AnswerDetailRepository.Find()
                        join user in _UserRepository.Find() on answer.userid equals user.id
-                       where answer.questionid == questionId
                        select new AnswerModel
                        {
                            Userid = user.id,
@@ -352,8 +351,17 @@ namespace Mskj.ArmyKnowledge.All.Services
                            Isadopt = answer.isadopt,
                            Praisecount = answer.praisecount,
                            Questionid = answer.questionid,
-                       }).OrderByDescending(p => p.Publishtime).ToPage(pageIndex,pageSize);
-            return new ReturnResult<IPagedData<AnswerModel>>(1, res);
+                       });
+            if(questionId != "all")
+            {
+                res = res.Where(p => p.Questionid == questionId);
+            }
+            if(!string.IsNullOrEmpty(filter))
+            {
+                res = res.Where(p => p.Nickname.Contains(filter) || p.Content.Contains(filter));
+            }
+            var result = res.OrderByDescending(p => p.Publishtime).ToPage(pageIndex, pageSize);
+            return new ReturnResult<IPagedData<AnswerModel>>(1, result);
         }
         /// <summary>
         /// 分页获取对应用户回答的问题
@@ -443,7 +451,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 question.Avatar = _UserRepository.Find().Where(p => p.id == question.Author)
                 .Select(q => q.avatar).FirstOrDefault();
-                var answers = GetAnswers(questionId, pageIndex, pageSize);
+                var answers = GetAnswers("",questionId, pageIndex, pageSize);
                 question.Answers =  answers.data;
                 return new ReturnResult<QuestionModel>(1, question);
             }
@@ -622,7 +630,51 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             else
             {
-                return new ReturnResult<bool>(-2, "问题数据保存失败！");
+                return new ReturnResult<bool>(-2, "回答保存失败！");
+            }
+        }
+        /// <summary>
+        /// 删除评论
+        /// </summary>
+        public ReturnResult<bool> DeleteAnswer(string answerId)
+        {
+            bool res = false;
+            var answer = _AnswerDetailRepository.Find().Where(p => p.id == answerId).FirstOrDefault();
+            if(answer == null || string.IsNullOrEmpty(answer.id))
+            {
+                return new ReturnResult<bool>(-2, "该回答不存在！");
+            }
+            try
+            {
+                res = _AnswerDetailRepository.Delete(answer);
+            }
+            catch (Exception exp)
+            {
+                logger.LogError("DeleteAnswer删除评论出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
+            }
+            if (res)
+            {
+                //评论增加成功时，更新主表。
+                UpdateCommentCount(answer.questionid);
+                var user = _UserRepository.Find().Where(p => p.id == answer.userid).FirstOrDefault();
+                if (user != null)
+                {
+                    user.compositescores -= 2;//回答一个问题+2分
+                    try
+                    {
+                        _UserRepository.Update(user);
+                    }
+                    catch (Exception exp)
+                    {
+                        logger.LogError("AddAnswer增加评论时更新用户综合得分出错！", exp);
+                    }
+                }
+                return new ReturnResult<bool>(1, res);
+            }
+            else
+            {
+                return new ReturnResult<bool>(-2, "回答删除失败！");
             }
         }
         #endregion

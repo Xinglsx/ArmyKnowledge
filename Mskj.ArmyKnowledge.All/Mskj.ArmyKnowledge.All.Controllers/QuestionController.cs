@@ -162,7 +162,21 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         public object GetAnswers(
             string questionId, int pageIndex = 1, int pageSize = 10)
         {
-            return _QuestionService.GetAnswers(questionId, pageIndex, pageSize);
+            return _QuestionService.GetAnswers("",questionId, pageIndex, pageSize);
+        }
+        /// <summary>
+        /// 分页获取问题的回答
+        /// </summary>
+        /// <param name="questionId">问题ID</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        [Route("GetAllAnswers")]
+        [HttpGet]
+        public object GetAllAnswers(string filter = "", 
+            int pageIndex = 1, int pageSize = 10)
+        {
+            return _QuestionService.GetAnswers(filter, "all", pageIndex, pageSize);
         }
         /// <summary>
         /// 分页获取对应用户回答的问题
@@ -208,6 +222,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object UpdatePraiseCount(PostId question)
         {
+            if (question == null || string.IsNullOrEmpty(question.Id))
+            {
+                return new ReturnResult<QuestionModel>(-4, "传入参数错误!");
+            }
             return _QuestionService.UpdatePraiseCount(question.Id);
         }
         /// <summary>
@@ -220,6 +238,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object UpdateCommentCount(PostId question)
         {
+            if (question == null || string.IsNullOrEmpty(question.Id))
+            {
+                return new ReturnResult<QuestionModel>(-4, "传入参数错误!");
+            }
             return _QuestionService.UpdateCommentCount(question.Id);
         }
         /// <summary>
@@ -232,6 +254,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         [HttpPost]
         public object UpdateHeatCount(PostId question)
         {
+            if (question == null || string.IsNullOrEmpty(question.Id))
+            {
+                return new ReturnResult<QuestionModel>(-4, "传入参数错误!");
+            }
             _QuestionService.UpdateHeatCount(question.Id);
             return new ReturnResult<bool>(1, true);
         }
@@ -245,6 +271,19 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         public object AddAnswer(Answer answer)
         {
             return _QuestionService.AddAnswer(answer);
+        }
+        /// <summary>
+        /// 删除评论
+        /// </summary>
+        [Route("DeleteAnswer")]
+        [HttpPost]
+        public object DeleteAnswer(PostId answer)
+        {
+            if (answer == null || string.IsNullOrEmpty(answer.Id))
+            {
+                return new ReturnResult<bool>(-4, "传入参数错误!");
+            }
+            return _QuestionService.DeleteAnswer(answer.Id);
         }
         #endregion
 

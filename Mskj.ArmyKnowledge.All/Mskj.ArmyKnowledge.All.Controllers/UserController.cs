@@ -261,6 +261,21 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         {
             return _UsersService.GetCert(userid);
         }
+        /// <summary>
+        /// 获取用户认证信息列表
+        /// </summary>
+        /// <param name="filter">查询关键字 支持真实姓名、组织、组织机构代码查询</param>
+        /// <param name="state">状态 -1全部 0新建 1提交审核 2审核通过 3审核不通过</param>
+        /// <param name="pageIndex">页码</param>
+        /// <param name="pageSize">每页数量</param>
+        /// <returns></returns>
+        [Route("GetCerts")]
+        [HttpGet]
+        public object GetCerts(string filter = "",
+            int state = 1, int pageIndex = 1, int pageSize = 10)
+        {
+            return _UsersService.GetCerts(filter, state, pageIndex, pageSize);
+        }
         #endregion
 
         #region 专家用户信息

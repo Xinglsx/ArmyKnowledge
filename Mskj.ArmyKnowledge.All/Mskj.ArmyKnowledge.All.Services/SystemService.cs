@@ -15,6 +15,8 @@ using System.Collections.Generic;
 using QuickShare.LiteFramework.Base;
 using Mskj.ArmyKnowledge.All.Domains;
 using System.Linq;
+using QuickShare.LiteFramework.Common;
+using QuickShare.LiteFramework.Common.Extenstions;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
@@ -185,6 +187,20 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             return new ReturnResult<bool>(res ? 1 : -2, res);
 
+        }
+        /// <summary>
+        /// 获取字典
+        /// </summary>
+        public ReturnResult<IPagedData<Dictionary>> GetDictionarys(int dictype = -1,
+            int pageIndex = 1,int pageSize= 30)
+        {
+            var resTemp = _DicRepository.Find();
+            if(dictype != -1)
+            {
+                resTemp = resTemp.Where(p => p.dictype == dictype);
+            }
+            var res = resTemp.OrderBy(p => p.dictype).ThenBy(q => q.diccode).ToPage(pageIndex,pageSize);
+            return new ReturnResult<IPagedData<Dictionary>>(1,res);
         }
         #endregion
 

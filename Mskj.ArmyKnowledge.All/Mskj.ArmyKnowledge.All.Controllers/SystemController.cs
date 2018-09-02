@@ -349,6 +349,15 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             }
             return _SystemService.DeleteDictionary(dic.Id);
         }
+        /// <summary>
+        /// 获取字典列表
+        /// </summary>
+        [Route("GetDictionarys")]
+        [HttpGet]
+        public object GetDictionarys(int dictype = -1,int pageIndex = 1, int pageSize = 30)
+        {
+            return _SystemService.GetDictionarys(dictype,pageIndex,pageSize);
+        }
         #endregion
     }
 }

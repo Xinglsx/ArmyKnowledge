@@ -34,6 +34,11 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// 删除字典
         /// </summary>
         ReturnResult<bool> DeleteDictionary(string dicId);
+        /// <summary>
+        /// 获取字典
+        /// </summary>
+        ReturnResult<IPagedData<Dictionary>> GetDictionarys(int dictype = -1,
+            int pageIndex = 1, int pageSize = 30);
         #endregion
 
         #region 图片上传

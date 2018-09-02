@@ -292,7 +292,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             var resTemp = _SystemService.GetDictionarys(3);
             if(resTemp != null && resTemp.Count > 0)
             {
-                return new ReturnResult<string>(1, resTemp[0]); 
+                return new ReturnResult<string>(1, resTemp[0],"获取成功"); 
             }
             return new ReturnResult<string>(-1,"未设置欢迎页面！");
         }

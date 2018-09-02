@@ -60,8 +60,8 @@ begin
 	   adoptedcount         int                            null,		--获赞数
 	   collectcount         int                            null,		--收藏数
 	   compositescores      int                            null,		--综合得分
-	   followcount          int                            null,		--粉丝数
-	   fanscount            int                            null,		--关注数
+	   followcount          int                            null,		--关注数，当前用户关注的其它用户总数
+	   fanscount            int                            null,		--粉丝数，关注当前用户的其它用户总数
 	   userstate            int                            null,		--用户状态 0 启用 1停用
 	   registertime			datetime					   null,		--注册时间
 	   updatetime			datetime					   null,		--更新时间

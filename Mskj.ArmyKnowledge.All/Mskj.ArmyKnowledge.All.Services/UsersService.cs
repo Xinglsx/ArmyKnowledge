@@ -133,13 +133,13 @@ namespace Mskj.ArmyKnowledge.All.Services
             logger.LogInfo(string.Format("phonenumber:{0} id:{1}",
                 user.phonenumber, user.id));
             var existUser = this.GetOne(p => p.phonenumber == user.phonenumber &&
-                p.id != user.id);
+                p.id != user.id && p.phonenumber != null && p.phonenumber != "");
             if (existUser != null)
             {
                 return new ReturnResult<bool>(-2, false, "手机号已被使用，请更换！");
             }
             existUser = this.GetOne(p => p.loginname == user.loginname &&
-                p.id != user.id);
+                p.id != user.id && p.loginname != null && p.loginname != "");
             if (existUser != null)
             {
                 return new ReturnResult<bool>(-2, false, "登录名已被使用，请更换！");
@@ -952,9 +952,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             //    .OrderByDescending(p => p.updatetime).ToPage(pageIndex,pageSize);
 
             var res = (from fans in _FansRepository.Find()
-                        join user1 in _UsersRepository.Find() on fans.userid1 equals user1.id
-                        join user in _UsersRepository.Find() on fans.userid2 equals user.id
-                        where fans.userid1 == userid && (fans.fansstate == 0 || fans.fansstate == 1)
+                        join user in _UsersRepository.Find() on fans.userid1 equals user.id
+                        where fans.userid1 == userid && (fans.fansstate == 0 || fans.fansstate == 2)
                         select new UserFansModel{
                             Id = user.id,
                             Nickname =user.nickname,
@@ -971,9 +970,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                         })
                         .Concat
                         (from fans in _FansRepository.Find()
-                         join user1 in _UsersRepository.Find() on fans.userid1 equals user1.id
-                         join user in _UsersRepository.Find() on fans.userid2 equals user.id
-                         where fans.userid2 == userid && (fans.fansstate == 0 || fans.fansstate == 2)
+                         join user in _UsersRepository.Find() on fans.userid1 equals user.id
+                         where fans.userid2 == userid && (fans.fansstate == 0 || fans.fansstate == 1)
                          select new UserFansModel
                          {
                              Id = user.id,
@@ -1009,8 +1007,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             //    .OrderByDescending(p => p.updatetime).ToPage(pageIndex, pageSize);
 
             var res = (from fans in _FansRepository.Find()
-                       join user in _UsersRepository.Find() on fans.userid1 equals user.id
-                       where fans.userid1 == userid && (fans.fansstate == 0 || fans.fansstate == 2)
+                       join user in _UsersRepository.Find() on fans.userid2 equals user.id
+                       where fans.userid1 == userid && (fans.fansstate == 0 || fans.fansstate == 1)
                        select new UserFansModel
                        {
                            Id = user.id,
@@ -1028,8 +1026,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                        })
                         .Concat
                         (from fans in _FansRepository.Find()
-                         join user in _UsersRepository.Find() on fans.userid1 equals user.id
-                         where fans.userid2 == userid && (fans.fansstate == 0 || fans.fansstate == 1)
+                         join user in _UsersRepository.Find() on fans.userid2 equals user.id
+                         where fans.userid2 == userid && (fans.fansstate == 0 || fans.fansstate == 2)
                          select new UserFansModel
                          {
                              Id = user.id,

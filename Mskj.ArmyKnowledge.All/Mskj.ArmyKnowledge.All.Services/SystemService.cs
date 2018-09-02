@@ -93,7 +93,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                     version.UpdateContent = "优化了主要流程！";
                 }
                 version.DownloadAddress = ConfigurationManager.AppSettings["Localhost"]
-                    + @"/Download/junzi.apk";
+                    + @"/Download/junzhi.apk";
 
                 return new ReturnResult<VersionInfo>(1, version);
             }
@@ -212,7 +212,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         {
             HttpContext context = HttpContext.Current;
             string imagePath = ConfigurationManager.AppSettings["ImagePath"];
-            string localhost = ConfigurationManager.AppSettings["Localhost"];
+            string localhost = ConfigurationManager.AppSettings["ImageLocalhost"];
             string fileUrls = string.Empty;
             if (!imagePath.EndsWith("\\"))
             {

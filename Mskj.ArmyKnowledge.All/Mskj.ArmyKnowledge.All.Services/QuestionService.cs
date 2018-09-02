@@ -493,7 +493,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             else
             {
-                question.PraiseCount++;
+                question.PraiseCount += count;
                 var res = UpdateQuestion(question);
                 if(res.code > 0)
                 {
@@ -514,7 +514,7 @@ namespace Mskj.ArmyKnowledge.All.Services
             }
             else
             {
-                question.CommentCount++;
+                question.CommentCount += count;
                 var res = UpdateQuestion(question);
                 return res;
             }
@@ -617,6 +617,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                 if (user != null)
                 {
                     user.compositescores += 2;//回答一个问题+2分
+                    user.answercount++;//用户回答数据加1
                     try
                     {
                         _UserRepository.Update(user);
@@ -656,11 +657,12 @@ namespace Mskj.ArmyKnowledge.All.Services
             if (res)
             {
                 //评论增加成功时，更新主表。
-                UpdateCommentCount(answer.questionid);
+                UpdateCommentCount(answer.questionid,-1);
                 var user = _UserRepository.Find().Where(p => p.id == answer.userid).FirstOrDefault();
                 if (user != null)
                 {
                     user.compositescores -= 2;//回答一个问题+2分
+                    user.answercount--;//用户回答数据减1
                     try
                     {
                         _UserRepository.Update(user);
@@ -755,11 +757,10 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<IPagedData<QuestionModel>> GetRecordQuestions(string userid,
             int pageIndex = 1, int pageSize = 10, string filter= "")
         {
-            var res = (from question in _QuestionRepository.Find()
+            var res = (from record in _RecordRepository.Find()
+                       join question in _QuestionRepository.Find() on new { id = record.questionid, record.userid } 
+                       equals new { question.id, userid }
                        join user in _UserRepository.Find() on question.author equals user.id
-                       join record in _RecordRepository.Find() on new { question.id, userid }
-                       equals new { id = record.questionid, record.userid } into temp
-                       from tempRecord in temp.DefaultIfEmpty()
                        select new QuestionModel
                        {
                            Author = user.id,
@@ -772,15 +773,15 @@ namespace Mskj.ArmyKnowledge.All.Services
                            Id = question.id,
                            Images = question.images ?? "",
                            Introduction = question.introduction ?? "",
-                           IsCollect = tempRecord.iscollect,
-                           IsPraise = tempRecord.ispraise,
+                           IsCollect = record.iscollect,
+                           IsPraise = record.ispraise,
                            IsRecommend = question.isrecommend,
                            PraiseCount = question.praisecount,
                            Publishtime = question.publishtime,
                            QuestionState = question.questionstate,
                            ReadCount = question.readcount,
                            Title = question.title ?? "",
-                           RecordLastTime = tempRecord.lasttime,
+                           RecordLastTime = record.lasttime,
                        }).OrderByDescending(q => q.RecordLastTime).ToPage(pageIndex,pageSize);
             return new ReturnResult<IPagedData<QuestionModel>>(1, res);
         }
@@ -795,13 +796,12 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<IPagedData<QuestionModel>> GetCollectionQuestions(string userid,
             int pageIndex = 1, int pageSize = 10, string filter = "")
         {
-            var res = (from question in _QuestionRepository.Find()
+            var res = (from record in _RecordRepository.Find()
+                       join question in _QuestionRepository.Find() on new { id = record.questionid, record.userid }
+                       equals new { question.id, userid }
                        join user in _UserRepository.Find() on question.author equals user.id
-                       join record in _RecordRepository.Find() on new { question.id, userid }
-                       equals new { id = record.questionid, record.userid } into temp
-                       from tempRecord in temp.DefaultIfEmpty()
-                       where tempRecord.iscollect &&
-                       (filter == "" || 
+                       where record.iscollect &&
+                       (filter == "" || filter == null ||
                        (question.title.Contains(filter) || question.content.Contains(filter) ||
                        question.introduction.Contains(filter) || question.author.Contains(filter)))
                        select new QuestionModel
@@ -812,19 +812,19 @@ namespace Mskj.ArmyKnowledge.All.Services
                            CommentCount = question.commentcount,
                            Content = question.content ?? "",
                            HeatCount = question.heatcount,
-                           HomeImage = question.homeimage ?? "",
+                           HomeImage = question.homeimage,
                            Id = question.id,
                            Images = question.images ?? "",
                            Introduction = question.introduction ?? "",
-                           IsCollect = tempRecord.iscollect,
-                           IsPraise = tempRecord.ispraise,
+                           IsCollect = record.iscollect,
+                           IsPraise = record.ispraise,
                            IsRecommend = question.isrecommend,
                            PraiseCount = question.praisecount,
                            Publishtime = question.publishtime,
                            QuestionState = question.questionstate,
                            ReadCount = question.readcount,
                            Title = question.title ?? "",
-                           RecordLastTime = tempRecord.lasttime,
+                           RecordLastTime = record.lasttime,
                        }).OrderByDescending(q => q.RecordLastTime).ToPage(pageIndex, pageSize);
             return new ReturnResult<IPagedData<QuestionModel>>(1, res);
         }

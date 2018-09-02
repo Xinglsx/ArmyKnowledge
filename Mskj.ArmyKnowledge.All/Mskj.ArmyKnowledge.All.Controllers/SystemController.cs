@@ -280,5 +280,75 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             return _NoticeService.GetNotices(filter, pageIndex, pageSize);
         }
         #endregion
+
+        #region 字典相关信息
+        /// <summary>
+        /// 获取欢迎页
+        /// </summary>
+        [Route("GetWelcomeImage")]
+        [HttpGet]
+        public object GetWelcomeImage()
+        {
+            var resTemp = _SystemService.GetDictionarys(3);
+            if(resTemp != null && resTemp.Count > 0)
+            {
+                return new ReturnResult<string>(1, resTemp[0]); 
+            }
+            return new ReturnResult<string>(-1,"未设置欢迎页面！");
+        }
+        /// <summary>
+        /// 获取轮播图
+        /// </summary>
+        [Route("GetCarouselImages")]
+        [HttpGet]
+        public object GetCarouselImages()
+        {
+            var resTemp = _SystemService.GetDictionarys(4);
+            if (resTemp != null && resTemp.Count > 0)
+            {
+                return new ReturnResult<List<string>>(1, resTemp);
+            }
+            return new ReturnResult<List<string>>(-1, "未设置轮播图片！");
+        }
+        /// <summary>
+        /// 增加字典
+        /// </summary>
+        [Route("AddDictionary")]
+        [HttpPost]
+        public object AddDictionary(Dictionary dic)
+        {
+            if(dic == null || string.IsNullOrEmpty(dic.dicname))
+            {
+                return new ReturnResult<Dictionary>(-4, "传入参数错误!");
+            }
+            return _SystemService.AddDictionary(dic);
+        }
+        /// <summary>
+        /// 更新字典
+        /// </summary>
+        [Route("UpdateDictionary")]
+        [HttpPost]
+        public object UpdateDictionary(Dictionary dic)
+        {
+            if (dic == null || string.IsNullOrEmpty(dic.dicname))
+            {
+                return new ReturnResult<Dictionary>(-4, "传入参数错误!");
+            }
+            return _SystemService.UpdateDictionary(dic);
+        }
+        /// <summary>
+        /// 删除字典
+        /// </summary>
+        [Route("DeleteDictionary")]
+        [HttpPost]
+        public object DeleteDictionary(PostId dic)
+        {
+            if (dic == null || string.IsNullOrEmpty(dic.Id))
+            {
+                return new ReturnResult<bool>(-4, "传入参数错误!");
+            }
+            return _SystemService.DeleteDictionary(dic.Id);
+        }
+        #endregion
     }
 }

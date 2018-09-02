@@ -11,14 +11,23 @@ using QuickShare.LiteFramework.Foundation;
 using QuickShare.LiteFramework;
 using Mskj.ArmyKnowledge.All.Common.DataObj;
 using System.Web;
+using System.Collections.Generic;
+using QuickShare.LiteFramework.Base;
+using Mskj.ArmyKnowledge.All.Domains;
+using System.Linq;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {
     public class SystemService : ISystemService
     {
         #region 构造函数
-        public SystemService() 
+        private readonly IRepository<Dictionary> _DicRepository;
+        private readonly ILogger logger;
+        public SystemService(IRepository<Dictionary> dicRepository)
         {
+            _DicRepository = dicRepository;
+
+            logger = AppInstance.Current.Resolve<ILogger>();
         }
         #endregion
 
@@ -106,6 +115,79 @@ namespace Mskj.ArmyKnowledge.All.Services
         }
         #endregion
 
+        #region 获取字典信息
+        /// <summary>
+        /// 获取字典值
+        /// </summary>
+        /// <param name="dictype">字典类型</param>
+        public List<string> GetDictionarys(int dictype)
+        {
+            var res = _DicRepository.Find().Where(x => x.dictype == dictype)
+                .OrderBy(q => q.diccode).Select(p => p.dicname).ToList();
+            return res;
+        }
+        /// <summary>
+        /// 增加字典
+        /// </summary>
+        public ReturnResult<Dictionary> AddDictionary(Dictionary dic)
+        {
+            dic.id = Guid.NewGuid().ToString();
+            bool res = false;
+            try
+            {
+                res = _DicRepository.Add(dic);
+            }
+            catch (Exception exp)
+            {
+                logger.LogError("AddDictionary增加字典", exp);
+                return new ReturnResult<Dictionary>(-1, "系统异常，请稍后重试。");
+            }
+            if (res)
+            {
+                return new ReturnResult<Dictionary>(1, dic);
+            }
+            else
+            {
+                return new ReturnResult<Dictionary>(-1, "字典数据插入失败！");
+            }
+        }
+        /// <summary>
+        /// 更新字典
+        /// </summary>
+        public ReturnResult<bool> UpdateDictionary(Dictionary dic)
+        {
+            bool res = false;
+            try
+            {
+                res = _DicRepository.Update(dic);
+            }
+            catch (Exception exp)
+            {
+                logger.LogError("UpdateDictionary更新字典", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
+            }
+            return new ReturnResult<bool>(res ? 1 : -2, res);
+        }
+        /// <summary>
+        /// 删除字典
+        /// </summary>
+        public ReturnResult<bool> DeleteDictionary(string dicId)
+        {
+            bool res = false;
+            try
+            {
+                res = _DicRepository.Delete(dicId);
+            }
+            catch (Exception exp)
+            {
+                logger.LogError("DeleteDictionary删除字典", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
+            }
+            return new ReturnResult<bool>(res ? 1 : -2, res);
+
+        }
+        #endregion
+
         #region 图片上传
         /// <summary>
         /// 图片上传
@@ -157,7 +239,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                 }
                 catch (Exception exp)
                 {
-                    return new ReturnResult<string>(-1, exp.Message);
+                    logger.LogError("UploadFile图片上传", exp);
+                    return new ReturnResult<string>(-1,"", "系统异常，请稍后重试。");
                 }
 
             }

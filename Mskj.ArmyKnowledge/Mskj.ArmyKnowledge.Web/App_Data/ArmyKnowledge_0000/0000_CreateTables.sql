@@ -352,12 +352,15 @@ IF NOT EXISTS( SELECT * FROM sys.objects WHERE name='dictionary' AND type='U')
 																		--0-专家专业
 																		--1-需求类型
 																		--2-产品类型
+																		--3-欢迎页图
+																		--4-轮播图片
 	   diccode				varchar(2)                     null,		--字典Code
-	   dicname              varchar(36)                    null,		--字典名称
+	   dicname              varchar(512)                   null,		--字典名称
 	   dicstate             bit                            null,		--字典状态
 	   constraint PK_DICTIONARY primary key clustered (id)
 	);
 end
+
 /*插入专家专业字典*/
 if not exists (select 1 from dictionary where id = '2302B295-14F3-43FF-AA52-55B4C565F718')
 begin
@@ -383,6 +386,27 @@ if not exists (select 1 from dictionary where id ='2B8E58AE-B8A2-458E-A1A0-01A4C
 begin
 	insert into dictionary select '2B8E58AE-B8A2-458E-A1A0-01A4C6442872',0,'06','生物医药技术',1
 end
+/*插入需求类型字典*/
+if not exists (select 1 from dictionary where id ='DF839C2A-D431-49C9-90F7-53D9B8A0B61D')
+begin
+	insert into dictionary select 'DF839C2A-D431-49C9-90F7-53D9B8A0B61D',1,'01','元器件',1
+end
+if not exists (select 1 from dictionary where id ='6CCA31B7-4760-4BB7-B432-D3E32227D65E')
+begin
+	insert into dictionary select '6CCA31B7-4760-4BB7-B432-D3E32227D65E',1,'02','电力装备',1
+end
+if not exists (select 1 from dictionary where id ='FC4E1A96-2E43-4DD6-A00C-F162CD929D6A')
+begin
+	insert into dictionary select 'FC4E1A96-2E43-4DD6-A00C-F162CD929D6A',1,'03','工业基础件',1
+end
+if not exists (select 1 from dictionary where id ='B3160D0A-FC82-490F-9951-4DDB63551CE5')
+begin
+	insert into dictionary select 'B3160D0A-FC82-490F-9951-4DDB63551CE5',1,'04','应急救援保障',1
+end
+if not exists (select 1 from dictionary where id ='766D8DEC-D45A-4993-A46C-37AFA4D8BF2E')
+begin
+	insert into dictionary select '766D8DEC-D45A-4993-A46C-37AFA4D8BF2E',1,'05','新材料',1
+end
 /*插入产品类型字典*/
 if not exists (select 1 from dictionary where id ='049D0A85-3514-4940-9417-FCAF99405880')
 begin
@@ -404,24 +428,30 @@ if not exists (select 1 from dictionary where id ='AE69E62E-876B-4345-B507-58767
 begin
 	insert into dictionary select 'AE69E62E-876B-4345-B507-587674BA0A1A',2,'05','新材料',1
 end
-/*插入需求类型字典*/
-if not exists (select 1 from dictionary where id ='DF839C2A-D431-49C9-90F7-53D9B8A0B61D')
+/*插入首页图片*/
+if not exists (select 1 from dictionary where id ='78A3137A-8C1D-4318-94CC-D5E61F8221BE')
 begin
-	insert into dictionary select 'DF839C2A-D431-49C9-90F7-53D9B8A0B61D',1,'01','元器件',1
+	insert into dictionary select '78A3137A-8C1D-4318-94CC-D5E61F8221BE',3,'01',
+	'http://www.mingshukeji.com.cn/ArmyKnowledge/images/homepage/homepage.jpg',1
 end
-if not exists (select 1 from dictionary where id ='6CCA31B7-4760-4BB7-B432-D3E32227D65E')
+/*插入轮播图*/
+if not exists (select 1 from dictionary where id ='AA78D4D4-BAF2-470B-AF92-20136DA9DF4E')
 begin
-	insert into dictionary select '6CCA31B7-4760-4BB7-B432-D3E32227D65E',1,'02','电力装备',1
+	insert into dictionary select 'AA78D4D4-BAF2-470B-AF92-20136DA9DF4E',4,'01',
+	'http://www.mingshukeji.com.cn/ArmyKnowledge/images/carousel/carousel01.jpg',1
 end
-if not exists (select 1 from dictionary where id ='FC4E1A96-2E43-4DD6-A00C-F162CD929D6A')
+if not exists (select 1 from dictionary where id ='81941C45-6829-48EE-BF26-DC286AF98FC2')
 begin
-	insert into dictionary select 'FC4E1A96-2E43-4DD6-A00C-F162CD929D6A',1,'03','工业基础件',1
+	insert into dictionary select '81941C45-6829-48EE-BF26-DC286AF98FC2',4,'02',
+	'http://www.mingshukeji.com.cn/ArmyKnowledge/images/carousel/carousel02.jpg',1
 end
-if not exists (select 1 from dictionary where id ='B3160D0A-FC82-490F-9951-4DDB63551CE5')
+if not exists (select 1 from dictionary where id ='1819FDDB-03C7-47F5-99A0-D0DE83736AD9')
 begin
-	insert into dictionary select 'B3160D0A-FC82-490F-9951-4DDB63551CE5',1,'04','应急救援保障',1
+	insert into dictionary select '1819FDDB-03C7-47F5-99A0-D0DE83736AD9',4,'03',
+	'http://www.mingshukeji.com.cn/ArmyKnowledge/images/carousel/carousel03.jpg',1
 end
-if not exists (select 1 from dictionary where id ='766D8DEC-D45A-4993-A46C-37AFA4D8BF2E')
+if not exists (select 1 from dictionary where id ='6598BBC2-F8FE-49F8-9C68-9969E5D6166E')
 begin
-	insert into dictionary select '766D8DEC-D45A-4993-A46C-37AFA4D8BF2E',1,'05','新材料',1
+	insert into dictionary select '6598BBC2-F8FE-49F8-9C68-9969E5D6166E',4,'04',
+	'http://www.mingshukeji.com.cn/ArmyKnowledge/images/carousel/carousel04.jpg',1
 end

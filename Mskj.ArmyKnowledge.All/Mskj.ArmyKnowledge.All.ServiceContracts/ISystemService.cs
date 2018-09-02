@@ -16,6 +16,26 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         ReturnResult<VersionInfo> GetVersionInfo();
         #endregion
 
+        #region 获取字典信息
+        /// <summary>
+        /// 获取字典值
+        /// </summary>
+        /// <param name="dictype">字典类型</param>
+        List<string> GetDictionarys(int dictype);
+        /// <summary>
+        /// 增加字典
+        /// </summary>
+        ReturnResult<Dictionary> AddDictionary(Dictionary dic);
+        /// <summary>
+        /// 更新字典
+        /// </summary>
+        ReturnResult<bool> UpdateDictionary(Dictionary dic);
+        /// <summary>
+        /// 删除字典
+        /// </summary>
+        ReturnResult<bool> DeleteDictionary(string dicId);
+        #endregion
+
         #region 图片上传
         /// <summary>
         /// 图片上传

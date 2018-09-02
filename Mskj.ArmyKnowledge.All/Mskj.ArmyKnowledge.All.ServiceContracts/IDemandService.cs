@@ -42,7 +42,7 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <summary>
         /// 获取已有需求分类
         /// </summary>
-        ReturnResult<List<string>> GetDemandCategory();
+        ReturnResult<List<string>> GetDemandField();
         /// <summary>
         /// 分页获取对应用户的需求列表
         /// </summary>

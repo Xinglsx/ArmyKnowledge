@@ -25,5 +25,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public int demandstate { get; set; }
         public int demandscores { get; set; }
         public DateTime? updatetime { get; set; }
+        public string field { get; set; }
     }
 }

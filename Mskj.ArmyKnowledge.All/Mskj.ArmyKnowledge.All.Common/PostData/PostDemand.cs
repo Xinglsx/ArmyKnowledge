@@ -53,6 +53,11 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
         /// </summary>
         [JsonProperty("category")]
         public string Category { get; set; }
+        /// <summary>
+        /// 领域
+        /// </summary>
+        [JsonProperty("field")]
+        public string Field { get; set; }
     }
 
     public static class PostDemandExtensions
@@ -69,6 +74,7 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
                 images = demand.Images,
                 homeimage = demand.Homeimage,
                 category = demand.Category,
+                field = demand.Field,
             };
         }
     }

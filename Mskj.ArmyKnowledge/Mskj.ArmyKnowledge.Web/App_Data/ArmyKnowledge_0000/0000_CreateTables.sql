@@ -185,6 +185,7 @@ begin
 	   readcount            int                            null,		--阅读数
 	   heatcount            int                            null,		--热点指数
 	   category             varchar(16)                    null,		--分类
+	   field				varchar(16)                    null,		--领域
 	   demandstate          int                            null,		--需求状态
 	   demandscores         int                            null,		--需求总得分，排名用
 	   updatetime			datetime					   null,		--更新时间

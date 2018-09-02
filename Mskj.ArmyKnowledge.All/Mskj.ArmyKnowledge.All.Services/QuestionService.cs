@@ -764,14 +764,14 @@ namespace Mskj.ArmyKnowledge.All.Services
                        {
                            Author = user.id,
                            AuthorNickname = user.nickname,
-                           Avatar = user.avatar,
+                           Avatar = user.avatar ?? "",
                            CommentCount = question.commentcount,
-                           Content = question.content,
+                           Content = question.content ?? "",
                            HeatCount = question.heatcount,
                            HomeImage = question.homeimage,
                            Id = question.id,
-                           Images = question.images,
-                           Introduction = question.introduction,
+                           Images = question.images ?? "",
+                           Introduction = question.introduction ?? "",
                            IsCollect = tempRecord.iscollect,
                            IsPraise = tempRecord.ispraise,
                            IsRecommend = question.isrecommend,
@@ -779,15 +779,9 @@ namespace Mskj.ArmyKnowledge.All.Services
                            Publishtime = question.publishtime,
                            QuestionState = question.questionstate,
                            ReadCount = question.readcount,
-                           Title = question.title,
+                           Title = question.title ?? "",
                            RecordLastTime = tempRecord.lasttime,
                        }).OrderByDescending(q => q.RecordLastTime).ToPage(pageIndex,pageSize);
-            //var res = (from question in _QuestionRepository.Find()
-            //           join record in _RecordRepository.Find() on question.id equals record.questionid
-            //           where record.userid == userid
-            //           orderby record.lasttime descending
-            //           select question).ToPage(pageIndex,pageSize).
-            //           MapTo<Question,QuestionModel>();
             return new ReturnResult<IPagedData<QuestionModel>>(1, res);
         }
         /// <summary>
@@ -814,14 +808,14 @@ namespace Mskj.ArmyKnowledge.All.Services
                        {
                            Author = user.id,
                            AuthorNickname = user.nickname,
-                           Avatar = user.avatar,
+                           Avatar = user.avatar ?? "",
                            CommentCount = question.commentcount,
-                           Content = question.content,
+                           Content = question.content ?? "",
                            HeatCount = question.heatcount,
-                           HomeImage = question.homeimage,
+                           HomeImage = question.homeimage ?? "",
                            Id = question.id,
-                           Images = question.images,
-                           Introduction = question.introduction,
+                           Images = question.images ?? "",
+                           Introduction = question.introduction ?? "",
                            IsCollect = tempRecord.iscollect,
                            IsPraise = tempRecord.ispraise,
                            IsRecommend = question.isrecommend,
@@ -829,7 +823,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                            Publishtime = question.publishtime,
                            QuestionState = question.questionstate,
                            ReadCount = question.readcount,
-                           Title = question.title,
+                           Title = question.title ?? "",
                            RecordLastTime = tempRecord.lasttime,
                        }).OrderByDescending(q => q.RecordLastTime).ToPage(pageIndex, pageSize);
             return new ReturnResult<IPagedData<QuestionModel>>(1, res);

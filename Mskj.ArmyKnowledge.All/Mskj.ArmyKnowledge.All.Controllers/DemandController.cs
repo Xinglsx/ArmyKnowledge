@@ -107,13 +107,13 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         }
         /// <summar
         /// <summary>
-        /// 获取已有需求分类
+        /// 获取已有需求领域
         /// </summary>
-        [Route("GetDemandCategory")]
+        [Route("GetDemandField")]
         [HttpGet]
-        public object GetDemandCategory()
+        public object GetDemandField()
         {
-            return _DemandService.GetDemandCategory();
+            return _DemandService.GetDemandField();
         }
         /// <summary>
         /// 分页获取对应用户的需求列表

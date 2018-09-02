@@ -44,5 +44,10 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         public DateTime? UpdateTime { get; set; }
         [JsonProperty("avatar")]
         public string Avatar { get; set; }
+        /// <summary>
+        /// 领域
+        /// </summary>
+        [JsonProperty("field")]
+        public string Field { get; set; }
     }
 }

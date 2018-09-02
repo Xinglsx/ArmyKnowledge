@@ -205,7 +205,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 获取已有需求分类
         /// </summary>
-        public ReturnResult<List<string>> GetDemandCategory()
+        public ReturnResult<List<string>> GetDemandField()
         {
             List<string> professions = new List<string> { "全部" };
             var res = _DicRepository.Find().Where(p => p.dicstate && p.dictype == 1)
@@ -249,21 +249,22 @@ namespace Mskj.ArmyKnowledge.All.Services
                        {
                            Id = demand.id,
                            Author = user.id,
-                           AuthorNickname = user.nickname,
-                           Avatar = user.avatar,
-                           Category = demand.category,
-                           Content = demand.content,
+                           AuthorNickname = user.nickname ?? "",
+                           Avatar = user.avatar ?? "",
+                           Category = demand.category ?? "",
+                           Content = demand.content ?? "",
                            DemandScores = demand.demandscores,
                            DemandState = demand.demandstate,
                            HeatCount = demand.heatcount,
-                           HomeImage = demand.homeimage,
-                           Images = demand.images,
-                           Introduction = demand.introduction,
+                           HomeImage = demand.homeimage ?? "",
+                           Images = demand.images ?? "",
+                           Introduction = demand.introduction ?? "",
                            isRecommend = demand.isrecommend,
                            PublishTime = demand.publishtime,
                            ReadCount = demand.readcount,
-                           Title = demand.title,
+                           Title = demand.title ?? "",
                            UpdateTime = demand.updatetime,
+                           Field = demand.field ?? "",
                        });
             if(state != -1)
             {

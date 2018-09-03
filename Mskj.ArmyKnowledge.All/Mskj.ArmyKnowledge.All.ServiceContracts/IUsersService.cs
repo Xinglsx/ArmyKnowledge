@@ -73,6 +73,12 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <param name="userId">用户ID</param>
         /// <param name="count">增减数量</param>
         bool UpdateCollectCount(string userId, int count = 1);
+        /// <summary>
+        /// 更新用户被点赞数
+        /// </summary>
+        /// <param name="userId">问题ID</param>
+        /// <param name="count">增减数量</param>
+        bool UpdatePraiseCount(string questionId, int count = 1);
         #endregion
 
         #region 用户认证信息

@@ -314,15 +314,32 @@ namespace Mskj.ArmyKnowledge.All.Controllers
                 case 0:
                     break;
                 case 1://点赞
+                    if(!isNew && saveTemp.ispraise)
+                    {
+                        //此种情况，正常返回，后台不做处理
+                        return new ReturnResult<bool>(1, true, "此文已经赞过!");
+                    }
                     saveTemp.ispraise = true;
                     break;
                 case 2://收藏
+                    if (!isNew && saveTemp.iscollect)
+                    {
+                        return new ReturnResult<bool>(1, true, "此文已经收藏过!");
+                    }
                     saveTemp.iscollect = true;
                     break;
                 case -1://取消点赞
+                    if (!isNew && !saveTemp.ispraise)
+                    {
+                        return new ReturnResult<bool>(1, true, "此文未赞过!");
+                    }
                     saveTemp.ispraise = false;
                     break;
                 case -2://取消收藏
+                    if (!isNew && !saveTemp.iscollect)
+                    {
+                        return new ReturnResult<bool>(1, true, "此文未收藏过!");
+                    }
                     saveTemp.iscollect = false;
                     break;
             }
@@ -344,17 +361,17 @@ namespace Mskj.ArmyKnowledge.All.Controllers
                         break;
                     case 1://点赞
                         _QuestionService.UpdatePraiseCount(record.QuestionId, 1);
-                        _IUsersService.UpdateCollectCount(record.UserId, 1);
+                        _IUsersService.UpdatePraiseCount(record.QuestionId, 1);
                         break;
                     case 2://收藏
-                        _QuestionService.UpdateCollectCount(record.QuestionId, 1);
+                        _QuestionService.UpdateCollectCount(record.UserId, 1);
                         break;
                     case -1://取消点赞
                         _QuestionService.UpdatePraiseCount(record.QuestionId, -1);
+                        _IUsersService.UpdatePraiseCount(record.QuestionId, -1);
                         break;
                     case -2://取消收藏
-                        _QuestionService.UpdateCollectCount(record.QuestionId, -1);
-                        _IUsersService.UpdateCollectCount(record.UserId, -1);
+                        _QuestionService.UpdateCollectCount(record.UserId, -1);
                         break;
                 }
             }

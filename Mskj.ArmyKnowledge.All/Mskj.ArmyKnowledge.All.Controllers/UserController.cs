@@ -319,6 +319,10 @@ namespace Mskj.ArmyKnowledge.All.Controllers
             {
                 return new ReturnResult<Fans>(-4, "传入参数错误!");
             }
+            else if(fans.userid1 == fans.userid2)
+            {
+                return new ReturnResult<Fans>(-4, "无需关注自己!");
+            }
             return _UsersService.AddFans(fans);
         }
         /// <summary>

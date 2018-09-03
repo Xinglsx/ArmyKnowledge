@@ -24,6 +24,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         private readonly IRepository<Fans> _FansRepository;
         private readonly IRepository<Follower> _FollowerRepository;//暂时先不用，只用Fans表
         private readonly IRepository<Dictionary> _DicRepository;
+        private readonly IRepository<Question> _QuestionRepository;
         ILogger logger;
         ICache cache;
 
@@ -34,13 +35,14 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="goodsRepository"></param>
         public UsersService(IRepository<Users> usersRepository,IRepository<Cert> certRepository,
             IRepository<Fans> fansRepository,IRepository<Follower> followerRepository,
-            IRepository<Dictionary> dicRepository) : base(usersRepository)
+            IRepository<Dictionary> dicRepository,IRepository<Question> questionRepository) : base(usersRepository)
         {
             _UsersRepository = usersRepository;
             _CertRepository = certRepository;
             _FansRepository = fansRepository;
             _FollowerRepository = followerRepository;
             _DicRepository = dicRepository;
+            _QuestionRepository = questionRepository;
 
             logger = AppInstance.Current.Resolve<ILogger>();
             cache = AppInstance.Current.Resolve<ICache>();
@@ -315,6 +317,37 @@ namespace Mskj.ArmyKnowledge.All.Services
                 return false;
             }
             user.collectcount += count;
+            user.compositescores += 2 * count;
+            bool updateResult = false;
+            try
+            {
+                //user.isadmin = false;已不再对接口公布些字段//接口不可将些字段更新为true,只能后台update
+                user.updatetime = DateTime.Now;
+                updateResult = this.Update(user);
+            }
+            catch (Exception exp)
+            {
+                logger.LogError("更新用户信息出错！", exp);
+                return false;
+            }
+            return updateResult;
+        }
+        /// <summary>
+        /// 更新用户被点赞数
+        /// </summary>
+        /// <param name="userId">问题ID</param>
+        /// <param name="count">增减数量</param>
+        public bool UpdatePraiseCount(string questionId, int count = 1)
+        {
+            var user = (from question in _QuestionRepository.Find()
+                        join userTemp in _UsersRepository.Find() on question.author equals userTemp.id
+                        where question.id == questionId
+                        select userTemp).FirstOrDefault();
+            if (user == null || string.IsNullOrEmpty(user.id))
+            {
+                return false;
+            }
+            user.adoptedcount += count;
             user.compositescores += 2 * count;
             bool updateResult = false;
             try
@@ -952,8 +985,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             //    .OrderByDescending(p => p.updatetime).ToPage(pageIndex,pageSize);
 
             var res = (from fans in _FansRepository.Find()
-                        join user in _UsersRepository.Find() on fans.userid1 equals user.id
-                        where fans.userid1 == userid && (fans.fansstate == 0 || fans.fansstate == 2)
+                        join user in _UsersRepository.Find() on fans.userid2 equals user.id
+                        where fans.userid1 == userid && (fans.fansstate == 0 || fans.fansstate == 1)
                         select new UserFansModel{
                             Id = user.id,
                             Nickname =user.nickname,
@@ -971,7 +1004,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                         .Concat
                         (from fans in _FansRepository.Find()
                          join user in _UsersRepository.Find() on fans.userid1 equals user.id
-                         where fans.userid2 == userid && (fans.fansstate == 0 || fans.fansstate == 1)
+                         where fans.userid2 == userid && (fans.fansstate == 0 || fans.fansstate == 2)
                          select new UserFansModel
                          {
                              Id = user.id,
@@ -1008,7 +1041,7 @@ namespace Mskj.ArmyKnowledge.All.Services
 
             var res = (from fans in _FansRepository.Find()
                        join user in _UsersRepository.Find() on fans.userid2 equals user.id
-                       where fans.userid1 == userid && (fans.fansstate == 0 || fans.fansstate == 1)
+                       where fans.userid1 == userid && (fans.fansstate == 0 || fans.fansstate == 2)
                        select new UserFansModel
                        {
                            Id = user.id,
@@ -1026,8 +1059,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                        })
                         .Concat
                         (from fans in _FansRepository.Find()
-                         join user in _UsersRepository.Find() on fans.userid2 equals user.id
-                         where fans.userid2 == userid && (fans.fansstate == 0 || fans.fansstate == 2)
+                         join user in _UsersRepository.Find() on fans.userid1 equals user.id
+                         where fans.userid2 == userid && (fans.fansstate == 0 || fans.fansstate == 1)
                          select new UserFansModel
                          {
                              Id = user.id,

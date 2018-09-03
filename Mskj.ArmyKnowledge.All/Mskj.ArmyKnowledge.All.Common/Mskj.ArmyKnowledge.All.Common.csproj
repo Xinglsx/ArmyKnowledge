@@ -55,6 +55,7 @@
     <Compile Include="DataObj\ProductModel.cs" />
     <Compile Include="DataObj\QuestionModel.cs" />
     <Compile Include="DataObj\UserFansModel.cs" />
+    <Compile Include="DataObj\UserModel.cs" />
     <Compile Include="DataObj\VersionInfo.cs" />
     <Compile Include="PostData\PostDemand.cs" />
     <Compile Include="PostData\PostId.cs" />

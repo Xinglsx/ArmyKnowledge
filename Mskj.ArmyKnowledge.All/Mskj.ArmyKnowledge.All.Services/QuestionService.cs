@@ -404,11 +404,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             //                   ReadCount = question.readcount,
             //                   Title = question.title,
             //               }).OrderByDescending(q => q.Publishtime);
-            var questionIds = _AnswerDetailRepository.Find().Where(p => p.userid == userid).Select(q => q.questionid).Distinct().ToList();
-            if (questionIds == null || questionIds.Count() <= 0)
-            {
-
-            }
+            var questionIds = _AnswerDetailRepository.Find().Where(p => p.userid == userid)
+                .Select(q => q.questionid).Distinct().ToList();
             var resTemp = (from question in _QuestionRepository.Find()
                            join user in _UserRepository.Find() on question.author equals user.id into temp1
                            from tempUser in temp1.DefaultIfEmpty()
@@ -701,35 +698,24 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<bool> AddRecord(Record record)
         {
             bool res = false;
-            var existRecord = _RecordRepository.Find().Where
-                (p => p.userid == record.userid && p.questionid == record.questionid).FirstOrDefault();
-            if (existRecord == null || string.IsNullOrEmpty(existRecord.id))
+            record.id = Guid.NewGuid().ToString();
+            record.lasttime = DateTime.Now;
+            try
             {
-                record.id = Guid.NewGuid().ToString();
-                record.lasttime = DateTime.Now;
-                try
-                {
-                    res = _RecordRepository.Add(record);
-                }
-                catch (Exception exp)
-                {
-                    logger.LogError("AddRecord增加最近浏览出错！", exp);
-                    return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
-                }
-                if (res)
-                {
-                    return new ReturnResult<bool>(1, res);
-                }
-                else
-                {
-                    return new ReturnResult<bool>(-2, "新增最近浏览失败！");
-                }
+                res = _RecordRepository.Add(record);
+            }
+            catch (Exception exp)
+            {
+                logger.LogError("AddRecord增加最近浏览出错！", exp);
+                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
+            }
+            if (res)
+            {
+                return new ReturnResult<bool>(1, res);
             }
             else
             {
-                existRecord.iscollect = record.iscollect;
-                existRecord.ispraise = record.ispraise;
-                return UpdateRecord(existRecord);
+                return new ReturnResult<bool>(-2, "新增最近浏览失败！");
             }
         }
         /// <summary>

@@ -273,59 +273,67 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <param name="state">状态</param>
         /// <param name="pageIndex">页码</param>
         /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式</param>
+        /// <param name="sortType">排序方式：0-时间倒序 1-热值倒序 2-评论倒序</param>
         /// <returns></returns>
         public ReturnResult<IPagedData<QuestionModel>> GetUserQuestion(string userid,
             string filter = "",int pageIndex = 1, int pageSize = 10, int sortType = 0)
         {
-            Expression<Func<QuestionModel, bool>> expression;
-            if (string.IsNullOrEmpty(filter))
+            var headers = HttpContext.Current.Request.Headers;
+            string currentUserid = string.Empty;
+            if (headers["userid"] != null)
             {
-                expression = x => x.Author == userid;
+                currentUserid = headers["userid"].ToString();
             }
-            else
+            var resTemp = (from question in _QuestionRepository.Find()
+                           join user in _UserRepository.Find() on question.author equals user.id into temp1
+                           from tempUser in temp1.DefaultIfEmpty()
+                           join record in _RecordRepository.Find() on new { question.id, userid = currentUserid }
+                           equals new { id = record.questionid, record.userid } into temp
+                           from tempRecord in temp.DefaultIfEmpty()
+                           where question.author == userid
+                           select new QuestionModel
+                           {
+                               Author = tempUser.id,
+                               AuthorNickname = tempUser.nickname,
+                               Avatar = tempUser.avatar,
+                               CommentCount = question.commentcount,
+                               Content = question.content,
+                               HeatCount = question.heatcount,
+                               HomeImage = question.homeimage,
+                               Id = question.id,
+                               Images = question.images,
+                               Introduction = question.introduction,
+                               IsCollect = tempRecord.iscollect == null ? false : tempRecord.iscollect,
+                               IsPraise = tempRecord.ispraise == null ? false : tempRecord.ispraise,
+                               IsRecommend = question.isrecommend,
+                               PraiseCount = question.praisecount,
+                               Publishtime = question.publishtime,
+                               QuestionState = question.questionstate,
+                               ReadCount = question.readcount,
+                               Title = question.title,
+                           });
+            if (!string.IsNullOrEmpty(filter))
             {
-                expression = x => x.Author == userid && (
+                resTemp = resTemp.Where(x => x.Author == userid && (
                     x.Title.Contains(filter) || x.AuthorNickname.Contains(filter) ||
                     x.Introduction.Contains(filter) || x.Content.Contains(filter)
-                    );
-
+                    ));
             }
-            return GetBaseQuestionModels(pageIndex, pageSize, sortType, expression);
-        }
-        /// <summary>
-        /// 分页获取问题列表(封装排序方式)
-        /// </summary>
-        /// <param name="pageIndex">页码</param>
-        /// <param name="pageSize">每页数量</param>
-        /// <param name="sortType">排序方式：0-时间倒序 1-热值倒序 2-评论倒序 </param>
-        /// <param name="expression">查询表达示</param>
-        /// <returns></returns>
-        private ReturnResult<IPagedData<QuestionModel>> GetBaseQuestionModels(int pageIndex,
-            int pageSize, int sortType, Expression<Func<QuestionModel, bool>> expression)
-        {
-            List<SortInfo<QuestionModel>> sorts = new List<SortInfo<QuestionModel>>();
-            SortInfo<QuestionModel> sortTime = new SortInfo<QuestionModel>(p => new { p.Publishtime },
-                        SortOrder.Descending);
             switch (sortType)
             {
                 case 1:
-                    sorts.Add(new SortInfo<QuestionModel>(p => new { p.HeatCount },
-                        SortOrder.Descending));
-                    sorts.Add(sortTime);
+                    resTemp = resTemp.OrderByDescending(p => p.HeatCount).ThenByDescending(q => q.Publishtime);
                     break;
                 case 2:
-                    sorts.Add(new SortInfo<QuestionModel>(p => new { p.CommentCount },
-                        SortOrder.Descending));
-                    sorts.Add(sortTime);
+                    resTemp = resTemp.OrderByDescending(p => p.CommentCount).ThenByDescending(q => q.Publishtime);
                     break;
                 case 0:
                 default:
-                    sorts.Add(sortTime);
+                    resTemp = resTemp.OrderByDescending(q => q.Publishtime);
                     break;
             }
-            return new ReturnResult<IPagedData<QuestionModel>>(1,
-                    GetPage(pageIndex, pageSize, sorts, expression));
+            var res = resTemp.ToPage(pageIndex, pageSize);
+            return new ReturnResult<IPagedData<QuestionModel>>(1, res);
         }
         /// <summary>
         /// 分页获取问题的回答
@@ -404,12 +412,18 @@ namespace Mskj.ArmyKnowledge.All.Services
             //                   ReadCount = question.readcount,
             //                   Title = question.title,
             //               }).OrderByDescending(q => q.Publishtime);
+            var headers = HttpContext.Current.Request.Headers;
+            string currentUserid = string.Empty;
+            if (headers["userid"] != null)
+            {
+                currentUserid = headers["userid"].ToString();
+            }
             var questionIds = _AnswerDetailRepository.Find().Where(p => p.userid == userid)
                 .Select(q => q.questionid).Distinct().ToList();
             var resTemp = (from question in _QuestionRepository.Find()
                            join user in _UserRepository.Find() on question.author equals user.id into temp1
                            from tempUser in temp1.DefaultIfEmpty()
-                           join record in _RecordRepository.Find() on new { question.id, userid }
+                           join record in _RecordRepository.Find() on new { question.id, userid = currentUserid }
                            equals new { id = record.questionid, record.userid } into temp
                            from tempRecord in temp.DefaultIfEmpty()
                            where questionIds.Contains(question.id)
@@ -425,8 +439,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                                Id = question.id,
                                Images = question.images,
                                Introduction = question.introduction,
-                               IsCollect = tempRecord.iscollect,
-                               IsPraise = tempRecord.ispraise,
+                               IsCollect = tempRecord.iscollect == null ? false: tempRecord.iscollect,
+                               IsPraise = tempRecord.ispraise == null ? false : tempRecord.ispraise,
                                IsRecommend = question.isrecommend,
                                PraiseCount = question.praisecount,
                                Publishtime = question.publishtime,

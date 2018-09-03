@@ -223,8 +223,8 @@ namespace Mskj.ArmyKnowledge.All.Services
                            Id = question.id,
                            Images = question.images,
                            Introduction = question.introduction,
-                           IsCollect = tempRecord.iscollect,
-                           IsPraise = tempRecord.ispraise,
+                           IsCollect = tempRecord.iscollect == null ? false : tempRecord.iscollect,
+                           IsPraise = tempRecord.ispraise == null ? false : tempRecord.ispraise,
                            IsRecommend = question.isrecommend,
                            PraiseCount = question.praisecount,
                            Publishtime = question.publishtime,
@@ -257,12 +257,6 @@ namespace Mskj.ArmyKnowledge.All.Services
                     break;
             }
             var result = res.ToPage(pageIndex, pageSize);
-            //为null时接口不会传出。。。
-            for(int i = 0; i < result.Data.Count(); i++)
-            {
-                if (result.Data[i].IsCollect == null) { result.Data[i].IsCollect = false; }
-                if (result.Data[i].IsPraise == null) { result.Data[i].IsPraise = false; }
-            }
 
             return new ReturnResult<IPagedData<QuestionModel>>(1, result);
         }

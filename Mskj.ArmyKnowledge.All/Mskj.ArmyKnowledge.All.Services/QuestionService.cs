@@ -701,24 +701,35 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<bool> AddRecord(Record record)
         {
             bool res = false;
-            record.id = Guid.NewGuid().ToString();
-            record.lasttime = DateTime.Now;
-            try
+            var existRecord = _RecordRepository.Find().Where
+                (p => p.userid == record.userid && p.questionid == record.questionid).FirstOrDefault();
+            if (existRecord == null || string.IsNullOrEmpty(existRecord.id))
             {
-                res = _RecordRepository.Add(record);
-            }
-            catch (Exception exp)
-            {
-                logger.LogError("AddRecord增加最近浏览出错！", exp);
-                return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
-            }
-            if (res)
-            {
-                return new ReturnResult<bool>(1, res);
+                record.id = Guid.NewGuid().ToString();
+                record.lasttime = DateTime.Now;
+                try
+                {
+                    res = _RecordRepository.Add(record);
+                }
+                catch (Exception exp)
+                {
+                    logger.LogError("AddRecord增加最近浏览出错！", exp);
+                    return new ReturnResult<bool>(-1, "系统异常，请稍后重试。");
+                }
+                if (res)
+                {
+                    return new ReturnResult<bool>(1, res);
+                }
+                else
+                {
+                    return new ReturnResult<bool>(-2, "新增最近浏览失败！");
+                }
             }
             else
             {
-                return new ReturnResult<bool>(-2, "新增最近浏览失败！");
+                existRecord.iscollect = record.iscollect;
+                existRecord.ispraise = record.ispraise;
+                return UpdateRecord(existRecord);
             }
         }
         /// <summary>
@@ -728,6 +739,7 @@ namespace Mskj.ArmyKnowledge.All.Services
         public ReturnResult<bool> UpdateRecord(Record record)
         {
             bool res = false;
+            record.lasttime = DateTime.Now;
             try
             {
                 res = _RecordRepository.Update(record);

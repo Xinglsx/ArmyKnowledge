@@ -1,4 +1,4 @@
-﻿using QuickShare.LiteFramework.Base;
+﻿using Mskj.LiteFramework.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -358,6 +358,7 @@ namespace Mskj.ArmyKnowledge.All.Controllers
                 {
                     default:
                     case 0:
+                        _QuestionService.UpdateReadCount(record.QuestionId);
                         break;
                     case 1://点赞
                         _QuestionService.UpdatePraiseCount(record.QuestionId, 1);

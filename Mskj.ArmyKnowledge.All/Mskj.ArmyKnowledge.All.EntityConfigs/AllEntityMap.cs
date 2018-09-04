@@ -1,5 +1,5 @@
-﻿using QuickShare.LiteFramework.Base;
-using QuickShare.LiteFramework.Data;
+﻿using Mskj.LiteFramework.Base;
+using Mskj.LiteFramework.Data;
 
 namespace Mskj.ArmyKnowledge.All.EntityConfigs
 {

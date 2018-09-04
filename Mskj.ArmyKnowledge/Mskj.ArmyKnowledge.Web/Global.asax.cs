@@ -1,10 +1,10 @@
 ﻿using Newtonsoft.Json;
-using QuickShare.LiteFramework;
-using QuickShare.LiteFramework.Model;
-using QuickShare.LiteFramework.WebApi;
-using QuickShare.LiteFramework.WebApi.AuditLog;
-using QuickShare.LiteFramework.Log4net;
-using QuickShare.LiteFramework.TinyMapper;
+using Mskj.LiteFramework;
+using Mskj.LiteFramework.Model;
+using Mskj.LiteFramework.WebApi;
+using Mskj.LiteFramework.WebApi.AuditLog;
+using Mskj.LiteFramework.Log4net;
+using Mskj.LiteFramework.TinyMapper;
 using System;
 using System.Web;
 using System.Web.Http;

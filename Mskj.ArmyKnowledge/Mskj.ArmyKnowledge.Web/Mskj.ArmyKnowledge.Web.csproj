@@ -42,6 +42,24 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mskj.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Mskj.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Mskj.Framework.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Mskj.Framework.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Mskj.Framework.Log4net">
+      <HintPath>..\..\libs\Mskj.Framework.Log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Mskj.Framework.TinyMapper">
+      <HintPath>..\..\libs\Mskj.Framework.TinyMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Mskj.Framework.WebApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Mskj.Framework.WebApi.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\libs\Newtonsoft.Json.dll</HintPath>
@@ -98,22 +116,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework.Log4net\QuickShare.LiteFramework.Log4net.csproj">
-      <Project>{6ada58c8-054f-4b8d-838f-389ae52ecd64}</Project>
-      <Name>QuickShare.LiteFramework.Log4net</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework.TinyMapper\QuickShare.LiteFramework.TinyMapper.csproj">
-      <Project>{3f7dbc10-3ed2-4a1d-8d78-73563dbb3f81}</Project>
-      <Name>QuickShare.LiteFramework.TinyMapper</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework.WebApi\QuickShare.LiteFramework.WebApi.csproj">
-      <Project>{ad156b74-a5cc-40a3-9837-a92ae958a5ca}</Project>
-      <Name>QuickShare.LiteFramework.WebApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework\QuickShare.LiteFramework.csproj">
-      <Project>{56f059b9-0aa7-4f5b-aa7f-69512cdb70b5}</Project>
-      <Name>QuickShare.LiteFramework</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Mskj.ArmyKnowledge.Common\Mskj.ArmyKnowledge.Common.csproj">
       <Project>{bf59d032-c9fc-4106-a1a7-230371e25063}</Project>
       <Name>Mskj.ArmyKnowledge.Common</Name>

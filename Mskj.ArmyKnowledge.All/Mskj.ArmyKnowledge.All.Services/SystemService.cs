@@ -7,16 +7,16 @@ using Aliyun.Acs.Core.Profile;
 using Aliyun.Acs.Core;
 using Aliyun.Acs.Dysmsapi.Model.V20170525;
 using Aliyun.Acs.Core.Exceptions;
-using QuickShare.LiteFramework.Foundation;
-using QuickShare.LiteFramework;
+using Mskj.LiteFramework.Foundation;
+using Mskj.LiteFramework;
 using Mskj.ArmyKnowledge.All.Common.DataObj;
 using System.Web;
 using System.Collections.Generic;
-using QuickShare.LiteFramework.Base;
+using Mskj.LiteFramework.Base;
 using Mskj.ArmyKnowledge.All.Domains;
 using System.Linq;
-using QuickShare.LiteFramework.Common;
-using QuickShare.LiteFramework.Common.Extenstions;
+using Mskj.LiteFramework.Common;
+using Mskj.LiteFramework.Common.Extenstions;
 
 namespace Mskj.ArmyKnowledge.All.Services
 {

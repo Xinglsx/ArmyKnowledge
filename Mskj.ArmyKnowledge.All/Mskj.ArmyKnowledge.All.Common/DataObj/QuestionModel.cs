@@ -1,7 +1,7 @@
 ﻿using Mskj.ArmyKnowledge.All.Domains;
 using Newtonsoft.Json;
-using QuickShare.LiteFramework.Base;
-using QuickShare.LiteFramework.Common;
+using Mskj.LiteFramework.Base;
+using Mskj.LiteFramework.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;

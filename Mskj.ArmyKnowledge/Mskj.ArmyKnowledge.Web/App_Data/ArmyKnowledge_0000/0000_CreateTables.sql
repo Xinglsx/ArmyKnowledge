@@ -96,11 +96,11 @@ begin
 	   creditexpirydate     varchar(10)                    null,		--社会信用代码有效期
 	   creditimage			varchar(512)				   null,		--营业执照
 	   othercredite1        varchar(512)                   null,		--其他证件1照片
-	   otherexpirydate1     varchar(10)                    null,		--其他证件1有奖项
+	   otherexpirydate1     varchar(10)                    null,		--其他证件1有效期
 	   othercredite2        varchar(512)                   null,		--其他证件2照片
-	   otherexpirydate2     varchar(10)                    null,		--其他证件2有奖项
+	   otherexpirydate2     varchar(10)                    null,		--其他证件2有效期
 	   othercredite3        varchar(512)                   null,		--其他证件3照片
-	   otherexpirydate3     varchar(10)                    null,		--其他证件4有奖项
+	   otherexpirydate3     varchar(10)                    null,		--其他证件4有效期
 	   certstate            int                            null,		--认证信息状态																		--0 未认证（没有认证信息）
 																		--1 已申请认证
 																		--2 已通过认证

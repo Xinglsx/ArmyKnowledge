@@ -1,6 +1,6 @@
-﻿using QuickShare.LiteFramework;
-using QuickShare.LiteFramework.Model;
-using QuickShare.LiteFramework.WebApi;
+﻿using Mskj.LiteFramework;
+using Mskj.LiteFramework.Model;
+using Mskj.LiteFramework.WebApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;

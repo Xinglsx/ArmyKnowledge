@@ -1,5 +1,5 @@
 ﻿using Newtonsoft.Json;
-using QuickShare.LiteFramework.Base;
+using Mskj.LiteFramework.Base;
 using System;
 
 namespace Mskj.ArmyKnowledge.All.Common.DataObj

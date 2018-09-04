@@ -31,6 +31,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mskj.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Mskj.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Mskj.Framework.WebApi, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Mskj.Framework.WebApi.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\libs\Newtonsoft.Json.dll</HintPath>
@@ -53,16 +61,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReturnResult.cs" />
     <Compile Include="UserInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework.WebApi\QuickShare.LiteFramework.WebApi.csproj">
-      <Project>{ad156b74-a5cc-40a3-9837-a92ae958a5ca}</Project>
-      <Name>QuickShare.LiteFramework.WebApi</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework\QuickShare.LiteFramework.csproj">
-      <Project>{56f059b9-0aa7-4f5b-aa7f-69512cdb70b5}</Project>
-      <Name>QuickShare.LiteFramework</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

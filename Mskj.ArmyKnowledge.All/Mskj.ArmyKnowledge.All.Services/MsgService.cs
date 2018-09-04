@@ -1,18 +1,18 @@
 ﻿using Mskj.ArmyKnowledge.All.ServiceContracts;
-using QuickShare.LiteFramework.Base;
+using Mskj.LiteFramework.Base;
 using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.Common.DataObject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using QuickShare.LiteFramework.Common;
+using Mskj.LiteFramework.Common;
 using System.Linq.Expressions;
 using System.Data.SqlClient;
-using QuickShare.LiteFramework.Common.Extenstions;
+using Mskj.LiteFramework.Common.Extenstions;
 using Jiguang.JPush;
 using Jiguang.JPush.Model;
-using QuickShare.LiteFramework;
-using QuickShare.LiteFramework.Foundation;
+using Mskj.LiteFramework;
+using Mskj.LiteFramework.Foundation;
 using Mskj.ArmyKnowledge.All.Common.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.Services

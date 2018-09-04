@@ -1,9 +1,9 @@
 ﻿using Mskj.ArmyKnowledge.All.Domains;
 using Mskj.ArmyKnowledge.All.ServiceContracts;
 using Mskj.ArmyKnowledge.Common.DataObject;
-using QuickShare.LiteFramework.Base;
-using QuickShare.LiteFramework.Common;
-using QuickShare.LiteFramework.Common.Extenstions;
+using Mskj.LiteFramework.Base;
+using Mskj.LiteFramework.Common;
+using Mskj.LiteFramework.Common.Extenstions;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -12,8 +12,8 @@ using System.Linq.Expressions;
 using System.Web;
 using System.Configuration;
 using System.IO;
-using QuickShare.LiteFramework.Foundation;
-using QuickShare.LiteFramework;
+using Mskj.LiteFramework.Foundation;
+using Mskj.LiteFramework;
 using Mskj.ArmyKnowledge.All.Common.DataObj;
 
 namespace Mskj.ArmyKnowledge.All.Services

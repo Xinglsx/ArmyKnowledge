@@ -1,5 +1,5 @@
 ﻿using Mskj.ArmyKnowledge.All.Domains;
-using QuickShare.LiteFramework.Common;
+using Mskj.LiteFramework.Common;
 
 namespace Mskj.ArmyKnowledge.All.Common.DataObj
 {

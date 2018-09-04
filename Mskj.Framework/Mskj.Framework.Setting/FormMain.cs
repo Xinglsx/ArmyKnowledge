@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using QuickShare.LiteFramework.Common.Extenstions;
-using QuickShare.LiteFramework.Common.Utilities;
+using Mskj.LiteFramework.Common.Extenstions;
+using Mskj.LiteFramework.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

@@ -1,4 +1,4 @@
-﻿using QuickShare.LiteFramework.Base;
+﻿using Mskj.LiteFramework.Base;
 using System;
 
 namespace Mskj.ArmyKnowledge.All.Domains

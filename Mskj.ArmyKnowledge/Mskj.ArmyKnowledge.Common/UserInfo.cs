@@ -1,5 +1,5 @@
-﻿using QuickShare.LiteFramework.Common.Extenstions;
-using QuickShare.LiteFramework.WebApi.Authorization;
+﻿using Mskj.LiteFramework.Common.Extenstions;
+using Mskj.LiteFramework.WebApi.Authorization;
 
 namespace Mskj.ArmyKnowledge.Common
 {

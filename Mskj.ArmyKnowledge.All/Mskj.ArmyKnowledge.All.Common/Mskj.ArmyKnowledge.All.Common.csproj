@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Mskj.Framework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\libs\Mskj.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\libs\Newtonsoft.Json.dll</HintPath>
@@ -69,10 +73,6 @@
     <ProjectReference Include="..\..\Mskj.ArmyKnowledge\Mskj.ArmyKnowledge.Common\Mskj.ArmyKnowledge.Common.csproj">
       <Project>{bf59d032-c9fc-4106-a1a7-230371e25063}</Project>
       <Name>Mskj.ArmyKnowledge.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Mskj.Framework\QuickShare.LiteFramework\QuickShare.LiteFramework.csproj">
-      <Project>{56f059b9-0aa7-4f5b-aa7f-69512cdb70b5}</Project>
-      <Name>QuickShare.LiteFramework</Name>
     </ProjectReference>
     <ProjectReference Include="..\Mskj.ArmyKnowledge.All.Domains\Mskj.ArmyKnowledge.All.Domains.csproj">
       <Project>{8f34319b-c79f-4304-a092-7d6b87ae2ea2}</Project>

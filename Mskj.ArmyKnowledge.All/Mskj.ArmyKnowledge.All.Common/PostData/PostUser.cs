@@ -64,5 +64,13 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
         [JsonProperty("keyvalue")]
         public string KeyValue { get; set; }
         #endregion
+
+        #region 登录时使用
+        /// <summary>
+        /// 密码
+        /// </summary>
+        [JsonProperty("loginname")]
+        public string LoginName { get; set; }
+        #endregion
     }
 }

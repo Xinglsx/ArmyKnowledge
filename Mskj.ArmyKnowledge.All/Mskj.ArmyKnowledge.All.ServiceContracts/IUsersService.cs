@@ -14,12 +14,15 @@ namespace Mskj.ArmyKnowledge.All.ServiceContracts
         /// <summary>
         /// 登录
         /// </summary>
-        /// <param name="user">登录信息，主要传loginname和加密后的password</param>
-        ReturnResult<Users> Login(Users user);
+        /// <param name="loginname">登录名</param>
+        /// <param name="pwd">密码</param>
+        ReturnResult<Users> Login(string loginname, string pwd);
         /// <summary>
         /// 新增用户
         /// </summary>
-        /// <param name="user">用户信息</param>
+        /// <param name="phoneNumber">电话号码</param>
+        /// <param name="pwd">密码</param>
+        /// <param name="verificationCode">验证码</param>
         ReturnResult<Users> AddUser(string phoneNumber,
             string pwd, string verificationCode);
         /// <summary>

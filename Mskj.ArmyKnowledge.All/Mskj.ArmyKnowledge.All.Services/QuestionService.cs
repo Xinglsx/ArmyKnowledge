@@ -595,6 +595,8 @@ namespace Mskj.ArmyKnowledge.All.Services
             {
                 question.HeatCount -= 1080 + (hours - 120) * 100;
             }
+            if (question.HeatCount <= 10)
+                question.HeatCount = 10;
 
             this.Update(question);
         }

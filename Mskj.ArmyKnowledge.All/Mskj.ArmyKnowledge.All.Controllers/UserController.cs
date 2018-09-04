@@ -27,14 +27,14 @@ namespace Mskj.ArmyKnowledge.All.Controllers
         /// <param name="user">登录信息，主要传loginname和加密后的password</param>
         [Route("Login")]
         [HttpPost]
-        public object Login(Users user)
+        public object Login(PostUser user)
         {
-            if (user == null || string.IsNullOrEmpty(user.loginname) ||
-                string.IsNullOrEmpty(user.pwd))
+            if (user == null || string.IsNullOrEmpty(user.LoginName) ||
+                string.IsNullOrEmpty(user.Pwd))
             {
                 return new ReturnResult<Users>(-4, "传入参数错误!");
             }
-            return _UsersService.Login(user);
+            return _UsersService.Login(user.LoginName,user.Pwd);
         }
         /// <summary>
         /// 新增用户

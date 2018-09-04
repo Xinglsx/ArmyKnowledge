@@ -53,33 +53,67 @@ namespace Mskj.ArmyKnowledge.All.Services
         /// <summary>
         /// 登录
         /// </summary>
-        /// <param name="user">登录信息，主要传loginname和加密后的pwd</param>
-        public ReturnResult<Users> Login(Users user)
+        /// <param name="loginname">登录名</param>
+        /// <param name="pwd">密码</param>
+        public ReturnResult<Users> Login(string loginname,string pwd)
         {
-            logger.LogInfo("loginname:"+ user.loginname+" pwd"+user.pwd);
-            logger.LogInfo(user);
-            var existUser = this.GetOne(p => p.phonenumber == user.loginname ||
-                p.loginname == user.loginname);
+            logger.LogInfo("loginname:"+ loginname+" pwd"+pwd);
+            var existUser = this.GetOne(p => p.phonenumber == loginname ||
+                p.loginname == loginname);
             if (existUser == null)
             {
                 return new ReturnResult<Users>(-2, "用户名或手机号不存在!");
             }
-            else if (!user.pwd.Equals(existUser.pwd))
+            else if (!pwd.Equals(existUser.pwd))
             {
                 return new ReturnResult<Users>(-2, "密码错误，请重试！");
             }
             else
             {
+                //var resUser = (from user in _UsersRepository.Find()
+                //               where (user.phonenumber == loginname || user.loginname == loginname)
+                //               && user.pwd == pwd
+                //               select new UserModel
+                //               {
+                //                   Id = user.id,
+                //                   AdoptedCount = user.adoptedcount,
+                //                   Area = user.area,
+                //                   Avatar = user.avatar,
+                //                   CompositeScores = user.compositescores,
+                //                   CreditCode = user.creditcode,
+                //                   FansCount = user.fanscount,
+                //                   FollowCount = user.followcount,
+                //                   GoodPoint = user.goodpoint,
+                //                   Isadmin = user.isadmin,
+                //                   Nickname = user.nickname,
+                //                   Organization = user.organization,
+                //                   PhoneNumber = user.phonenumber,
+                //                   LoginName = user.loginname,
+                //                   IsCertification = user.iscertification,
+                //                   AnswerCount = user.answercount,
+                //                   Position = user.position,
+                //                   RegisterTime = user.registertime,
+                //                   RegistrationId = user.registrationid,
+                //                   Signatures = user.signatures,
+                //                   UpdateTime = user.updatetime,
+                //                   UserState = user.userstate,
+                //                   Sex = user.sex,
+                //                   UserType = user.usertype,
+                //                   Profession = user.profession,
+                //                   Token = Guid.NewGuid().ToString(),
+                //               }).FirstOrDefault();
                 //将PWD别成token
-                string token = Guid.NewGuid().ToString();
-                existUser.pwd = token;
+                //string token = Guid.NewGuid().ToString();
+                //existUser.pwd = token;
                 return new ReturnResult<Users>(1, existUser);
             }
         }
         /// <summary>
         /// 新增用户
         /// </summary>
-        /// <param name="user">用户信息</param>
+        /// <param name="phoneNumber">电话号码</param>
+        /// <param name="pwd">密码</param>
+        /// <param name="verificationCode">验证码</param>
         public ReturnResult<Users> AddUser(string phoneNumber,
             string pwd, string verificationCode)
         {

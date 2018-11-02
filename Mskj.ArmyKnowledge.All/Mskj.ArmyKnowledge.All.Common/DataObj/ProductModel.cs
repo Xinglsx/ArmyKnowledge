@@ -64,5 +64,28 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         public DateTime? UpdateTime { get; set; }
         [JsonProperty("avatar")]
         public string Avatar { get; set; }
+
+        [JsonProperty("procategory")]
+        public string ProCategory { get; set; }
+        [JsonProperty("contacttelephone")]
+        public string ContactTelephone { get; set; }
+        [JsonProperty("appsituation")]
+        public string AppSituation { get; set; }
+        [JsonProperty("appadvancement")]
+        public string AppAdvancement { get; set; }
+        [JsonProperty("appachievement")]
+        public string AppAchievement { get; set; }
+        [JsonProperty("exhibitsdisplay")]
+        public string ExhibitsDisplay { get; set; }
+        [JsonProperty("exhibitssize")]
+        public string ExhibitsSize { get; set; }
+        [JsonProperty("exhibitsweight")]
+        public string ExhibitsWeight { get; set; }
+        [JsonProperty("requirement")]
+        public string Requirement { get; set; }
+        [JsonProperty("providefree")]
+        public string ProvideFree { get; set; }
+        [JsonProperty("area")]
+        public string Area { get; set; }
     }
 }

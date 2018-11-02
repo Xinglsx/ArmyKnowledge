@@ -310,8 +310,8 @@ begin
 	   productiondate       varchar(10)                    null,		--生产日期
 	   prodetail			text						   null,		--产品明细信息
 	   category             varchar(64)                    null,		--产品分类
-	   contacts             varchar(32)                    null,		--联系人
-	   contactphone         varchar(11)                    null,		--联系电话
+	   contacts             varchar(32)                    null,		--联系人(产品负责人)
+	   contactphone         varchar(11)                    null,		--联系人手机
 	   prostate             int                            null,		--产品状态 
 																		--0 新建 
 																		--1 提交审核 
@@ -319,6 +319,19 @@ begin
 																		--3 审核不通过
 	   proscores			int							   null,		--综合得分
 	   updatetime			datetime					   null,		--更新时间
+	   
+	   procategory			varchar(16)					   null,		--产品类别(海军、陆军、空军、火箭军、其他)
+	   contacttelephone		varchar(16)					   null,		--联系人电话
+	   appsituation			varchar(64)					   null,		--应用情况(A：已应用 B：正在洽谈 C：已立项)
+	   appadvancement		varchar(64)					   null,		--应用先进行(A：解决卡脖子问题 B：填报国内空白 C：创新型应用)
+	   appachievement		varchar(512)				   null,		--产品成就
+	   exhibitsdisplay		varchar(128)				   null,		--展示方式
+	   exhibitssize			varchar(128)				   null,		--展品尺寸
+	   exhibitsweight		varchar(128)				   null,		--展品重量
+	   requirement			varchar(512)				   null,		--展示需求
+	   providefree			varchar(128)				   null,		--是否愿意无偿提供
+	   area					varchar(128)				   null,		--所在区域
+
 	   constraint PK_PRODUCT primary key clustered (id)
 	);
 end

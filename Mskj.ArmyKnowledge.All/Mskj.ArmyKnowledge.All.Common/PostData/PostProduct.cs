@@ -78,6 +78,62 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
         /// </summary>
         [JsonProperty("category")]
         public string Category { get; set; }
+
+        /// <summary>
+        /// 产品类别(海军、陆军、空军、火箭军、其他)
+        /// </summary>
+        [JsonProperty("procategory")]
+        public string ProCategory { get; set; }
+        /// <summary>
+        /// 联系人电话
+        /// </summary>
+        [JsonProperty("contacttelephone")]
+        public string ContactTelephone { get; set; }
+        /// <summary>
+        /// 应用情况(A：已应用 B：正在洽谈 C：已立项)
+        /// </summary>
+        [JsonProperty("appsituation")]
+        public string AppSituation { get; set; }
+        /// <summary>
+        /// 应用先进行(A：解决卡脖子问题 B：填报国内空白 C：创新型应用)
+        /// </summary>
+        [JsonProperty("appadvancement")]
+        public string AppAdvancement { get; set; }
+        /// <summary>
+        /// 产品成就
+        /// </summary>
+        [JsonProperty("appachievement")]
+        public string AppAchievement { get; set; }
+        /// <summary>
+        /// 展示方式
+        /// </summary>
+        [JsonProperty("exhibitsdisplay")]
+        public string ExhibitsDisplay { get; set; }
+        /// <summary>
+        /// 展品尺寸
+        /// </summary>
+        [JsonProperty("exhibitssize")]
+        public string ExhibitsSize { get; set; }
+        /// <summary>
+        /// 展品重量
+        /// </summary>
+        [JsonProperty("exhibitsweight")]
+        public string ExhibitsWeight { get; set; }
+        /// <summary>
+        /// 展示需求
+        /// </summary>
+        [JsonProperty("requirement")]
+        public string Requirement { get; set; }
+        /// <summary>
+        /// 是否愿意无偿提供
+        /// </summary>
+        [JsonProperty("providefree")]
+        public string ProvideFree { get; set; }
+        /// <summary>
+        /// 所在区域
+        /// </summary>
+        [JsonProperty("area")]
+        public string Area { get; set; }
     }
 
     public static class PostProductExtensions
@@ -99,6 +155,18 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
                 images = pro.Images,
                 homeimage = pro.Homeimage,
                 category = pro.Category,
+
+                procategory = pro.ProCategory,
+                appachievement = pro.AppAchievement,
+                appadvancement = pro.AppAdvancement,
+                appsituation = pro.AppSituation,
+                area = pro.Area,
+                contacttelephone = pro.ContactTelephone,
+                exhibitsdisplay = pro.ExhibitsDisplay,
+                exhibitssize = pro.ExhibitsSize,
+                exhibitsweight = pro.ExhibitsWeight,
+                providefree = pro.ProvideFree,
+                requirement = pro.Requirement,
             };
         }
     }

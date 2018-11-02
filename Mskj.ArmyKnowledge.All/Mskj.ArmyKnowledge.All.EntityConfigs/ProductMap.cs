@@ -25,6 +25,18 @@ namespace Mskj.ArmyKnowledge.All.EntityConfigs
             this.Property(p => p.category).HasMaxLength(64);
             this.Property(p => p.contacts).HasMaxLength(32);
             this.Property(p => p.contactphone).HasMaxLength(11);
+
+            this.Property(p => p.procategory).HasMaxLength(16);
+            this.Property(p => p.contacttelephone).HasMaxLength(16);
+            this.Property(p => p.appsituation).HasMaxLength(64);
+            this.Property(p => p.appadvancement).HasMaxLength(64);
+            this.Property(p => p.appachievement).HasMaxLength(512);
+            this.Property(p => p.exhibitsdisplay).HasMaxLength(128);
+            this.Property(p => p.exhibitssize).HasMaxLength(128);
+            this.Property(p => p.exhibitsweight).HasMaxLength(128);
+            this.Property(p => p.requirement).HasMaxLength(512);
+            this.Property(p => p.providefree).HasMaxLength(128);
+            this.Property(p => p.area).HasMaxLength(128);
         }
     }
 }

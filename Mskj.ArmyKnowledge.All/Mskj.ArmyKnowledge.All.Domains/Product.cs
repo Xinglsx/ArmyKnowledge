@@ -27,5 +27,17 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public int readcount { get; set; }
         public int buycount { get; set; }
         public DateTime? updatetime { get; set; }
+
+        public string procategory { get;set;}
+        public string contacttelephone { get;set;}
+        public string appsituation { get;set;}
+        public string appadvancement { get;set;}
+        public string appachievement { get;set;}
+        public string exhibitsdisplay { get;set;}
+        public string exhibitssize { get;set;}
+        public string exhibitsweight { get;set;}
+        public string requirement { get;set; }
+        public string providefree { get;set; }
+        public string area { get;set; }
     }
 }

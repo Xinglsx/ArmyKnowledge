@@ -37,6 +37,8 @@ namespace Mskj.ArmyKnowledge.All.EntityConfigs
             this.Property(p => p.requirement).HasMaxLength(512);
             this.Property(p => p.providefree).HasMaxLength(128);
             this.Property(p => p.area).HasMaxLength(128);
-        }
+            this.Property(p => p.email).HasMaxLength(128);
+            this.Property(p => p.industrycategories).HasMaxLength(128);
+    }
     }
 }

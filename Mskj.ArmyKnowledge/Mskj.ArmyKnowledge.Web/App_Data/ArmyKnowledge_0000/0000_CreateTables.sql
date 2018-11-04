@@ -331,6 +331,13 @@ begin
 	   requirement			varchar(512)				   null,		--展示需求
 	   providefree			varchar(128)				   null,		--是否愿意无偿提供
 	   area					varchar(128)				   null,		--所在区域
+	   email				varchar(128)				   null,		--电子邮件
+	   industrycategories	varchar(128)				   null,		--行业类别
+																		--1.新一代信息技术（集成电路、人工智能、物联网及软件、新型平板显示、信息安全、应急通信）
+																		--2.高端装备制造（轨道交通装备、海洋工程装备、航空航天装备、机械制造、卫星及应用、智能制造装备）
+																		--3.新材料与新能源 （非金属复合新材料、金属新材料、新能源）
+																		--4.后勤保障 （1食品类、2医药类、3粮油类、4服装类、5工程物流检测）
+																		--5、其他（1其他）
 
 	   constraint PK_PRODUCT primary key clustered (id)
 	);

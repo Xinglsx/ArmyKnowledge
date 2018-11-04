@@ -87,5 +87,9 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         public string ProvideFree { get; set; }
         [JsonProperty("area")]
         public string Area { get; set; }
+        [JsonProperty("email")]
+        public string Email { get; set; }
+        [JsonProperty("industrycategories")]
+        public string IndustryCategories { get; set; }
     }
 }

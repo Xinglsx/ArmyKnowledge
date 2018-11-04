@@ -39,5 +39,7 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string requirement { get;set; }
         public string providefree { get;set; }
         public string area { get;set; }
+        public string email { get; set; }
+        public string industrycategories { get; set; }
     }
 }

@@ -134,6 +134,16 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
         /// </summary>
         [JsonProperty("area")]
         public string Area { get; set; }
+        /// <summary>
+        /// 电子邮件
+        /// </summary>
+        [JsonProperty("email")]
+        public string Email { get; set; }
+        /// <summary>
+        /// 行业类别
+        /// </summary>
+        [JsonProperty("industrycategories")]
+        public string IndustryCategories { get; set; }
     }
 
     public static class PostProductExtensions
@@ -167,6 +177,8 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
                 exhibitsweight = pro.ExhibitsWeight,
                 providefree = pro.ProvideFree,
                 requirement = pro.Requirement,
+                email = pro.Email,
+                industrycategories = pro.IndustryCategories,
             };
         }
     }

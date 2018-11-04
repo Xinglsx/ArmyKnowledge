@@ -248,6 +248,20 @@ namespace Mskj.ArmyKnowledge.All.Services
                            ReadCount = pro.readcount,
                            UpdateTime = pro.updatetime,
                            UserId = user.id,
+
+                           AppAchievement = pro.appachievement,
+                           AppAdvancement = pro.appadvancement,
+                           AppSituation = pro.appsituation,
+                           Area = pro.area,
+                           ContactTelephone = pro.contacttelephone,
+                           ExhibitsDisplay = pro.exhibitsdisplay,
+                           ExhibitsWeight = pro.exhibitsweight,
+                           ProCategory = pro.procategory,
+                           ProvideFree = pro.providefree,
+                           Requirement = pro.requirement,
+                           ExhibitsSize = pro.exhibitssize,
+                           IndustryCategories = pro.industrycategories,
+                           Email = pro.email,
                        });
             switch (sortType)
             {
@@ -306,6 +320,20 @@ namespace Mskj.ArmyKnowledge.All.Services
                            ReadCount = pro.readcount,
                            UpdateTime = pro.updatetime,
                            UserId = user.id,
+
+                           AppAchievement = pro.appachievement,
+                           AppAdvancement = pro.appadvancement,
+                           AppSituation = pro.appsituation,
+                           Area = pro.area,
+                           ContactTelephone = pro.contacttelephone,
+                           ExhibitsDisplay = pro.exhibitsdisplay,
+                           ExhibitsWeight = pro.exhibitsweight,
+                           ProCategory = pro.procategory,
+                           ProvideFree = pro.providefree,
+                           Requirement = pro.requirement,
+                           ExhibitsSize = pro.exhibitssize,
+                           IndustryCategories = pro.industrycategories,
+                           Email = pro.email,
                        });
             if (state != -1)
             {

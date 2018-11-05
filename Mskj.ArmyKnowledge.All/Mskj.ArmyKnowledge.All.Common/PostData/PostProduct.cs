@@ -144,6 +144,11 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
         /// </summary>
         [JsonProperty("industrycategories")]
         public string IndustryCategories { get; set; }
+        /// <summary>
+        /// 性能参数
+        /// </summary>
+        [JsonProperty("performance")]
+        public string Performance { get; set; }
     }
 
     public static class PostProductExtensions
@@ -179,6 +184,7 @@ namespace Mskj.ArmyKnowledge.All.Common.PostData
                 requirement = pro.Requirement,
                 email = pro.Email,
                 industrycategories = pro.IndustryCategories,
+                performance = pro.Performance,
             };
         }
     }

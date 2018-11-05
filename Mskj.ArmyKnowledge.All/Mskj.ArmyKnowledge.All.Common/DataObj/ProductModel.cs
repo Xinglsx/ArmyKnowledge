@@ -91,5 +91,7 @@ namespace Mskj.ArmyKnowledge.All.Common.DataObj
         public string Email { get; set; }
         [JsonProperty("industrycategories")]
         public string IndustryCategories { get; set; }
+        [JsonProperty("performance")]
+        public string Performance { get; set; }
     }
 }

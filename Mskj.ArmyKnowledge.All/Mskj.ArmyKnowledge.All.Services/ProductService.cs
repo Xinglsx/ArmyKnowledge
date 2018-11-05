@@ -262,6 +262,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                            ExhibitsSize = pro.exhibitssize,
                            IndustryCategories = pro.industrycategories,
                            Email = pro.email,
+                           Performance = pro.performance,
                        });
             switch (sortType)
             {
@@ -334,6 +335,7 @@ namespace Mskj.ArmyKnowledge.All.Services
                            ExhibitsSize = pro.exhibitssize,
                            IndustryCategories = pro.industrycategories,
                            Email = pro.email,
+                           Performance = pro.performance,
                        });
             if (state != -1)
             {

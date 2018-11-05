@@ -296,7 +296,7 @@ begin
 	   id                   varchar(36)                    not null,	--主键ID
 	   userid               varchar(36)                    null,		--发布用户ID
 	   nickname             varchar(32)                    null,		--发布用户昵称
-	   proname              varchar(64)                    null,		--产品名称
+	   proname              varchar(4000)                  null,		--产品名称
 	   price				decimal(12,2)				   null,		--价格
 	   introduction         varchar(2000)                  null,		--简介
 	   images               varchar(4000)                  null,		--图片集合，以逗号隔开
@@ -309,7 +309,7 @@ begin
 	   materialcode         varchar(32)                    null,		--物资编码
 	   productiondate       varchar(10)                    null,		--生产日期
 	   prodetail			text						   null,		--产品明细信息
-	   category             varchar(64)                    null,		--产品分类
+	   category             varchar(512)                   null,		--产品分类
 	   contacts             varchar(32)                    null,		--联系人(产品负责人)
 	   contactphone         varchar(11)                    null,		--联系人手机
 	   prostate             int                            null,		--产品状态 
@@ -320,19 +320,20 @@ begin
 	   proscores			int							   null,		--综合得分
 	   updatetime			datetime					   null,		--更新时间
 	   
-	   procategory			varchar(16)					   null,		--产品类别(海军、陆军、空军、火箭军、其他)
-	   contacttelephone		varchar(16)					   null,		--联系人电话
-	   appsituation			varchar(64)					   null,		--应用情况(A：已应用 B：正在洽谈 C：已立项)
-	   appadvancement		varchar(64)					   null,		--应用先进行(A：解决卡脖子问题 B：填报国内空白 C：创新型应用)
-	   appachievement		varchar(512)				   null,		--产品成就
-	   exhibitsdisplay		varchar(128)				   null,		--展示方式
-	   exhibitssize			varchar(128)				   null,		--展品尺寸
-	   exhibitsweight		varchar(128)				   null,		--展品重量
-	   requirement			varchar(512)				   null,		--展示需求
+	   procategory			varchar(4000)				   null,		--产品类别(海军、陆军、空军、火箭军、其他)
+	   contacttelephone		varchar(128)				   null,		--联系人电话
+	   appsituation			varchar(4000)				   null,		--应用情况(A：已应用 B：正在洽谈 C：已立项)
+	   appadvancement		varchar(4000)				   null,		--应用先进行(A：解决卡脖子问题 B：填报国内空白 C：创新型应用)
+	   appachievement		varchar(4000)				   null,		--产品成就
+	   performance			text						   null,		--性能参数
+	   exhibitsdisplay		varchar(4000)				   null,		--展示方式
+	   exhibitssize			varchar(4000)				   null,		--展品尺寸
+	   exhibitsweight		varchar(4000)				   null,		--展品重量
+	   requirement			varchar(4000)				   null,		--展示需求
 	   providefree			varchar(128)				   null,		--是否愿意无偿提供
 	   area					varchar(128)				   null,		--所在区域
 	   email				varchar(128)				   null,		--电子邮件
-	   industrycategories	varchar(128)				   null,		--行业类别
+	   industrycategories	varchar(4000)				   null,		--行业类别
 																		--1.新一代信息技术（集成电路、人工智能、物联网及软件、新型平板显示、信息安全、应急通信）
 																		--2.高端装备制造（轨道交通装备、海洋工程装备、航空航天装备、机械制造、卫星及应用、智能制造装备）
 																		--3.新材料与新能源 （非金属复合新材料、金属新材料、新能源）

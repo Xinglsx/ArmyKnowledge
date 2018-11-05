@@ -41,5 +41,6 @@ namespace Mskj.ArmyKnowledge.All.Domains
         public string area { get;set; }
         public string email { get; set; }
         public string industrycategories { get; set; }
+        public string performance { get; set; }
     }
 }
